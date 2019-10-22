@@ -1,0 +1,23 @@
+<resources>
+
+    <style name="Base.Theme.App" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="Theme.App" parent="Base.Theme.App">
+
+    </style>
+
+    <style name="Theme.App.Splash" parent="Base.Theme.App">
+        <item name="android:statusBarColor">?colorPrimary</item>
+        <item name="android:navigationBarColor">?colorPrimary</item>
+    </style>
+
+    <style name="Theme.App.Intro" parent="Base.Theme.App">
+        <item name="introBackground">@color/intro_background_color</item>
+        <item name="introBar">@color/intro_bar_color</item>
+    </style>
+
+</resources>
