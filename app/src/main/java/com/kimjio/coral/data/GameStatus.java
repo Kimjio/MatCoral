@@ -4,7 +4,11 @@ package com.kimjio.coral.data;
  * 방 정보?
  */
 public class GameStatus extends BaseData {
-    public boolean isClosed; //방 닫힘?
+    private boolean isClosed; //방 닫힘?
+
+    public boolean isClosed() {
+        return isClosed;
+    }
     /*public int playingMemberCount;
     public Status status;
 

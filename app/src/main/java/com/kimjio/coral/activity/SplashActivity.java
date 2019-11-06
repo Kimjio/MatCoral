@@ -4,10 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
-import com.kimjio.coral.R;
 import com.kimjio.coral.databinding.SplashActivityBinding;
 
 public class SplashActivity extends BaseActivity<SplashActivityBinding> {
+
+    private static final String TAG = "SplashActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -1,5 +1,9 @@
 package com.kimjio.coral.data;
 
 public abstract class BaseData {
-    public long id;
+    private long id;
+
+    public long getId() {
+        return id;
+    }
 }
