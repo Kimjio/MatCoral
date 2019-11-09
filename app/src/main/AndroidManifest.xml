@@ -11,6 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.App">
+        <activity android:name=".splat.activity.SplatActivity"></activity>
         <activity
             android:name=".activity.SplashActivity"
             android:theme="@style/Theme.App.Splash">
@@ -36,6 +37,7 @@
                 <data android:scheme="npf71b963c1b7b6d119" />
             </intent-filter>
         </activity>
+        <activity android:name=".activity.WelcomeActivity" />
         <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="com.nintendo.znca.OPEN_FROM_NOTIFICATION" />

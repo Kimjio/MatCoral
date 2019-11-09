@@ -1,25 +1,26 @@
 package com.kimjio.coral.viewmodel;
 
+import android.app.Application;
 import android.net.Uri;
 import android.util.Base64;
-import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.kimjio.coral.api.FlapgApi;
 import com.kimjio.coral.api.NintendoAccountApi;
 import com.kimjio.coral.api.NintendoApi;
-import com.kimjio.coral.data.Wrapper;
-import com.kimjio.coral.data.auth.LoginResult;
+import com.kimjio.coral.data.auth.TokenResponse;
 import com.kimjio.coral.data.auth.SessionToken;
 import com.kimjio.coral.data.auth.Token;
-import com.kimjio.coral.data.auth.flapg.FTokens;
-import com.kimjio.coral.data.auth.request.LoginParam;
-import com.kimjio.coral.data.auth.request.LoginParamWrapper;
+import com.kimjio.coral.data.auth.flapg.FToken;
 import com.kimjio.coral.data.auth.request.TokenRequest;
+import com.kimjio.coral.data.auth.request.TokenRequestWrapper;
+import com.kimjio.coral.data.auth.request.AITokenRequest;
 import com.kimjio.coral.data.me.Me;
 import com.kimjio.coral.util.RetrofitUtil;
+import com.kimjio.hash.HashTool;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,14 +28,9 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
-
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.observers.DisposableObserver;
-import io.reactivex.schedulers.Schedulers;
 
 import static com.kimjio.coral.api.FlapgApi.FLAPG;
 import static com.kimjio.coral.api.NintendoAccountApi.AUTH_SCHEME;
@@ -51,26 +47,23 @@ import static com.kimjio.coral.util.StringUtils.UTF_8;
 import static com.kimjio.coral.util.StringUtils.getEncodedString;
 
 public class LoginViewModel extends BaseViewModel {
-
-    static {
-        System.loadLibrary("hash");
-    }
-
-    private static final String TAG = "LoginViewModel";
-
-    private NintendoApi nintendoApi = RetrofitUtil.getInstance(NINTENDO).create(NintendoApi.class);
-    private NintendoAccountApi accountApi = RetrofitUtil.getInstance(NINTENDO_ACCOUNTS).create(NintendoAccountApi.class);
-    private FlapgApi flapgApi = RetrofitUtil.getInstance(FLAPG).create(FlapgApi.class);
+    protected NintendoApi nintendoApi = RetrofitUtil.getInstance(NINTENDO).create(NintendoApi.class);
+    protected NintendoAccountApi accountApi = RetrofitUtil.getInstance(NINTENDO_ACCOUNTS).create(NintendoAccountApi.class);
+    protected FlapgApi flapgApi = RetrofitUtil.getInstance(FLAPG).create(FlapgApi.class);
 
     private String state; //state
     private String sessionTokenCode;
     private String sessionTokenCodeChallenge; //stc:c
 
     private MutableLiveData<SessionToken> sessionTokenLiveData = new MutableLiveData<>();
-    private MutableLiveData<Token> tokenLiveData = new MutableLiveData<>();
-    private MutableLiveData<Me> meLiveData = new MutableLiveData<>();
-    private MutableLiveData<FTokens> fTokensLiveData = new MutableLiveData<>();
-    private MutableLiveData<LoginResult> loginResultLiveData = new MutableLiveData<>();
+    protected MutableLiveData<Token> tokenLiveData = new MutableLiveData<>();
+    protected MutableLiveData<Me> meLiveData = new MutableLiveData<>();
+    protected MutableLiveData<Map<String, FToken>> fTokensLiveData = new MutableLiveData<>();
+    protected MutableLiveData<TokenResponse> tokenResponseLiveData = new MutableLiveData<>();
+
+    public LoginViewModel(@NonNull Application application) {
+        super(application);
+    }
 
     public Uri getLoginUri() {
         String rawUrl = NINTENDO_ACCOUNTS + "connect/1.0.0/authorize?state=%s&redirect_uri=%s&client_id=%s&scope=%s&response_type=%s&session_token_code_challenge=%s&session_token_code_challenge_method=S256&theme=login_form";
@@ -87,7 +80,7 @@ public class LoginViewModel extends BaseViewModel {
     }
 
     public LiveData<Token> getToken(String sessionToken) {
-        disposable.add(getDisposable(accountApi.getToken(getUserAgent(), new TokenRequest(CLIENT_ID, TOKEN_GRANT_TYPE, sessionToken)), tokenLiveData));
+        disposable.add(getDisposable(accountApi.getToken(getUserAgent(), new AITokenRequest(CLIENT_ID, TOKEN_GRANT_TYPE, sessionToken)), tokenLiveData));
         return tokenLiveData;
     }
 
@@ -96,70 +89,15 @@ public class LoginViewModel extends BaseViewModel {
         return meLiveData;
     }
 
-    public LiveData<FTokens> getFTokens(String idToken, String timestamp, String hash) {
-        disposable.add(getDisposable(flapgApi.getFTokens(idToken, timestamp, UUID.randomUUID().toString(), hash, getRandom()), fTokensLiveData));
+    public LiveData<Map<String, FToken>> getFTokens(String idToken) {
+        String timestamp = Long.toString(System.currentTimeMillis() / 1000);
+        disposable.add(getDisposable(flapgApi.getFTokens(idToken, timestamp, UUID.randomUUID().toString(), HashTool.getHash(idToken, timestamp), getRandom()), fTokensLiveData));
         return fTokensLiveData;
     }
 
-    public LiveData<LoginResult> login(LoginParamWrapper loginParamWrapper) {
-        disposable.add(getWrapperDisposable(nintendoApi.login(getUserAgent(), NSO_VERSION, loginParamWrapper), loginResultLiveData));
-        return loginResultLiveData;
-    }
-
-    public LiveData<LoginResult> login(String naBirthDay, String naCountry, String naIdToken, String uuid, long timestamp, String f) {
-        disposable.add(getWrapperDisposable(nintendoApi.login(getUserAgent(), NSO_VERSION, new LoginParamWrapper(new LoginParam(naBirthDay, naCountry, naIdToken, uuid, timestamp, f))), loginResultLiveData));
-        return loginResultLiveData;
-    }
-
-    private <T, D extends MutableLiveData<T>> Disposable getDisposable(Observable<T> observable, D liveData) {
-        return observable.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .retryWhen(throwableObservable -> throwableObservable.flatMap(Observable::error))
-                .subscribeWith(getDisposableObserver(liveData));
-    }
-
-    private <T, D extends MutableLiveData<T>> DisposableObserver<T> getDisposableObserver(D liveData) {
-        return new DisposableObserver<T>() {
-            @Override
-            public void onNext(T result) {
-                liveData.postValue(result);
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                Log.w(TAG, "onError: ", e);
-            }
-
-            @Override
-            public void onComplete() {
-            }
-        };
-    }
-
-    private <T, W extends Wrapper<T>, D extends MutableLiveData<T>> Disposable getWrapperDisposable(Observable<W> observable, D liveData) {
-        return observable.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .retryWhen(throwableObservable -> throwableObservable.flatMap(Observable::error))
-                .subscribeWith(getWrapperDisposableObserver(liveData));
-    }
-
-    private <T, W extends Wrapper<T>, D extends MutableLiveData<T>> DisposableObserver<W> getWrapperDisposableObserver(D liveData) {
-        return new DisposableObserver<W>() {
-            @Override
-            public void onNext(W result) {
-                liveData.postValue(result.getData());
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                Log.w(TAG, "onError: ", e);
-            }
-
-            @Override
-            public void onComplete() {
-
-            }
-        };
+    public LiveData<TokenResponse> login(Me me, FToken f) {
+        disposable.add(getWrapperDisposable(nintendoApi.login(getUserAgent(), NSO_VERSION, new TokenRequestWrapper(new TokenRequest(me.getBirthday(), me.getCountry(), f.getToken(), f.getUUID(), Long.parseLong(f.getTimestamp()), f.getF()))), tokenResponseLiveData));
+        return tokenResponseLiveData;
     }
 
     private String getCrypto(String str) {
@@ -183,19 +121,11 @@ public class LoginViewModel extends BaseViewModel {
         return new String(chars);
     }
 
-    @Override
-    protected void onCleared() {
-        super.onCleared();
-        disposable.dispose();
-    }
-
-    public boolean verifyToken(Uri responseRaw) {
-        String response = responseRaw.toString();
-        Log.d(TAG, "verifyToken: " + response);
-        final String[] args = response.substring(AUTH_SCHEME.length()).replace('#', '\0').split("&");
-        sessionTokenCode = args[1].split("=")[1];// response.getQueryParameter("");
-        final String sessionTokenCodeVerifier = args[2].split("=")[1];
-        final boolean isStateEquals = sessionTokenCodeVerifier.equals(state);
+    public boolean verifyToken(Uri response) {
+        response = Uri.parse(response.toString().replace("auth#","auth?"));
+        sessionTokenCode = response.getQueryParameter("session_token_code");
+        final String sessionTokenCodeVerifier = response.getQueryParameter("state");
+        final boolean isStateEquals = sessionTokenCodeVerifier != null && sessionTokenCodeVerifier.equals(state);
         try {
             JSONObject jwtPayload = new JSONObject(new String(Base64.decode(sessionTokenCode.split("\\.")[1], Base64.DEFAULT)));
             boolean isSTCCEquals = jwtPayload.getString("stc:c").equals(sessionTokenCodeChallenge);

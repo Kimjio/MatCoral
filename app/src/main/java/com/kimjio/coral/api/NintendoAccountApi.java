@@ -5,7 +5,7 @@ import android.text.TextUtils;
 
 import com.kimjio.coral.data.auth.SessionToken;
 import com.kimjio.coral.data.auth.Token;
-import com.kimjio.coral.data.auth.request.TokenRequest;
+import com.kimjio.coral.data.auth.request.AITokenRequest;
 import com.kimjio.coral.data.me.Me;
 
 import io.reactivex.Observable;
@@ -17,6 +17,7 @@ import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 
+import static com.kimjio.coral.api.NintendoApi.NSO_VERSION;
 import static com.kimjio.coral.util.StringUtils.getEncodedString;
 
 public interface NintendoAccountApi {
@@ -27,7 +28,6 @@ public interface NintendoAccountApi {
     String AUTH_SCHEME = getEncodedString("npf71b963c1b7b6d119") + "://auth";
     String SCOPE_STR = getEncodedString(TextUtils.join(" ", SCOPE));
     String RESPONSE_TYPE = getEncodedString("session_token_code");
-    String NINTENDO_SWITCH_ONLINE_VERSION = "1.5.2";
     String TOKEN_GRANT_TYPE = "urn:ietf:params:oauth:grant-type:jwt-bearer-session-token";
 
     @POST("connect/1.0.0/api/session_token")
@@ -38,7 +38,7 @@ public interface NintendoAccountApi {
 
     @POST("connect/1.0.0/api/token")
     @Headers({"Content-Type: application/json"})
-    Observable<Token> getToken(@Header("User-Agent") String userAgent, @Body TokenRequest request);
+    Observable<Token> getToken(@Header("User-Agent") String userAgent, @Body AITokenRequest request);
 
     @GET("https://api.accounts.nintendo.com/2.0.0/users/me")
     Observable<Me> getMe(@Header("User-Agent") String userAgent, @Header("Authorization") String authorization);
@@ -48,6 +48,6 @@ public interface NintendoAccountApi {
     }
 
     static String getUserAgent() {
-        return "OnlineLounge/" + NINTENDO_SWITCH_ONLINE_VERSION + " NASDKAPI Android";
+        return "OnlineLounge/" + NSO_VERSION + " NASDKAPI Android";
     }
 }

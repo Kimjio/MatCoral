@@ -2,7 +2,7 @@ package com.kimjio.coral.data;
 
 import java.util.List;
 
-public class GameWebServices {
+public class GameWebServices implements Wrapper<List<GameWebService>> {
     private int status;
     private String correlationId;
     private List<GameWebService> result;
@@ -15,7 +15,7 @@ public class GameWebServices {
         return correlationId;
     }
 
-    public List<GameWebService> getResult() {
+    public List<GameWebService> getData() {
         return result;
     }
 }

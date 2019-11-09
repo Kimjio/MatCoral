@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".activity.WelcomeActivity">
+
+    <data>
+
+        <variable
+            name="me"
+            type="com.kimjio.coral.data.me.Me" />
+
+        <variable
+            name="user"
+            type="com.kimjio.coral.data.User" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.kimjio.coral.widget.DrawableSizeTextView
+            android:id="@+id/text_account_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:drawablePadding="8dp"
+            android:gravity="center"
+            android:text="@{me.nickname}"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+            app:drawableStartHeight="30dp"
+            app:drawableStartUri="@{me.mii.miiUri}"
+            app:drawableStartWidth="30dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:drawableStart="@tools:sample/avatars[0]"
+            tools:text="kjo0927" />
+
+        <TextView
+            android:id="@+id/text_welcome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/title_welcome"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+            app:layout_constraintBottom_toTopOf="@+id/image_console"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/image_console"
+            android:layout_width="128dp"
+            android:layout_height="56dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_console" />
+
+        <ImageView
+            android:id="@+id/image_profile"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_marginBottom="40dp"
+            app:layout_constraintBottom_toBottomOf="@+id/image_console"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcProfileUri="@{user.imageUri}"
+            tools:srcCompat="@drawable/ic_user_red" />
+
+        <View
+            android:id="@+id/bar_vertical"
+            android:layout_width="3dp"
+            android:layout_height="16dp"
+            android:background="@color/stroke_color"
+            app:layout_constraintBottom_toBottomOf="@+id/image_console"
+            app:layout_constraintEnd_toEndOf="@+id/image_console"
+            app:layout_constraintStart_toStartOf="@+id/image_console"
+            app:layout_constraintTop_toBottomOf="@+id/image_profile"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/text_user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="@{user.name}"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/image_console"
+            tools:text="Ji O" />
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/button_start"
+            style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
+            android:layout_width="240dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="56dp"
+            android:text="@string/btn_start"
+            android:textAllCaps="false"
+            android:textColor="?android:textColorPrimaryInverse"
+            android:textSize="17sp"
+            app:backgroundTint="?android:textColorPrimary"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

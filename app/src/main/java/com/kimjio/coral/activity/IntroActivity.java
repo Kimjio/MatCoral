@@ -19,9 +19,9 @@ public class IntroActivity extends AppIntro3 {
         super.onCreate(savedInstanceState);
 
         pager = findViewById(R.id.view_pager);
-        addSlide(new IntroFragment(new IntroItem("Nintendo Switch Online", "Enhance your online gameplay\nexperience on Nintendo Switch!", R.raw.tutorial_image_01)));
-        addSlide(new IntroFragment(new IntroItem("Enjoy voice chat while gaming!", "", R.raw.tutorial_image_02)));
-        addSlide(new IntroFragment(new IntroItem("Check info related\n to your game!", "", R.raw.tutorial_image_03)));
+        addSlide(new IntroFragment(new IntroItem(getString(R.string.title_intro_1), getString(R.string.desc_intro_1), R.raw.tutorial_image_01)));
+        addSlide(new IntroFragment(new IntroItem(getString(R.string.title_intro_2), R.raw.tutorial_image_02)));
+        addSlide(new IntroFragment(new IntroItem(getString(R.string.title_intro_3), R.raw.tutorial_image_03)));
     }
 
     @Override

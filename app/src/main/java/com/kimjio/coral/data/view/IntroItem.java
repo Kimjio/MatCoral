@@ -2,6 +2,7 @@ package com.kimjio.coral.data.view;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.TextUtils;
 import android.view.View;
 
 import androidx.annotation.RawRes;
@@ -17,8 +18,12 @@ public class IntroItem implements Parcelable {
     public int rawRes;
 
     public IntroItem(String title, String desc, int rawRes) {
-        this.title = title;
+        this(title, rawRes);
         this.desc = desc;
+    }
+
+    public IntroItem(String title, int rawRes) {
+        this.title = title;
         this.rawRes = rawRes;
     }
 
@@ -26,16 +31,6 @@ public class IntroItem implements Parcelable {
         title = in.readString();
         desc = in.readString();
         rawRes = in.readInt();
-    }
-
-    @BindingAdapter("lottie_rawResId")
-    public static void setRawId(LottieAnimationView view, @RawRes int rawRes) {
-        view.setAnimation(rawRes);
-    }
-
-    @BindingConversion
-    public static int setVisible(String text) {
-        return text.isEmpty() ? View.GONE : View.VISIBLE;
     }
 
     public static final Creator<IntroItem> CREATOR = new Creator<IntroItem>() {

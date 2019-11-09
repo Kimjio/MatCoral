@@ -6,4 +6,5 @@
 
     <color name="intro_background_color">#FFF</color>
     <color name="intro_bar_color">#DDD</color>
+    <color name="stroke_color">#000</color>
 </resources>

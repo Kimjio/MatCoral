@@ -1,7 +1,8 @@
 package com.kimjio.coral.api;
 
 import com.kimjio.coral.data.auth.flapg.FToken;
-import com.kimjio.coral.data.auth.flapg.FTokens;
+
+import java.util.Map;
 
 import io.reactivex.Observable;
 import retrofit2.http.GET;
@@ -14,5 +15,5 @@ public interface FlapgApi {
 
     @GET("api/login")
     @Headers({"X-Ver: 2"})
-    Observable<FTokens> getFTokens(@Header("X-Token") String idToken, @Header("X-Time") String timestamp, @Header("X-Guid") String guid, @Header("X-Hash") String hash, @Header("X-IID") String iid);
+    Observable<Map<String, FToken>> getFTokens(@Header("X-Token") String idToken, @Header("X-Time") String timestamp, @Header("X-Guid") String guid, @Header("X-Hash") String hash, @Header("X-IID") String iid);
 }

@@ -1,3 +1,19 @@
 <resources>
-    <string name="app_name">Coral</string>
+    <string name="app_name" translatable="false">Coral</string>
+    <string name="title_welcome">Welcome!</string>
+    <string name="btn_start">Start</string>
+    <string name="btn_login">Sign In</string>
+    <string name="btn_skip">Skip</string>
+    <string name="btn_logout">Sign Out</string>
+    <string name="btn_later">Later</string>
+    <string name="title_intro_1" translatable="false">Nintendo Switch Online</string>
+    <string name="title_intro_2">Enjoy voice chat while gaming!</string>
+    <string name="title_intro_3">Check info related\nto your game!</string>
+    <string name="desc_intro_1">Enhance your online gameplay\nexperience on Nintendo Switch!</string>
+    <string name="title_login">Sign in to your Nintendo Account.</string>
+    <string name="desc_login">Your Nintendo Account must be for ages 13 and up\nand must be linked to a Nintendo Switch console.</string>
+    <string name="error_title">Error</string>
+    <string name="error_re_auth">Please sign in to your Nintendo Account again.</string>
+    <string name="error_commu">A communication error has occurred.</string>
+    <string name="menu_settings">Settings</string>
 </resources>

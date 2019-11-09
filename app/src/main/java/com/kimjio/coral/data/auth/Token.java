@@ -35,14 +35,4 @@ public class Token {
         return scope;
     }
 
-    @Override
-    public String toString() {
-        return "Token{" +
-                "idToken='" + idToken + '\'' +
-                ", accessToken='" + accessToken + '\'' +
-                ", tokenType='" + tokenType + '\'' +
-                ", expiresIn=" + expiresIn +
-                ", scope=" + Arrays.toString(scope) +
-                '}';
-    }
 }

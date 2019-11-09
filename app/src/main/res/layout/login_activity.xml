@@ -4,13 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".activity.LoginActivity">
 
-    <data>
-
-        <variable
-            name="item"
-            type="com.kimjio.coral.data.view.IntroItem" />
-    </data>
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -25,27 +18,24 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="?actionBarSize"
-                android:text="@{item.title}"
+                android:text="@string/title_login"
                 android:textAlignment="center"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
                 android:textSize="23.25sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="Please sign in to\nyour Nintendo Account." />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="@{item.desc}"
+                android:text="@string/desc_login"
                 android:textAlignment="center"
-                android:visibility="@{item.desc}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/title"
-                tools:text="Your Nintendo Account must be for ages 13 and up and must be linked to a Nintendo Switch console." />
+                app:layout_constraintTop_toBottomOf="@+id/title" />
 
             <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/animation"
@@ -59,14 +49,15 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:lottie_rawResId="@{item.rawRes}" />
+                app:lottie_rawRes="@raw/tutorial_image_login" />
 
             <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
                 android:id="@+id/button_sign_in"
                 style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
                 android:layout_width="240dp"
                 android:layout_height="wrap_content"
-                android:text="Sign In"
+                android:layout_marginBottom="56dp"
+                android:text="@string/btn_login"
                 android:textAllCaps="false"
                 android:textColor="?android:textColorPrimary"
                 android:textSize="17sp"
@@ -74,7 +65,6 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/animation"
                 app:strokeColor="?android:textColorPrimary"
                 app:strokeWidth="1dp" />
 
@@ -85,6 +75,7 @@
             style="?android:attr/progressBarStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

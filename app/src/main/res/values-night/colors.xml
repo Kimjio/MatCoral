@@ -2,4 +2,5 @@
 <resources>
     <color name="intro_background_color">#222</color>
     <color name="intro_bar_color">#000</color>
+    <color name="stroke_color">#FFF</color>
 </resources>

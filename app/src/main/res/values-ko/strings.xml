@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title_welcome">환영합니다!</string>
+    <string name="title_intro_2">게임을 하면서\n음성 채팅을 즐기세요!</string>
+    <string name="title_intro_3">게임에 관한\n정보를 확인하세요!</string>
+    <string name="title_login">닌텐도 어카운트로 로그인</string>
+    <string name="desc_intro_1">Nintendo Switch의\n온라인 플레이 환경을 향상시키세요!</string>
+    <!--한국계정을 본체에 등록할 수 있는 최소 나이: 만 18세-->
+    <string name="desc_login">닌텐도 어카운트가 만 18세 이상이며,\nNintendo Switch 콘솔과 연결된 닌텐도 어카운트여야 합니다.</string>
+    <string name="btn_start">시작</string>
+    <string name="btn_login">로그인</string>
+    <string name="btn_skip">건너뛰기</string>
+    <string name="btn_logout">로그아웃</string>
+    <string name="btn_later">나중에</string>
+    <string name="error_title">오류</string>
+    <string name="error_re_auth">다시 로그인해주세요.</string>
+    <string name="error_commu">통신 오류가 발생했습니다.</string>
+    <string name="menu_settings">설정</string>
+</resources>

@@ -1,7 +1,10 @@
 package com.kimjio.coral.api;
 
-import com.kimjio.coral.data.auth.LoginResultWrapper;
-import com.kimjio.coral.data.auth.request.LoginParamWrapper;
+import android.os.Build;
+
+import com.kimjio.coral.data.GameWebServices;
+import com.kimjio.coral.data.auth.TokenResponseWrapper;
+import com.kimjio.coral.data.auth.request.TokenRequestWrapper;
 
 import io.reactivex.Observable;
 import retrofit2.http.Body;
@@ -20,9 +23,23 @@ public interface NintendoApi {
             "Content-Type: application/json",
             "X-Platform: Android"
     })
-    Observable<LoginResultWrapper> login(@Header("User-Agent") String userAgent, @Header("X-ProductVersion") String version, @Body LoginParamWrapper loginParamWrapper);
+    Observable<TokenResponseWrapper> login(@Header("User-Agent") String userAgent, @Header("X-ProductVersion") String version, @Body TokenRequestWrapper tokenRequestWrapper);
+
+    @POST("v1/Account/GetToken")
+    @Headers({
+            "Content-Type: application/json",
+            "X-Platform: Android"
+    })
+    Observable<TokenResponseWrapper> getToken(@Header("User-Agent") String userAgent, @Header("X-ProductVersion") String version, @Header("Authorization") String authorization, @Body TokenRequestWrapper tokenRequestWrapper);
+
+    @POST("v1/Game/ListWebServices")
+    @Headers({
+            "Content-Type: application/json",
+            "X-Platform: Android"
+    })
+    Observable<GameWebServices> getGameWebServices(@Header("User-Agent") String userAgent, @Header("X-ProductVersion") String version, @Header("Authorization") String authorization);
 
     static String getUserAgent() {
-        return NSO_PACKAGE + "/" + NSO_VERSION;
+        return NSO_PACKAGE + "/" + NSO_VERSION + "(Android/" + Build.VERSION.RELEASE + ")";
     }
 }

@@ -1,10 +1,42 @@
 package com.kimjio.coral.data;
 
+import android.os.Parcel;
+
 /**
  * 방 정보?
  */
 public class GameStatus extends BaseData {
-    private boolean isClosed; //방 닫힘?
+    public static final Creator<GameStatus> CREATOR = new Creator<GameStatus>() {
+        @Override
+        public GameStatus createFromParcel(Parcel in) {
+            return new GameStatus(in);
+        }
+
+        @Override
+        public GameStatus[] newArray(int size) {
+            return new GameStatus[size];
+        }
+    };
+    private boolean isClosed;
+
+    public GameStatus() {
+    }
+
+    protected GameStatus(Parcel in) {
+        super(in);
+        isClosed = in.readByte() != 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        super.writeToParcel(dest, flags);
+        dest.writeByte((byte) (isClosed ? 1 : 0));
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
 
     public boolean isClosed() {
         return isClosed;

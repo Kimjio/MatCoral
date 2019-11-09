@@ -1,18 +1,30 @@
 package com.kimjio.coral.data.auth.request;
 
-import com.google.gson.annotations.SerializedName;
+import java.util.Locale;
 
 public class TokenRequest {
-    @SerializedName("client_id")
-    private String clientId;
-    @SerializedName("grant_type")
-    private String grantType;
-    @SerializedName("session_token")
-    private String sessionToken;
+    private String language;
+    private String naBirthday;
+    private String naCountry;
+    private String naIdToken;
+    private String requestId;
+    private long timestamp;
+    private String f;
 
-    public TokenRequest(String clientId, String grantType, String sessionToken) {
-        this.clientId = clientId;
-        this.grantType = grantType;
-        this.sessionToken = sessionToken;
+    public TokenRequest(String naBirthday, String naCountry, String naIdToken, String requestId, long timestamp, String f) {
+        this.language = Locale.getDefault().toLanguageTag();
+        this.naBirthday = naBirthday;
+        this.naCountry = naCountry;
+        this.naIdToken = naIdToken;
+        this.requestId = requestId;
+        this.timestamp = timestamp;
+        this.f = f;
+    }
+
+    public TokenRequest(String naIdToken, String requestId, long timestamp, String f) {
+        this.naIdToken = naIdToken;
+        this.requestId = requestId;
+        this.timestamp = timestamp;
+        this.f = f;
     }
 }
