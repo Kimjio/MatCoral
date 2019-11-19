@@ -2,14 +2,15 @@ package com.kimjio.coral.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
 import android.graphics.Rect;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.AttributeSet;
-import android.util.Log;
 
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.AppCompatTextView;
 
 import com.kimjio.coral.R;
@@ -22,20 +23,13 @@ public class DrawableSizeTextView extends AppCompatTextView {
     private static final int START = LEFT;
     private static final int END = RIGHT;
 
-    private int drawableWidth;
-    private int drawableHeight;
-    private int drawableTopWidth;
-    private int drawableTopHeight;
-    private int drawableBottomWidth;
-    private int drawableBottomHeight;
-    private int drawableStartWidth;
-    private int drawableStartHeight;
-    private int drawableEndWidth;
-    private int drawableEndHeight;
-    private int drawableLeftWidth;
-    private int drawableLeftHeight;
-    private int drawableRightWidth;
-    private int drawableRightHeight;
+    private int drawableWidth, drawableHeight;
+    private int drawableTopWidth, drawableTopHeight;
+    private int drawableBottomWidth, drawableBottomHeight;
+    private int drawableStartWidth, drawableStartHeight;
+    private int drawableEndWidth, drawableEndHeight;
+    private int drawableLeftWidth, drawableLeftHeight;
+    private int drawableRightWidth, drawableRightHeight;
 
     public DrawableSizeTextView(Context context) {
         this(context, null);
@@ -51,7 +45,6 @@ public class DrawableSizeTextView extends AppCompatTextView {
     }
 
     private void init(AttributeSet attrs, int defStyle) {
-        // Load attributes
         final TypedArray a = getContext().obtainStyledAttributes(
                 attrs, R.styleable.DrawableSizeTextView, defStyle, 0);
 
@@ -153,6 +146,60 @@ public class DrawableSizeTextView extends AppCompatTextView {
         applyDrawablesSize();
     }
 
+    @Override
+    public Parcelable onSaveInstanceState() {
+        SavedState savedState = new SavedState(super.onSaveInstanceState());
+        Drawable[] drawables = getCompoundDrawables();
+        Drawable[] drawablesRelative = getCompoundDrawablesRelative();
+        if (drawablesRelative[START] != null) {
+            switch (getResources().getConfiguration().getLayoutDirection()) {
+                case LAYOUT_DIRECTION_LTR:
+                    drawables[LEFT] = drawablesRelative[START];
+                    break;
+                case LAYOUT_DIRECTION_RTL:
+                    drawables[RIGHT] = drawablesRelative[START];
+                    break;
+            }
+        }
+        if (drawablesRelative[END] != null) {
+            switch (getResources().getConfiguration().getLayoutDirection()) {
+                case LAYOUT_DIRECTION_LTR:
+                    drawables[RIGHT] = drawablesRelative[END];
+                    break;
+                case LAYOUT_DIRECTION_RTL:
+                    drawables[LEFT] = drawablesRelative[END];
+                    break;
+            }
+        }
+        savedState.drawableLeft = getBitmap(drawables[LEFT]);
+        savedState.drawableTop = getBitmap(drawables[TOP]);
+        savedState.drawableRight = getBitmap(drawables[RIGHT]);
+        savedState.drawableBottom = getBitmap(drawables[BOTTOM]);
+        return savedState;
+    }
+
+    @Override
+    public void onRestoreInstanceState(Parcelable state) {
+        if (!(state instanceof SavedState)) {
+            super.onRestoreInstanceState(state);
+            return;
+        }
+        SavedState savedState = (SavedState) state;
+        super.onRestoreInstanceState(savedState.getSuperState());
+        setCompoundDrawables(
+                new BitmapDrawable(getResources(), savedState.drawableLeft),
+                new BitmapDrawable(getResources(), savedState.drawableTop),
+                new BitmapDrawable(getResources(), savedState.drawableRight),
+                new BitmapDrawable(getResources(), savedState.drawableBottom));
+    }
+
+    private Bitmap getBitmap(Drawable drawable) {
+        if (drawable instanceof BitmapDrawable) {
+            return ((BitmapDrawable) drawable).getBitmap();
+        }
+        return null;
+    }
+
     private void applyDrawablesSize() {
         Drawable[] drawables = getCompoundDrawables();
         Drawable[] drawablesRelative = getCompoundDrawablesRelative();
@@ -192,7 +239,6 @@ public class DrawableSizeTextView extends AppCompatTextView {
         super.setCompoundDrawables(left, top, right, bottom);
     }
 
-    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     public void setCompoundDrawablesRelative(@Nullable Drawable start, @Nullable Drawable top, @Nullable Drawable end, @Nullable Drawable bottom) {
         setDrawableSize(top, drawableTopWidth, drawableTopHeight);
@@ -206,26 +252,9 @@ public class DrawableSizeTextView extends AppCompatTextView {
         if (drawable == null) return;
         if (width > 0 || height > 0) {
             Rect bounds = drawable.getBounds();
-            //float scaleFactor = bounds.height() / (float) bounds.width();
 
-            int drawableWidth = bounds.width();
-            int drawableHeight = bounds.height();
-
-            if (width > 0) {
-                if (drawableWidth > width || drawableWidth == 0) {
-                    drawableWidth = width;
-                    //drawableHeight = Math.round(drawableWidth * scaleFactor);
-                }
-            }
-            if (height > 0) {
-                if (drawableHeight > height || drawableHeight == 0) {
-                    drawableHeight = height;
-                    //drawableWidth = Math.round(drawableHeight / scaleFactor);
-                }
-            }
-
-            bounds.right = bounds.left + Math.round(drawableWidth);
-            bounds.bottom = bounds.top + Math.round(drawableHeight);
+            bounds.right = bounds.left + width;
+            bounds.bottom = bounds.top + height;
 
             drawable.setBounds(bounds);
         }
@@ -355,5 +384,50 @@ public class DrawableSizeTextView extends AppCompatTextView {
     public void setDrawableRightHeight(int drawableRightHeight) {
         this.drawableRightHeight = drawableRightHeight;
         invalidate();
+    }
+
+    public static class SavedState extends BaseSavedState {
+
+        public static final Creator<SavedState> CREATOR = new Creator<SavedState>() {
+            @Override
+            public SavedState createFromParcel(Parcel in) {
+                return new SavedState(in);
+            }
+
+            @Override
+            public SavedState[] newArray(int size) {
+                return new SavedState[size];
+            }
+        };
+        Bitmap drawableLeft;
+        Bitmap drawableTop;
+        Bitmap drawableRight;
+        Bitmap drawableBottom;
+
+        public SavedState(Parcel source) {
+            super(source);
+            drawableLeft = source.readParcelable(getClass().getClassLoader());
+            drawableTop = source.readParcelable(getClass().getClassLoader());
+            drawableRight = source.readParcelable(getClass().getClassLoader());
+            drawableBottom = source.readParcelable(getClass().getClassLoader());
+        }
+
+        public SavedState(Parcelable superState) {
+            super(superState);
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            super.writeToParcel(dest, flags);
+            dest.writeParcelable(drawableLeft, flags);
+            dest.writeParcelable(drawableTop, flags);
+            dest.writeParcelable(drawableRight, flags);
+            dest.writeParcelable(drawableBottom, flags);
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
     }
 }
