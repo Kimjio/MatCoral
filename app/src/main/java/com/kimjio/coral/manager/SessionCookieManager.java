@@ -2,16 +2,16 @@ package com.kimjio.coral.manager;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.text.TextUtils;
 
+import androidx.collection.ArrayMap;
 import androidx.collection.ArraySet;
 
 import com.kimjio.coral.data.auth.SessionCookie;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
+@Deprecated
 public final class SessionCookieManager {
     private static final String PREF_SESSION_COOKIE = "pref_session_cookie";
     private static final String PREF_COOKIES = "pref_cookies";
@@ -35,16 +35,21 @@ public final class SessionCookieManager {
 
     public void saveCookie(SessionCookie cookie) {
         Set<String> cookieSet = preferences.getStringSet(PREF_COOKIES, new ArraySet<>());
-        cookieSet.add(TextUtils.concat(cookie.toString()).toString());
+        for (String s : cookieSet) {
+            if (s.contains(cookie.getKey()))
+                cookieSet.remove(s);
+        }
+        cookieSet.add(cookie.toString());
         preferences.edit().putStringSet(PREF_COOKIES, cookieSet).apply();
     }
 
-    public List<SessionCookie> getCookies() {
+    public Map<String, SessionCookie> getCookies() {
         Set<String> cookieSet = preferences.getStringSet(PREF_COOKIES, new ArraySet<>());
-        List<SessionCookie> cookieList = new ArrayList<>();
+        ArrayMap<String, SessionCookie> cookieMap = new ArrayMap<>();
         for (String cookie : cookieSet) {
-            cookieList.add(new SessionCookie(cookie));
+            SessionCookie sessionCookie = new SessionCookie(cookie);
+            cookieMap.put(sessionCookie.getKey(), sessionCookie);
         }
-        return cookieList;
+        return cookieMap;
     }
 }

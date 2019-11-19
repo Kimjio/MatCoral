@@ -21,13 +21,11 @@ import java.util.Objects;
 
 public class MainActivity extends BaseActivity<MainActivityBinding> {
 
-    private static final String TAG = "MainActivity";
-
     private static MainViewModel viewModel;
 
     private GameWebServiceAdapter adapter = new GameWebServiceAdapter((item, position) -> {
         if (item.getId() == GameWebService.ID_SPLAT2) {
-            startActivity(new Intent(this, SplatActivity.class));
+            viewModel.loadWebServiceToken(item.getId());
         }
     });
 
@@ -38,6 +36,39 @@ public class MainActivity extends BaseActivity<MainActivityBinding> {
         binding.list.setAdapter(adapter);
 
         viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+
+        observeData();
+    }
+
+    @Override
+    protected void observeData() {
+        viewModel.getMe().observe(this, me ->
+            UserManager.getInstance().setAccountUser(me)
+        );
+        viewModel.getFTokens().observe(this, fTokenMap -> {
+            FToken nso = fTokenMap.get(FToken.NSO);
+            FToken webApp = fTokenMap.get(FToken.WEB_APP);
+            TokenManager.getInstance()
+                    .setNsoToken(nso)
+                    .setWebAppToken(webApp);
+            viewModel.loadToken(Objects.requireNonNull(nso));
+        });
+        viewModel.getToken().observe(this, response -> {
+            TokenManager.getInstance()
+                    .setWebApiServerCredential(response.getWebApiServerCredential());
+            UserManager.getInstance().setUser(response.getUser());
+            viewModel.loadGameWebServices();
+        });
+        viewModel.getAccountToken().observe(this, token -> {
+            viewModel.loadMe(token.getAccessToken());
+            viewModel.loadFTokens(token.getIdToken());
+        });
+        viewModel.getGameWebServices().observe(this, gameWebServices ->
+                adapter.setGameWebServices(gameWebServices));
+        viewModel.getWebServiceToken().observe(this, webServiceToken ->
+                startActivity(
+                        new Intent(MainActivity.this, SplatActivity.class)
+                                .putExtra("web_service_token", webServiceToken)));
     }
 
     @Override
@@ -49,30 +80,18 @@ public class MainActivity extends BaseActivity<MainActivityBinding> {
     @Override
     protected void onResume() {
         super.onResume();
-        viewModel.getGameWebServicesData().observe(this, gameWebServices -> {
-            adapter.setGameWebServices(gameWebServices);
-        });
         if (TokenManager.getInstance().expired()) {
+            if (TokenManager.getInstance().getWebApiServerCredential() == null) {
+                finish();
+                return;
+            }
             getToken();
+        } else {
+            viewModel.loadGameWebServices();
         }
     }
 
     private void getToken() {
-        viewModel.getToken(SessionTokenManager.getInstance(this).loadSessionToken().getSessionToken()).observe(this, token -> {
-            viewModel.getMe(token.getAccessToken()).observe(this, me -> {
-                viewModel.getFTokens(token.getIdToken()).observe(this, fTokenMap -> {
-                    FToken nso = fTokenMap.get(FToken.NSO);
-                    FToken webApp = fTokenMap.get(FToken.WEB_APP);
-                    viewModel.getToken(Objects.requireNonNull(nso)).observe(this, response -> {
-                        TokenManager.getInstance()
-                                .setNsoToken(nso)
-                                .setWebAppToken(webApp)
-                                .setWebApiServerCredential(response.getWebApiServerCredential());
-                        UserManager.getInstance().setAccountUser(me);
-                        UserManager.getInstance().setUser(response.getUser());
-                    });
-                });
-            });
-        });
+        viewModel.loadAccountToken(SessionTokenManager.getInstance(this).loadSessionToken().getSessionToken());
     }
 }

@@ -55,6 +55,6 @@ public final class TokenManager {
     }
 
     public boolean expired() {
-        return System.currentTimeMillis() / 1000 > webApiTimestamp + webApiExpiresIn;
+        return System.currentTimeMillis() / 1000 > webApiTimestamp + webApiExpiresIn || webApiServerCredential == null;
     }
 }

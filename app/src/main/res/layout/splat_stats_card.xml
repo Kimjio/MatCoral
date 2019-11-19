@@ -79,7 +79,7 @@
                 android:drawableStart="@drawable/ic_splat_star"
                 android:numStars="@{records.player.starLevel}"
                 android:rating="@{records.player.starLevel}"
-                android:visibility="@{records.player.starLevel}"
+                android:visibility="@{records.player.starLevel > 0 ? 0 : 8}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/text_level"
                 tools:numStars="1"

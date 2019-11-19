@@ -1,8 +1,28 @@
 package com.kimjio.coral.data.auth;
 
-public class WebApiServerCredential {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class WebApiServerCredential implements Parcelable {
     private String accessToken;
     private int expiresIn;
+
+    protected WebApiServerCredential(Parcel in) {
+        accessToken = in.readString();
+        expiresIn = in.readInt();
+    }
+
+    public static final Creator<WebApiServerCredential> CREATOR = new Creator<WebApiServerCredential>() {
+        @Override
+        public WebApiServerCredential createFromParcel(Parcel in) {
+            return new WebApiServerCredential(in);
+        }
+
+        @Override
+        public WebApiServerCredential[] newArray(int size) {
+            return new WebApiServerCredential[size];
+        }
+    };
 
     public String getAccessToken() {
         return accessToken;
@@ -10,5 +30,16 @@ public class WebApiServerCredential {
 
     public int getExpiresIn() {
         return expiresIn;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(accessToken);
+        dest.writeInt(expiresIn);
     }
 }

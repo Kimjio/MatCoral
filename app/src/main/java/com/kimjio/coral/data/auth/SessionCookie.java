@@ -1,5 +1,7 @@
 package com.kimjio.coral.data.auth;
 
+import androidx.annotation.NonNull;
+
 import org.jetbrains.annotations.NotNull;
 
 public class SessionCookie {
@@ -32,9 +34,18 @@ public class SessionCookie {
         return expiresIn;
     }
 
+    public boolean expires() {
+        return System.currentTimeMillis() / 1000 > expiresIn;
+    }
+
     @NotNull
     @Override
     public String toString() {
         return getKey() + "/" + getValue() + "/" + getExpiresIn();
+    }
+
+    @NonNull
+    public String toRawString() {
+        return getKey() + "=" + getValue() + ";";
     }
 }

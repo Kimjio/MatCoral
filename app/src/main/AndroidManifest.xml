@@ -11,7 +11,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.App">
-        <activity android:name=".splat.activity.SplatActivity"></activity>
         <activity
             android:name=".activity.SplashActivity"
             android:theme="@style/Theme.App.Splash">
@@ -55,6 +54,10 @@
                 <data android:scheme="lounge" />
             </intent-filter>
         </activity>
+        <activity
+            android:label="@string/title_splat"
+            android:name=".splat.activity.SplatActivity"
+            android:theme="@style/Theme.App.Splat" />
     </application>
 
 </manifest>

@@ -40,14 +40,58 @@ public class LoginActivity extends BaseActivity<LoginActivityBinding> {
         viewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
 
         sessionTokenManager = SessionTokenManager.getInstance(getApplication());
-        SessionToken token = sessionTokenManager.loadSessionToken();
-        if (token != null) {
+        SessionToken sessionToken = sessionTokenManager.loadSessionToken();
+        if (sessionToken != null) {
             hideLogin();
-            login(token);
+            login(sessionToken);
         } else {
             binding.animation.playAnimation();
             binding.buttonSignIn.setOnClickListener(v -> startActivity(new Intent(Intent.ACTION_VIEW, viewModel.getLoginUri())));
         }
+
+        observeData();
+    }
+
+    @Override
+    protected void observeData() {
+        viewModel.getSessionToken().observe(this, token -> {
+            sessionTokenManager.saveSessionToken(token);
+            login(token);
+        });
+        viewModel.getThrowable().observe(this, throwable -> {
+            if (throwable instanceof HttpException) {
+                handleHTTPException((HttpException) throwable);
+            }
+        });
+        viewModel.getAccountToken().observe(this, token -> {
+            viewModel.loadMe(token.getAccessToken());
+            viewModel.loadFTokens(token.getIdToken());
+        });
+        viewModel.getMe().observe(this, me -> {
+            UserManager.getInstance().setAccountUser(me);
+            viewModel.login(me, null);
+        });
+        viewModel.getFTokens().observe(this, fTokenMap -> {
+            FToken nso = fTokenMap.get(FToken.NSO);
+            FToken webApp = fTokenMap.get(FToken.WEB_APP);
+            TokenManager.getInstance()
+                    .setNsoToken(nso)
+                    .setWebAppToken(webApp);
+            viewModel.login(null, Objects.requireNonNull(nso));
+        });
+        viewModel.getTokenResponse().observe(this, response -> {
+            TokenManager.getInstance()
+                    .setWebApiServerCredential(response.getWebApiServerCredential());
+            UserManager.getInstance()
+                    .setUser(response.getUser());
+            Intent intent = new Intent(this, MainActivity.class);
+            if (!UIManager.getInstance(this).welcomeDisplayed()) {
+                intent.setComponent(new ComponentName(this, WelcomeActivity.class));
+            }
+            startActivity(intent);
+            overridePendingTransition(0, 0);
+            finish();
+        });
     }
 
     private void showLogin() {
@@ -72,67 +116,41 @@ public class LoginActivity extends BaseActivity<LoginActivityBinding> {
         super.onNewIntent(intent);
         if (intent != null && intent.getData() != null) {
             if (viewModel.verifyToken(intent.getData())) {
-                viewModel.getSessionToken().observe(this, sessionToken -> {
-                    sessionTokenManager.saveSessionToken(sessionToken);
-                    login(sessionToken);
-                });
+                viewModel.loadSessionToken();
             }
         }
     }
 
+    private void handleHTTPException(HttpException e) {
+        Response<?> response = e.response();
+        if (response != null) {
+            ResponseBody body = response.errorBody();
+            if (body != null)
+                try {
+                    JSONObject object = new JSONObject(body.string());
+                    String error = object.getString("error");
+                    if (error.equals("invalid_grant"))
+                        error = getString(R.string.error_re_auth);
+
+                    new MaterialAlertDialogBuilder(this)
+                            .setIcon(R.drawable.ic_error)
+                            .setTitle(R.string.error_title)
+                            .setMessage(error)
+                            .setCancelable(false)
+                            .setPositiveButton(android.R.string.ok, (dialogInterface, which) -> {
+                                sessionTokenManager.clear();
+                                hideProgress();
+                                showLogin();
+                            })
+                            .show();
+                } catch (JSONException | IOException ignore) {
+                }
+        }
+    }
 
     private void login(SessionToken sessionToken) {
         hideLogin();
         showProgress();
-        viewModel.getThrowable().observe(this, throwable -> {
-            if (throwable instanceof HttpException) {
-                Response response = ((HttpException) throwable).response();
-                if (response != null) {
-                    ResponseBody body = response.errorBody();
-                    if (body != null)
-                        try {
-                            JSONObject object = new JSONObject(body.string());
-                            String error = object.getString("error");
-                            if (error.equals("invalid_grant"))
-                                error = getString(R.string.error_re_auth);
-
-                            new MaterialAlertDialogBuilder(this)
-                                    .setIcon(R.drawable.ic_error)
-                                    .setTitle(R.string.error_title)
-                                    .setMessage(error)
-                                    .setCancelable(false)
-                                    .setPositiveButton(android.R.string.ok, (dialogInterface, which) -> {
-                                        sessionTokenManager.clear();
-                                        hideProgress();
-                                        showLogin();
-                                    })
-                                    .show();
-                        } catch (JSONException | IOException ignore) {
-                        }
-                }
-            }
-        });
-        viewModel.getToken(sessionToken.getSessionToken()).observe(this, token ->
-                viewModel.getMe(token.getAccessToken()).observe(this, me ->
-                        viewModel.getFTokens(token.getIdToken()).observe(this, fTokenMap -> {
-                            FToken nso = fTokenMap.get(FToken.NSO);
-                            FToken webApp = fTokenMap.get(FToken.WEB_APP);
-                            viewModel.login(me, Objects.requireNonNull(nso)).observe(this, response -> {
-                                TokenManager.getInstance()
-                                        .setNsoToken(nso)
-                                        .setWebAppToken(webApp)
-                                        .setWebApiServerCredential(response.getWebApiServerCredential());
-                                UserManager.getInstance()
-                                        .setUser(response.getUser())
-                                        .setAccountUser(me);
-                                Intent intent = new Intent(this, MainActivity.class);
-                                if (!UIManager.getInstance(this).welcomeDisplayed()) {
-                                    intent.setComponent(new ComponentName(this, WelcomeActivity.class));
-                                }
-                                startActivity(intent);
-                                overridePendingTransition(0, 0);
-                                finish();
-                            });
-                        })));
+        viewModel.loadAccountToken(sessionToken.getSessionToken());
     }
 }

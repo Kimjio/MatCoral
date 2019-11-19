@@ -28,8 +28,10 @@ public class MainFragment extends SplatBaseFragment<SplatMainFragmentBinding> {
 
     public void setRecords(Records records) {
         this.records = records;
-        if (binding != null)
+        if (binding != null) {
             binding.statsCard.setRecords(this.records);
+            binding.equipmentCard.setPlayer(this.records.getPlayer());
+        }
     }
 
     public void setNicknameIcon(NicknameIcon nicknameIcon) {

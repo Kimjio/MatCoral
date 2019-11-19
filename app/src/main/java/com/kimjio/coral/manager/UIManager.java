@@ -1,18 +1,18 @@
 package com.kimjio.coral.manager;
 
-import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 
 public final class UIManager {
-    private static final String PREF_WELCOME_DISPLAYED = "pref_welcome_displayed";
+    private static final String PREF_UI = "pref_ui";
+    private static final String WELCOME_DISPLAYED = "welcome_displayed";
 
     private static UIManager INSTANCE;
 
     private SharedPreferences preferences;
 
     private UIManager(Context context) {
-        preferences = context.getApplicationContext().getSharedPreferences("pref_ui", Context.MODE_PRIVATE);
+        preferences = context.getApplicationContext().getSharedPreferences(PREF_UI, Context.MODE_PRIVATE);
     }
 
     public static UIManager getInstance(Context context) {
@@ -25,11 +25,11 @@ public final class UIManager {
     }
 
     public void setWelcomeDisplayed() {
-        preferences.edit().putBoolean(PREF_WELCOME_DISPLAYED, true).apply();
+        preferences.edit().putBoolean(WELCOME_DISPLAYED, true).apply();
     }
 
     public boolean welcomeDisplayed() {
-        return preferences.getBoolean(PREF_WELCOME_DISPLAYED, false);
+        return preferences.getBoolean(WELCOME_DISPLAYED, false);
     }
 
     public void clear() {

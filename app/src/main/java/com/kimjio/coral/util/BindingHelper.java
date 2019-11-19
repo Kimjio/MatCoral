@@ -3,6 +3,7 @@ package com.kimjio.coral.util;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -16,6 +17,7 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
@@ -73,6 +75,28 @@ public final class BindingHelper {
                 .load(uri)
                 .placeholder(R.drawable.ic_account)
                 .error(R.drawable.ic_account)
+                .transform(new CircleCrop())
+                .listener(new RequestListener<Drawable>() {
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                        view.post(() -> view.setCompoundDrawablesRelative(resource, null, null, null));
+                        return true;
+                    }
+                })
+                .submit();
+    }
+
+    @BindingAdapter("drawableStartUriBorder")
+    public static void setDrawableStartUriBorder(DrawableSizeTextView view, Uri uri) {
+        Glide.with(view)
+                .load(uri)
+                .placeholder(R.drawable.ic_account)
+                .error(R.drawable.ic_account)
                 .transform(new CropCircleWithBorderTransformation(ViewUtils.dpToPx(view.getContext(), 1), view.getTextColors().getDefaultColor()))
                 .listener(new RequestListener<Drawable>() {
                     @Override
@@ -91,11 +115,20 @@ public final class BindingHelper {
 
     @BindingAdapter("lottie_rawResId")
     public static void setRawId(LottieAnimationView view, @RawRes int rawRes) {
+        if (rawRes == 0) {
+            Log.w("LottieBinding", "rawId is 0x0. Ignoring... ");
+            return;
+        }
         view.setAnimation(rawRes);
     }
 
     @BindingConversion
-    public static int setVisible(String text) {
+    public static int setVisibleByString(String text) {
         return TextUtils.isEmpty(text) ? View.GONE : View.VISIBLE;
     }
+
+    /*@BindingConversion
+    public static int setVisibleByInt(int i) {
+        return i <= 0 ? View.GONE : View.VISIBLE;
+    }*/
 }

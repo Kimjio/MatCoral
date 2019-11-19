@@ -4,19 +4,61 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".splat.activity.SplatActivity">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Hello SplatNet2!"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        <com.kimjio.coral.splat.widget.SplatSwipeRefreshLayout
+            android:id="@+id/swipe_refresh_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/view_pager"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <!--<FrameLayout
+                    android:id="@+id/fragment"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />-->
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.kimjio.coral.splat.widget.SplatSwipeRefreshLayout>
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:stateListAnimator="@null"
+            android:theme="@style/ThemeOverlay.App.Splat.ActionBar">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/app_bar"
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize" />
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_navigation_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_anchor="@+id/swipe_refresh_layout"
+            app:layout_anchorGravity="bottom"
+            app:menu="@menu/menu_splat" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

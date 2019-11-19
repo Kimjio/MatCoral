@@ -14,15 +14,16 @@ import com.kimjio.coral.R;
 import com.kimjio.coral.databinding.IntroItemBinding;
 import com.kimjio.coral.data.view.IntroItem;
 
-public class IntroFragment extends Fragment {
+public class IntroFragment extends BaseFragment<IntroItemBinding> {
 
     private static final String KEY_ITEM = "intro_item";
 
     private IntroItem item;
 
-    private IntroItemBinding binding;
+    public IntroFragment() {
+    }
 
-    public IntroFragment(IntroItem item) {
+    public IntroFragment(@NonNull IntroItem item) {
         this.item = item;
     }
 
@@ -38,15 +39,9 @@ public class IntroFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.intro_item, container, false);
+        View view = super.onCreateView(inflater, container, savedInstanceState);
         binding.setItem(item);
-        return binding.getRoot();
-    }
-
-    public boolean isAnimating() {
-        if (binding != null)
-            return binding.animation.isAnimating();
-        return false;
+        return view;
     }
 
     public void playAnimation() {
@@ -59,5 +54,4 @@ public class IntroFragment extends Fragment {
         super.onSaveInstanceState(outState);
         outState.putParcelable(KEY_ITEM, item);
     }
-
 }

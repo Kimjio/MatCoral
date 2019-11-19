@@ -5,7 +5,7 @@ import android.text.TextUtils;
 
 import com.kimjio.coral.data.auth.SessionToken;
 import com.kimjio.coral.data.auth.Token;
-import com.kimjio.coral.data.auth.request.AITokenRequest;
+import com.kimjio.coral.data.auth.request.AccountTokenRequest;
 import com.kimjio.coral.data.me.Me;
 
 import io.reactivex.Observable;
@@ -38,7 +38,7 @@ public interface NintendoAccountApi {
 
     @POST("connect/1.0.0/api/token")
     @Headers({"Content-Type: application/json"})
-    Observable<Token> getToken(@Header("User-Agent") String userAgent, @Body AITokenRequest request);
+    Observable<Token> getAccountToken(@Header("User-Agent") String userAgent, @Body AccountTokenRequest request);
 
     @GET("https://api.accounts.nintendo.com/2.0.0/users/me")
     Observable<Me> getMe(@Header("User-Agent") String userAgent, @Header("Authorization") String authorization);

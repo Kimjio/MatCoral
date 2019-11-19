@@ -17,7 +17,7 @@ import com.kimjio.coral.data.auth.Token;
 import com.kimjio.coral.data.auth.flapg.FToken;
 import com.kimjio.coral.data.auth.request.TokenRequest;
 import com.kimjio.coral.data.auth.request.TokenRequestWrapper;
-import com.kimjio.coral.data.auth.request.AITokenRequest;
+import com.kimjio.coral.data.auth.request.AccountTokenRequest;
 import com.kimjio.coral.data.me.Me;
 import com.kimjio.coral.util.RetrofitUtil;
 import com.kimjio.hash.HashTool;
@@ -47,13 +47,16 @@ import static com.kimjio.coral.util.StringUtils.UTF_8;
 import static com.kimjio.coral.util.StringUtils.getEncodedString;
 
 public class LoginViewModel extends BaseViewModel {
-    protected NintendoApi nintendoApi = RetrofitUtil.getInstance(NINTENDO).create(NintendoApi.class);
-    protected NintendoAccountApi accountApi = RetrofitUtil.getInstance(NINTENDO_ACCOUNTS).create(NintendoAccountApi.class);
-    protected FlapgApi flapgApi = RetrofitUtil.getInstance(FLAPG).create(FlapgApi.class);
+    protected final NintendoApi nintendoApi = RetrofitUtil.getInstance(NINTENDO).create(NintendoApi.class);
+    protected final NintendoAccountApi accountApi = RetrofitUtil.getInstance(NINTENDO_ACCOUNTS).create(NintendoAccountApi.class);
+    protected final FlapgApi flapgApi = RetrofitUtil.getInstance(FLAPG).create(FlapgApi.class);
 
     private String state; //state
     private String sessionTokenCode;
     private String sessionTokenCodeChallenge; //stc:c
+
+    private Me me;
+    private FToken f;
 
     private MutableLiveData<SessionToken> sessionTokenLiveData = new MutableLiveData<>();
     protected MutableLiveData<Token> tokenLiveData = new MutableLiveData<>();
@@ -75,29 +78,59 @@ public class LoginViewModel extends BaseViewModel {
     }
 
     public LiveData<SessionToken> getSessionToken() {
-        disposable.add(getDisposable(accountApi.getSessionToken(CLIENT_ID, sessionTokenCode, state), sessionTokenLiveData));
         return sessionTokenLiveData;
     }
 
-    public LiveData<Token> getToken(String sessionToken) {
-        disposable.add(getDisposable(accountApi.getToken(getUserAgent(), new AITokenRequest(CLIENT_ID, TOKEN_GRANT_TYPE, sessionToken)), tokenLiveData));
+    public void loadSessionToken() {
+        disposable.add(getDisposable(accountApi.getSessionToken(CLIENT_ID, sessionTokenCode, state), sessionTokenLiveData));
+    }
+
+    public LiveData<Token> getAccountToken() {
         return tokenLiveData;
     }
 
-    public LiveData<Me> getMe(String accessToken) {
-        disposable.add(getDisposable(accountApi.getMe(getUserAgent(), getAuthorization(accessToken)), meLiveData));
+    public void loadAccountToken(String sessionToken) {
+        disposable.add(getDisposable(accountApi.getAccountToken(getUserAgent(), new AccountTokenRequest(CLIENT_ID, TOKEN_GRANT_TYPE, sessionToken)), tokenLiveData));
+    }
+
+    public LiveData<Me> getMe() {
         return meLiveData;
     }
 
-    public LiveData<Map<String, FToken>> getFTokens(String idToken) {
-        String timestamp = Long.toString(System.currentTimeMillis() / 1000);
-        disposable.add(getDisposable(flapgApi.getFTokens(idToken, timestamp, UUID.randomUUID().toString(), HashTool.getHash(idToken, timestamp), getRandom()), fTokensLiveData));
+    public void loadMe(String accessToken) {
+        disposable.add(getDisposable(accountApi.getMe(getUserAgent(), getAuthorization(accessToken)), meLiveData));
+    }
+
+    public LiveData<Map<String, FToken>> getFTokens() {
         return fTokensLiveData;
     }
 
-    public LiveData<TokenResponse> login(Me me, FToken f) {
-        disposable.add(getWrapperDisposable(nintendoApi.login(getUserAgent(), NSO_VERSION, new TokenRequestWrapper(new TokenRequest(me.getBirthday(), me.getCountry(), f.getToken(), f.getUUID(), Long.parseLong(f.getTimestamp()), f.getF()))), tokenResponseLiveData));
+    public void loadFTokens(String idToken) {
+        String timestamp = Long.toString(System.currentTimeMillis() / 1000);
+        disposable.add(
+                getDisposable(
+                        flapgApi.getFTokens(idToken, timestamp,
+                                UUID.randomUUID().toString(),
+                                HashTool.getHash(idToken, timestamp),
+                                getRandom()),
+                        fTokensLiveData));
+    }
+
+    public LiveData<TokenResponse> getTokenResponse() {
         return tokenResponseLiveData;
+    }
+
+    public void login(Me me, FToken f) {
+        if (me != null) this.me = me;
+        if (f != null) this.f = f;
+        synchronized (LoginViewModel.class) {
+            if (this.me != null && this.f != null)
+                disposable.add(getWrapperDisposable(nintendoApi.login(getUserAgent(), NSO_VERSION,
+                        new TokenRequestWrapper(
+                                new TokenRequest(this.me.getBirthday(), this.me.getCountry(), this.f.getToken(), this.f.getUUID(), Long.parseLong(this.f.getTimestamp()), this.f.getF())
+                        )),
+                        tokenResponseLiveData));
+        }
     }
 
     private String getCrypto(String str) {

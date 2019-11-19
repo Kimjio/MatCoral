@@ -4,21 +4,4 @@
         <attr name="introBackground" format="color" />
         <attr name="introBar" format="color" />
     </declare-styleable>
-
-    <declare-styleable name="DrawableSizeTextView">
-        <attr name="drawableWidth" format="dimension|reference" />
-        <attr name="drawableHeight" format="dimension|reference" />
-        <attr name="drawableTopWidth" format="dimension|reference" />
-        <attr name="drawableTopHeight" format="dimension|reference" />
-        <attr name="drawableBottomWidth" format="dimension|reference" />
-        <attr name="drawableBottomHeight" format="dimension|reference" />
-        <attr name="drawableStartWidth" format="dimension|reference" />
-        <attr name="drawableStartHeight" format="dimension|reference" />
-        <attr name="drawableEndWidth" format="dimension|reference" />
-        <attr name="drawableEndHeight" format="dimension|reference" />
-        <attr name="drawableLeftWidth" format="dimension|reference" />
-        <attr name="drawableLeftHeight" format="dimension|reference" />
-        <attr name="drawableRightWidth" format="dimension|reference" />
-        <attr name="drawableRightHeight" format="dimension|reference" />
-    </declare-styleable>
 </resources>

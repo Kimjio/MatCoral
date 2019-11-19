@@ -2,7 +2,13 @@
 <resources>
     <color name="colorPrimary">#E60012</color>
     <color name="colorPrimaryDark">#AB0000</color>
-    <color name="colorAccent">#FF3C28</color>
+    <color name="colorSecondary">#FF3C28</color>
+
+    <color name="colorPrimarySplat">#17a80d</color>
+    <color name="colorPrimaryDarkSplat">#007700</color>
+    <color name="colorSecondarySplat">#cf0466</color>
+
+    <color name="windowBackgroundSplat">#dfdfdf</color>
 
     <color name="intro_background_color">#FFF</color>
     <color name="intro_bar_color">#DDD</color>
