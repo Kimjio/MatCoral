@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 /**
  * access_token & id_token Request
  */
-public class AITokenRequest {
+public class AccountTokenRequest {
     @SerializedName("client_id")
     private String clientId;
     @SerializedName("grant_type")
@@ -13,7 +13,7 @@ public class AITokenRequest {
     @SerializedName("session_token")
     private String sessionToken;
 
-    public AITokenRequest(String clientId, String grantType, String sessionToken) {
+    public AccountTokenRequest(String clientId, String grantType, String sessionToken) {
         this.clientId = clientId;
         this.grantType = grantType;
         this.sessionToken = sessionToken;

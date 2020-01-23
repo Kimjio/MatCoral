@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="records"
+            type="com.kimjio.coral.data.splat.Records" />
+
+        <variable
+            name="nickname_icon"
+            type="com.kimjio.coral.data.splat.NicknameIcon" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingStart="16dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="8dp">
+
+            <com.kimjio.coral.widget.DrawableSizeTextView
+                android:id="@+id/text_account_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_account"
+                android:drawablePadding="8dp"
+                android:gravity="center"
+                android:text="@{nickname_icon.nickname}"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                android:textSize="24sp"
+                app:drawableStartHeight="48dp"
+                app:drawableStartUri="@{nickname_icon.thumbnailUri}"
+                app:drawableStartWidth="48dp"
+                app:layout_constraintBottom_toBottomOf="@+id/text_level"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/text_level"
+                tools:text="Ji O" />
+
+            <TextView
+                android:id="@+id/text_level_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="@string/label_level"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                android:textColor="?colorSecondary"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="@+id/text_level"
+                app:layout_constraintEnd_toStartOf="@+id/text_level"
+                app:layout_constraintTop_toTopOf="@+id/text_level" />
+
+            <TextView
+                android:id="@+id/text_level"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{records.player.level}"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                android:textSize="32sp"
+                app:fontFamily="@font/splatoon"
+                app:layout_constraintEnd_toStartOf="@+id/star_level"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="39" />
+
+            <RatingBar
+                android:id="@+id/star_level"
+                style="@style/Widget.AppCompat.RatingBar.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:drawableStart="@drawable/ic_splat_star"
+                android:numStars="@{records.player.starLevel}"
+                android:rating="@{records.player.starLevel}"
+                android:visibility="@{records.player.starLevel}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/text_level"
+                tools:numStars="1"
+                tools:rating="1" />
+
+            <View
+                android:id="@+id/divider"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="8dp"
+                android:background="?android:attr/listDivider"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_level" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/divider">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp">
+
+                    <TextView
+                        android:id="@+id/text_zones"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:text="@{records.player.rankClamSplatZones.name}"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                        android:textSize="24sp"
+                        app:fontFamily="@font/splatoon"
+                        app:layout_constraintStart_toEndOf="@+id/text_zones_label"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="A" />
+
+                    <TextView
+                        android:id="@+id/text_zones_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/mode_zones"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                        android:textColor="?colorSecondary"
+                        android:textSize="18sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/text_zones"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/text_zones" />
+
+                    <TextView
+                        android:id="@+id/text_tower"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:text="@{records.player.rankClamTowerControl.name}"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                        android:textSize="24sp"
+                        app:fontFamily="@font/splatoon"
+                        app:layout_constraintStart_toEndOf="@+id/text_tower_label"
+                        app:layout_constraintTop_toBottomOf="@+id/text_zones"
+                        tools:text="A" />
+
+                    <TextView
+                        android:id="@+id/text_tower_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/mode_tower"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                        android:textColor="?colorSecondary"
+                        android:textSize="18sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/text_tower"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/text_tower" />
+
+                    <TextView
+                        android:id="@+id/text_rain"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:text="@{records.player.rankClamRainmaker.name}"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                        android:textSize="24sp"
+                        app:fontFamily="@font/splatoon"
+                        app:layout_constraintStart_toEndOf="@+id/text_rain_label"
+                        app:layout_constraintTop_toBottomOf="@+id/text_tower"
+                        tools:text="A" />
+
+                    <TextView
+                        android:id="@+id/text_rain_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/mode_rain"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                        android:textColor="?colorSecondary"
+                        android:textSize="18sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/text_rain"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/text_rain" />
+
+                    <TextView
+                        android:id="@+id/text_clam"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:text="@{records.player.rankClamBlitz.name}"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                        android:textSize="24sp"
+                        app:fontFamily="@font/splatoon"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/text_clam_label"
+                        app:layout_constraintTop_toBottomOf="@+id/text_rain"
+                        tools:text="A" />
+
+                    <TextView
+                        android:id="@+id/text_clam_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/mode_clam"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                        android:textColor="?colorSecondary"
+                        android:textSize="18sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/text_clam"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/text_clam" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <TextView
+                    android:id="@+id/text_max_rank"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="8dp"
+                    android:layout_weight="1"
+                    android:text="@{records.player.maxRank}"
+                    android:textAlignment="center"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                    android:textColor="?colorPrimary"
+                    android:textSize="96sp"
+                    app:fontFamily="@font/splatoon"
+                    tools:text="A" />
+            </LinearLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+</layout>

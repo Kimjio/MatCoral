@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title_splat">오징어링\ue06c</string>
+    <string name="splat_home">홈</string>
+    <string name="splat_stages">스테이지</string>
+    <string name="splat_stats">통계</string>
+    <string name="splat_battles">베틀</string>
+    <string name="splat_salmon_run">연어런</string>
+
+    <string name="label_level">레벨</string>
+    <string name="mode_turf">Turf War</string>
+    <string name="mode_zones">Splat Zones</string>
+    <string name="mode_tower">Tower Control</string>
+    <string name="mode_rain">Rainmaker</string>
+    <string name="mode_clam">Clam Blitz</string>
+</resources>

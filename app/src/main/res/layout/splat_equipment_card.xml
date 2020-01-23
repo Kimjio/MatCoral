@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="player"
+            type="com.kimjio.coral.data.splat.Player" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingStart="16dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="8dp">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp">
+
+                    <TextView
+                        android:id="@+id/text_zones"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:text="@{player.weapon.name}"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                        android:textSize="24sp"
+                        app:fontFamily="@font/splatoon"
+                        app:layout_constraintStart_toEndOf="@+id/text_zones_label"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="A" />
+
+                    <TextView
+                        android:id="@+id/text_zones_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/mode_zones"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                        android:textColor="?colorSecondary"
+                        android:textSize="18sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/text_zones"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/text_zones" />
+
+                    <TextView
+                        android:id="@+id/text_tower"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:text="@{player.head.name}"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                        android:textSize="24sp"
+                        app:fontFamily="@font/splatoon"
+                        app:layout_constraintStart_toEndOf="@+id/text_tower_label"
+                        app:layout_constraintTop_toBottomOf="@+id/text_zones"
+                        tools:text="A" />
+
+                    <TextView
+                        android:id="@+id/text_tower_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/mode_tower"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                        android:textColor="?colorSecondary"
+                        android:textSize="18sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/text_tower"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/text_tower" />
+
+                    <TextView
+                        android:id="@+id/text_rain"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:text="@{player.clothes.name}"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                        android:textSize="24sp"
+                        app:fontFamily="@font/splatoon"
+                        app:layout_constraintStart_toEndOf="@+id/text_rain_label"
+                        app:layout_constraintTop_toBottomOf="@+id/text_tower"
+                        tools:text="A" />
+
+                    <TextView
+                        android:id="@+id/text_rain_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/mode_rain"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                        android:textColor="?colorSecondary"
+                        android:textSize="18sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/text_rain"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/text_rain" />
+
+                    <TextView
+                        android:id="@+id/text_clam"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:text="@{player.shoes.name}"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                        android:textSize="24sp"
+                        app:fontFamily="@font/splatoon"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/text_clam_label"
+                        app:layout_constraintTop_toBottomOf="@+id/text_rain"
+                        tools:text="A" />
+
+                    <TextView
+                        android:id="@+id/text_clam_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/mode_clam"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                        android:textColor="?colorSecondary"
+                        android:textSize="18sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/text_clam"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/text_clam" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+</layout>

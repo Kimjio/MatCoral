@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title_splat">SplatNet\ue06c</string>
+    <string name="splat_home">Home</string>
+    <string name="splat_stages">Stages</string>
+    <string name="splat_stats">My Stats</string>
+    <string name="splat_battles">Battles</string>
+    <string name="splat_salmon_run">Salmon Run</string>
+
+    <string name="label_level">Level</string>
+    <string name="mode_turf">Turf War</string>
+    <string name="mode_zones">Splat Zones</string>
+    <string name="mode_tower">Tower Control</string>
+    <string name="mode_rain">Rainmaker</string>
+    <string name="mode_clam">Clam Blitz</string>
+</resources>

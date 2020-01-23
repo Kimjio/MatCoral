@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_home"
+        android:icon="@drawable/ic_splat_squid"
+        android:title="@string/splat_home" />
+    <item
+        android:id="@+id/menu_stages"
+        android:icon="@drawable/ic_splat_stages"
+        android:title="@string/splat_stages" />
+    <item
+        android:id="@+id/menu_stats"
+        android:icon="@drawable/ic_splat_stats"
+        android:title="@string/splat_stats" />
+    <item
+        android:id="@+id/menu_battles"
+        android:icon="@drawable/ic_splat_battles"
+        android:title="@string/splat_battles" />
+    <item
+        android:id="@+id/menu_salmon"
+        android:icon="@drawable/ic_splat_salmon"
+        android:title="@string/splat_salmon_run" />
+</menu>
