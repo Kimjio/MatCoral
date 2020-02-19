@@ -61,14 +61,6 @@ public class SplatFragmentAdapter extends FragmentStateAdapter {
         return fragment;
     }
 
-    public void setRecords(Records records) {
-        mainFragment.setRecords(records);
-    }
-
-    public void setNicknameIcon(NicknameIcon nicknameIcon) {
-        mainFragment.setNicknameIcon(nicknameIcon);
-    }
-
     @Override
     public int getItemCount() {
         return 5;

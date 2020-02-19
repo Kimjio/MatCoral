@@ -1,6 +1,7 @@
 package com.kimjio.coral.splat.activity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
@@ -18,6 +19,8 @@ import java.util.Objects;
 
 public class SplatActivity extends BaseActivity<SplatActivityBinding> implements SwipeRefreshLayout.OnRefreshListener {
 
+    private static final String TAG = "SplatActivity";
+
     private SplatViewModel viewModel;
     private SplatFragmentAdapter adapter;
 
@@ -29,6 +32,7 @@ public class SplatActivity extends BaseActivity<SplatActivityBinding> implements
 
         viewModel = ViewModelProviders.of(this).get(SplatViewModel.class);
         observeData();
+        Log.d(TAG, "onCreate: " + viewModel.toString());
 
         WebServiceToken webServiceToken = getIntent().getParcelableExtra("web_service_token");
         getSessionCookie(Objects.requireNonNull(webServiceToken).getAccessToken());
@@ -48,12 +52,13 @@ public class SplatActivity extends BaseActivity<SplatActivityBinding> implements
         viewModel.getThrowable().observe(this, Throwable::printStackTrace);
         viewModel.getCookieResponseData().observe(this, response -> getData());
         viewModel.getFullRecordsData().observe(this, fullRecords -> {
-            viewModel.loadNicknameIconData(fullRecords.getRecords().getPlayer().getNsUserId());
-            adapter.setRecords(fullRecords.getRecords());
+            //viewModel.loadNicknameIconData(fullRecords.getRecords().getPlayer().getNsUserId());
+            //adapter.setRecords(fullRecords.getRecords());
             binding.bottomNavigationView.getMenu().getItem(0).setIcon(fullRecords.getRecords().getPlayer().getType().getSpecies().equals("inklings") ? R.drawable.ic_splat_squid : R.drawable.ic_splat_octo);
+            binding.swipeRefreshLayout.setRefreshing(false);
         });
         viewModel.getNicknameIconData().observe(this, nicknameIcons -> {
-            adapter.setNicknameIcon(nicknameIcons.get(0));
+            //adapter.setNicknameIcon(nicknameIcons.get(0));
             binding.swipeRefreshLayout.setRefreshing(false);
         });
     }
@@ -103,6 +108,6 @@ public class SplatActivity extends BaseActivity<SplatActivityBinding> implements
     }
 
     private void getData() {
-        viewModel.loadFullRecordsData();
+        //viewModel.loadFullRecordsData();
     }
 }

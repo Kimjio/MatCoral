@@ -15,6 +15,8 @@ import com.kimjio.coral.R;
 import java.lang.reflect.ParameterizedType;
 import java.util.Objects;
 
+import dagger.android.support.DaggerAppCompatActivity;
+
 public abstract class BaseActivity<VB extends ViewDataBinding> extends AppCompatActivity {
     protected VB binding;
 

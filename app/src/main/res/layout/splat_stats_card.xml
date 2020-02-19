@@ -10,7 +10,7 @@
             type="com.kimjio.coral.data.splat.Records" />
 
         <variable
-            name="nickname_icon"
+            name="nicknameIcon"
             type="com.kimjio.coral.data.splat.NicknameIcon" />
     </data>
 
@@ -33,11 +33,11 @@
                 android:drawableStart="@drawable/ic_account"
                 android:drawablePadding="8dp"
                 android:gravity="center"
-                android:text="@{nickname_icon.nickname}"
+                android:text="@{nicknameIcon.nickname}"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                 android:textSize="24sp"
                 app:drawableStartHeight="48dp"
-                app:drawableStartUri="@{nickname_icon.thumbnailUri}"
+                app:drawableStartUri="@{nicknameIcon.thumbnailUri}"
                 app:drawableStartWidth="48dp"
                 app:layout_constraintBottom_toBottomOf="@+id/text_level"
                 app:layout_constraintStart_toStartOf="parent"

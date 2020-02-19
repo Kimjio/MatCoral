@@ -17,6 +17,8 @@ import com.kimjio.coral.R;
 import java.lang.reflect.ParameterizedType;
 import java.util.Objects;
 
+import dagger.android.support.DaggerFragment;
+
 public abstract class BaseFragment<VB extends ViewDataBinding> extends Fragment {
     protected VB binding;
 
@@ -29,7 +31,7 @@ public abstract class BaseFragment<VB extends ViewDataBinding> extends Fragment 
 
     @LayoutRes
     private int getLayoutRes() {
-        String[] split = ((Class) ((ParameterizedType) Objects.requireNonNull(getClass().getGenericSuperclass())).getActualTypeArguments()[0]).getSimpleName().replace("Binding", "").split("(?<=.)(?=\\p{Upper})");
+        String[] split = ((Class<?>) ((ParameterizedType) Objects.requireNonNull(getClass().getGenericSuperclass())).getActualTypeArguments()[0]).getSimpleName().replace("Binding", "").split("(?<=.)(?=\\p{Upper})");
         StringBuilder name = new StringBuilder();
 
         for (int i = 0; i < split.length; i++) {

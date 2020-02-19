@@ -422,13 +422,12 @@ public class SplatCircularProgressDrawable extends CircularProgressDrawable {
         if (mRing.getEndTrim() != mRing.getStartTrim()) {
             mFinishing = true;
             mAnimator.setDuration(ANIMATION_DURATION / 2);
-            mAnimator.start();
         } else {
             mRing.setColorIndex(0);
             mRing.resetOriginals();
             mAnimator.setDuration(ANIMATION_DURATION);
-            mAnimator.start();
         }
+        mAnimator.start();
     }
 
     /**

@@ -55,8 +55,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:label="@string/title_splat"
             android:name=".splat.activity.SplatActivity"
+            android:label="@string/title_splat"
             android:theme="@style/Theme.App.Splat" />
     </application>
 
