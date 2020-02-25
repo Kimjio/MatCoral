@@ -23,77 +23,43 @@
             android:paddingBottom="8dp">
 
             <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:baselineAligned="false">
+                app:layout_constraintTop_toTopOf="parent">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp">
+                <include
+                    android:id="@+id/equip_weapon"
+                    layout="@layout/splat_equipment_item"
+                    app:item="@{player.weapon}"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                    <TextView
-                        android:id="@+id/text_zones"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginTop="8dp"
-                        android:text="@{player.weapon.name}"
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-                        android:textSize="24sp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:text="A" />
+                <include
+                    android:id="@+id/equip_head"
+                    layout="@layout/splat_equipment_item"
+                    app:item="@{player.head}"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/equip_weapon" />
 
-                    <TextView
-                        android:id="@+id/text_tower"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:text="@{player.head.name}"
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-                        android:textSize="24sp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/text_zones"
-                        tools:text="A" />
+                <include
+                    android:id="@+id/equip_clothes"
+                    layout="@layout/splat_equipment_item"
+                    app:item="@{player.clothes}"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/equip_head" />
 
-                    <TextView
-                        android:id="@+id/text_rain"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:text="@{player.clothes.name}"
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-                        android:textSize="24sp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/text_tower"
-                        tools:text="A" />
+                <include
+                    android:id="@+id/equip_shoes"
+                    layout="@layout/splat_equipment_item"
+                    app:item="@{player.shoes}"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/equip_clothes" />
 
-                    <TextView
-                        android:id="@+id/text_clam"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginBottom="8dp"
-                        android:text="@{player.shoes.name}"
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-                        android:textSize="24sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/text_rain"
-                        tools:text="A" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
             </LinearLayout>
-
-
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 </layout>

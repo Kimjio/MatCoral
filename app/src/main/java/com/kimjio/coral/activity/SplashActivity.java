@@ -10,7 +10,6 @@ import com.kimjio.coral.manager.SessionTokenManager;
 import com.kimjio.coral.databinding.SplashActivityBinding;
 
 public class SplashActivity extends BaseActivity<SplashActivityBinding> {
-
     private static final String TAG = "SplashActivity";
 
     @Override

@@ -4,26 +4,33 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.annotation.RawRes;
+import androidx.annotation.StringRes;
+
+import com.kimjio.coral.R;
 
 public class IntroItem implements Parcelable {
-    public final String title;
-    public String desc;
+    @StringRes
+    public final int titleRes;
+    @StringRes
+    public final int descRes;
     @RawRes
     public final int rawRes;
 
-    public IntroItem(String title, String desc, int rawRes) {
-        this(title, rawRes);
-        this.desc = desc;
+    public IntroItem(int titleRes, int descRes, int rawRes) {
+        this.titleRes = titleRes;
+        this.rawRes = rawRes;
+        this.descRes = descRes;
     }
 
-    public IntroItem(String title, int rawRes) {
-        this.title = title;
+    public IntroItem(int titleRes, int rawRes) {
+        this.titleRes = titleRes;
         this.rawRes = rawRes;
+        this.descRes = R.string.gone;
     }
 
     private IntroItem(Parcel in) {
-        title = in.readString();
-        desc = in.readString();
+        titleRes = in.readInt();
+        descRes = in.readInt();
         rawRes = in.readInt();
     }
 
@@ -46,8 +53,8 @@ public class IntroItem implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(title);
-        dest.writeString(desc);
+        dest.writeInt(titleRes);
+        dest.writeInt(descRes);
         dest.writeInt(rawRes);
     }
 }

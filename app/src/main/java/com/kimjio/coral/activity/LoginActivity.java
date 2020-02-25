@@ -29,7 +29,6 @@ import retrofit2.HttpException;
 import retrofit2.Response;
 
 public class LoginActivity extends BaseActivity<LoginActivityBinding> {
-
     private static LoginViewModel viewModel;
     private SessionTokenManager sessionTokenManager;
 

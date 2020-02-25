@@ -2,29 +2,9 @@ package com.kimjio.coral.data.splat;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Weapon {
-    private String id;
-    private String name;
-    private String image;
-    private String thumbnail;
+public class Weapon extends SplatBaseData {
     private Ability sub;
     private Ability special;
-
-    public String getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public String getThumbnail() {
-        return thumbnail;
-    }
 
     public Ability getSub() {
         return sub;

@@ -10,35 +10,42 @@
             type="com.kimjio.coral.splat.viewmodel.SplatViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/background_splat_main"
-        android:paddingStart="16dp"
-        android:paddingTop="?actionBarSize"
-        android:paddingEnd="16dp">
+        android:background="@drawable/background_splat_main">
 
-        <include
-            android:id="@+id/stats_card"
-            layout="@layout/splat_stats_card"
-            android:layout_width="0dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:records="@{viewModel.fullRecordsData.records}"
-            app:nicknameIcon="@{viewModel.nicknameIconData.get(0)}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:paddingStart="16dp"
+            android:paddingTop="?actionBarSize"
+            android:paddingEnd="16dp">
 
-        <include
-            android:id="@+id/equipment_card"
-            layout="@layout/splat_equipment_card"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            app:player="@{viewModel.fullRecordsData.records.player}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/stats_card" />
+            <include
+                android:id="@+id/stats_card"
+                layout="@layout/splat_stats_card"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:nicknameIcon="@{viewModel.nicknameIconData.get(0)}"
+                app:records="@{viewModel.fullRecordsData.records}" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <include
+                android:id="@+id/equipment_card"
+                layout="@layout/splat_equipment_card"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/stats_card"
+                app:player="@{viewModel.fullRecordsData.records.player}" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+
+
 </layout>

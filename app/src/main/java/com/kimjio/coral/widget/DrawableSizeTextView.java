@@ -146,53 +146,6 @@ public class DrawableSizeTextView extends AppCompatTextView {
         applyDrawablesSize();
     }
 
-    @Override
-    public Parcelable onSaveInstanceState() {
-        SavedState savedState = new SavedState(super.onSaveInstanceState());
-        Drawable[] drawables = getCompoundDrawables();
-        Drawable[] drawablesRelative = getCompoundDrawablesRelative();
-        if (drawablesRelative[START] != null) {
-            switch (getResources().getConfiguration().getLayoutDirection()) {
-                case LAYOUT_DIRECTION_LTR:
-                    drawables[LEFT] = drawablesRelative[START];
-                    break;
-                case LAYOUT_DIRECTION_RTL:
-                    drawables[RIGHT] = drawablesRelative[START];
-                    break;
-            }
-        }
-        if (drawablesRelative[END] != null) {
-            switch (getResources().getConfiguration().getLayoutDirection()) {
-                case LAYOUT_DIRECTION_LTR:
-                    drawables[RIGHT] = drawablesRelative[END];
-                    break;
-                case LAYOUT_DIRECTION_RTL:
-                    drawables[LEFT] = drawablesRelative[END];
-                    break;
-            }
-        }
-        savedState.drawableLeft = getBitmap(drawables[LEFT]);
-        savedState.drawableTop = getBitmap(drawables[TOP]);
-        savedState.drawableRight = getBitmap(drawables[RIGHT]);
-        savedState.drawableBottom = getBitmap(drawables[BOTTOM]);
-        return savedState;
-    }
-
-    @Override
-    public void onRestoreInstanceState(Parcelable state) {
-        if (!(state instanceof SavedState)) {
-            super.onRestoreInstanceState(state);
-            return;
-        }
-        SavedState savedState = (SavedState) state;
-        super.onRestoreInstanceState(savedState.getSuperState());
-        setCompoundDrawables(
-                new BitmapDrawable(getResources(), savedState.drawableLeft),
-                new BitmapDrawable(getResources(), savedState.drawableTop),
-                new BitmapDrawable(getResources(), savedState.drawableRight),
-                new BitmapDrawable(getResources(), savedState.drawableBottom));
-    }
-
     private Bitmap getBitmap(Drawable drawable) {
         if (drawable instanceof BitmapDrawable) {
             return ((BitmapDrawable) drawable).getBitmap();
@@ -384,50 +337,5 @@ public class DrawableSizeTextView extends AppCompatTextView {
     public void setDrawableRightHeight(int drawableRightHeight) {
         this.drawableRightHeight = drawableRightHeight;
         invalidate();
-    }
-
-    public static class SavedState extends BaseSavedState {
-
-        public static final Creator<SavedState> CREATOR = new Creator<SavedState>() {
-            @Override
-            public SavedState createFromParcel(Parcel in) {
-                return new SavedState(in);
-            }
-
-            @Override
-            public SavedState[] newArray(int size) {
-                return new SavedState[size];
-            }
-        };
-        Bitmap drawableLeft;
-        Bitmap drawableTop;
-        Bitmap drawableRight;
-        Bitmap drawableBottom;
-
-        public SavedState(Parcel source) {
-            super(source);
-            drawableLeft = source.readParcelable(getClass().getClassLoader());
-            drawableTop = source.readParcelable(getClass().getClassLoader());
-            drawableRight = source.readParcelable(getClass().getClassLoader());
-            drawableBottom = source.readParcelable(getClass().getClassLoader());
-        }
-
-        public SavedState(Parcelable superState) {
-            super(superState);
-        }
-
-        @Override
-        public void writeToParcel(Parcel dest, int flags) {
-            super.writeToParcel(dest, flags);
-            dest.writeParcelable(drawableLeft, flags);
-            dest.writeParcelable(drawableTop, flags);
-            dest.writeParcelable(drawableRight, flags);
-            dest.writeParcelable(drawableBottom, flags);
-        }
-
-        @Override
-        public int describeContents() {
-            return 0;
-        }
     }
 }

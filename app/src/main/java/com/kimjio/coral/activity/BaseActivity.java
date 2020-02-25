@@ -24,6 +24,7 @@ public abstract class BaseActivity<VB extends ViewDataBinding> extends AppCompat
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, getLayoutRes());
+        binding.setLifecycleOwner(this);
     }
 
     protected void observeData() {

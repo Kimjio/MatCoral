@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.kimjio.coral.data.splat.SplatBaseData" />
+    </data>
+
+    <com.kimjio.coral.widget.DrawableSizeTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@{item.name}"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+        android:textSize="20sp"
+        android:drawablePadding="8dp"
+        app:drawableStartHeight="40dp"
+        app:drawableStartUri="@{item.imageUri}"
+        app:drawableStartWidth="40dp"
+        tools:text="Weapon" />
+
+    <!--<TextView
+        android:id="@+id/text_zones"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@{player.weapon.name}"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Weapon" />-->
+</layout>

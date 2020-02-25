@@ -20,7 +20,6 @@ import com.kimjio.coral.viewmodel.MainViewModel;
 import java.util.Objects;
 
 public class MainActivity extends BaseActivity<MainActivityBinding> {
-
     private static MainViewModel viewModel;
 
     private GameWebServiceAdapter adapter = new GameWebServiceAdapter((item, position) -> {
@@ -43,7 +42,7 @@ public class MainActivity extends BaseActivity<MainActivityBinding> {
     @Override
     protected void observeData() {
         viewModel.getMe().observe(this, me ->
-            UserManager.getInstance().setAccountUser(me)
+                UserManager.getInstance().setAccountUser(me)
         );
         viewModel.getFTokens().observe(this, fTokenMap -> {
             FToken nso = fTokenMap.get(FToken.NSO);
@@ -65,10 +64,15 @@ public class MainActivity extends BaseActivity<MainActivityBinding> {
         });
         viewModel.getGameWebServices().observe(this, gameWebServices ->
                 adapter.setGameWebServices(gameWebServices));
-        viewModel.getWebServiceToken().observe(this, webServiceToken ->
-                startActivity(
-                        new Intent(MainActivity.this, SplatActivity.class)
-                                .putExtra("web_service_token", webServiceToken)));
+        viewModel.getWebServiceToken().observe(this, webServiceToken -> {
+            if (webServiceToken.getId() == GameWebService.ID_SPLAT2) {
+                startActivity(new Intent(MainActivity.this, SplatActivity.class).putExtra("web_service_token", webServiceToken));
+            } else if (webServiceToken.getId() == GameWebService.ID_SMASH) {
+
+            } else if (webServiceToken.getId() == GameWebService.ID_AC_NEW_HORIZON) {
+
+            }
+        });
     }
 
     @Override
@@ -82,6 +86,7 @@ public class MainActivity extends BaseActivity<MainActivityBinding> {
         super.onResume();
         if (TokenManager.getInstance().expired()) {
             if (TokenManager.getInstance().getWebApiServerCredential() == null) {
+                startActivity(new Intent(this, LoginActivity.class));
                 finish();
                 return;
             }

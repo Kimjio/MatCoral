@@ -18,9 +18,6 @@ import com.kimjio.coral.splat.viewpager2.SplatFragmentAdapter;
 import java.util.Objects;
 
 public class SplatActivity extends BaseActivity<SplatActivityBinding> implements SwipeRefreshLayout.OnRefreshListener {
-
-    private static final String TAG = "SplatActivity";
-
     private SplatViewModel viewModel;
     private SplatFragmentAdapter adapter;
 
@@ -32,7 +29,6 @@ public class SplatActivity extends BaseActivity<SplatActivityBinding> implements
 
         viewModel = ViewModelProviders.of(this).get(SplatViewModel.class);
         observeData();
-        Log.d(TAG, "onCreate: " + viewModel.toString());
 
         WebServiceToken webServiceToken = getIntent().getParcelableExtra("web_service_token");
         getSessionCookie(Objects.requireNonNull(webServiceToken).getAccessToken());
@@ -44,21 +40,21 @@ public class SplatActivity extends BaseActivity<SplatActivityBinding> implements
 
         binding.swipeRefreshLayout.setOnRefreshListener(this);
         binding.swipeRefreshLayout.setRefreshing(true);
-        binding.swipeRefreshLayout.post(this::onRefresh);
+        getData(false);
     }
 
     @Override
     protected void observeData() {
         viewModel.getThrowable().observe(this, Throwable::printStackTrace);
-        viewModel.getCookieResponseData().observe(this, response -> getData());
+        viewModel.getCookieResponseData().observe(this, response -> getData(false));
         viewModel.getFullRecordsData().observe(this, fullRecords -> {
-            //viewModel.loadNicknameIconData(fullRecords.getRecords().getPlayer().getNsUserId());
-            //adapter.setRecords(fullRecords.getRecords());
             binding.bottomNavigationView.getMenu().getItem(0).setIcon(fullRecords.getRecords().getPlayer().getType().getSpecies().equals("inklings") ? R.drawable.ic_splat_squid : R.drawable.ic_splat_octo);
-            binding.swipeRefreshLayout.setRefreshing(false);
+            if (viewModel.getNicknameIconData().getValue() == null)
+                viewModel.loadNicknameIconData(fullRecords.getRecords().getPlayer().getNsUserId());
+            else
+                binding.swipeRefreshLayout.setRefreshing(false);
         });
         viewModel.getNicknameIconData().observe(this, nicknameIcons -> {
-            //adapter.setNicknameIcon(nicknameIcons.get(0));
             binding.swipeRefreshLayout.setRefreshing(false);
         });
     }
@@ -100,14 +96,16 @@ public class SplatActivity extends BaseActivity<SplatActivityBinding> implements
 
     @Override
     public void onRefresh() {
-        getData();
+        getData(true);
     }
 
     private void getSessionCookie(@NonNull String accessToken) {
-        viewModel.loadCookieResponseData(accessToken);
+        if (viewModel.getCookieResponseData().getValue() == null)
+            viewModel.loadCookieResponseData(accessToken);
     }
 
-    private void getData() {
-        //viewModel.loadFullRecordsData();
+    private void getData(boolean refresh) {
+        if (viewModel.getFullRecordsData().getValue() == null || refresh)
+            viewModel.loadFullRecordsData();
     }
 }

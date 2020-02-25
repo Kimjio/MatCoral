@@ -26,6 +26,7 @@ public abstract class BaseFragment<VB extends ViewDataBinding> extends Fragment 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (binding == null)
             binding = DataBindingUtil.inflate(inflater, getLayoutRes(), container, false);
+        binding.setLifecycleOwner(this);
         return binding.getRoot();
     }
 

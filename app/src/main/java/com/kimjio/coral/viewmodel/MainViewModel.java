@@ -10,6 +10,7 @@ import com.kimjio.coral.api.NintendoAccountApi;
 import com.kimjio.coral.data.GameWebService;
 import com.kimjio.coral.data.auth.TokenResponse;
 import com.kimjio.coral.data.auth.WebServiceToken;
+import com.kimjio.coral.data.auth.WebServiceTokenWrapper;
 import com.kimjio.coral.data.auth.flapg.FToken;
 import com.kimjio.coral.data.auth.request.TokenRequest;
 import com.kimjio.coral.data.auth.request.TokenRequestWrapper;
@@ -18,6 +19,11 @@ import com.kimjio.coral.data.auth.request.WebServiceTokenRequestWrapper;
 import com.kimjio.coral.manager.TokenManager;
 
 import java.util.List;
+
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.observers.DisposableObserver;
+import io.reactivex.schedulers.Schedulers;
 
 import static com.kimjio.coral.api.NintendoAccountApi.getAuthorization;
 import static com.kimjio.coral.api.NintendoApi.NSO_VERSION;
@@ -63,15 +69,33 @@ public class MainViewModel extends LoginViewModel {
 
     public void loadWebServiceToken(long id) {
         disposable.add(
-                getWrapperDisposable(
-                        nintendoApi.getWebServiceToken(getUserAgent(), NSO_VERSION,
-                                getAuthorization(TokenManager.getInstance().getWebApiServerCredential().getAccessToken()),
-                                new WebServiceTokenRequestWrapper(
-                                        new WebServiceTokenRequest(id,
-                                                TokenManager.getInstance().getWebAppToken().getToken(),
-                                                TokenManager.getInstance().getWebAppToken().getUUID(),
-                                                Long.parseLong(TokenManager.getInstance().getWebAppToken().getTimestamp()),
-                                                TokenManager.getInstance().getWebAppToken().getF()))),
-                        webServiceTokenLiveData));
+                nintendoApi.getWebServiceToken(getUserAgent(), NSO_VERSION,
+                        getAuthorization(TokenManager.getInstance().getWebApiServerCredential().getAccessToken()),
+                        new WebServiceTokenRequestWrapper(
+                                new WebServiceTokenRequest(id,
+                                        TokenManager.getInstance().getWebAppToken().getToken(),
+                                        TokenManager.getInstance().getWebAppToken().getUUID(),
+                                        Long.parseLong(TokenManager.getInstance().getWebAppToken().getTimestamp()),
+                                        TokenManager.getInstance().getWebAppToken().getF()))).subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .retryWhen(throwableObservable -> throwableObservable.flatMap(Observable::error))
+                        .subscribeWith(new DisposableObserver<WebServiceTokenWrapper>() {
+                            @Override
+                            public void onNext(WebServiceTokenWrapper result) {
+                                WebServiceToken token = result.getData();
+                                token.setId(id);
+                                webServiceTokenLiveData.postValue(token);
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                throwableLiveData.setValue(e);
+                            }
+
+                            @Override
+                            public void onComplete() {
+                            }
+                        })
+        );
     }
 }

@@ -9,6 +9,7 @@ import java.util.List;
 public class GameWebService extends BaseData implements Parcelable {
     public static final long ID_SMASH = 0x13E3EF9E7E0000L;
     public static final long ID_SPLAT2 = 0x14657000000000L;
+    public static final long ID_AC_NEW_HORIZON = 0x0L;
 
     private String name; //Splatoon 2
     private String imageUri; //384 x 384

@@ -17,8 +17,6 @@ import com.kimjio.coral.fragment.BaseFragment;
 import com.kimjio.coral.splat.viewmodel.SplatViewModel;
 
 public abstract class SplatBaseFragment<VB extends ViewDataBinding> extends BaseFragment<VB> {
-    private static final String TAG = "SplatBaseFragment";
-
     private static final float[] NEGATIVE = {
             -1f,   0,   0,  0, 255, // red
               0, -1f,   0,  0, 255, // green
@@ -31,7 +29,7 @@ public abstract class SplatBaseFragment<VB extends ViewDataBinding> extends Base
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewModel = ViewModelProviders.of(this).get(SplatViewModel.class);
+        viewModel = ViewModelProviders.of(requireActivity()).get(SplatViewModel.class);
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.kimjio.coral.splat.viewpager2;
 
+import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -14,6 +16,7 @@ import com.kimjio.coral.splat.fragment.MainFragment;
 import com.kimjio.coral.splat.fragment.SalmonFragment;
 import com.kimjio.coral.splat.fragment.StagesFragment;
 import com.kimjio.coral.splat.fragment.StatsFragment;
+import com.kimjio.coral.splat.viewmodel.SplatViewModel;
 
 public class SplatFragmentAdapter extends FragmentStateAdapter {
 

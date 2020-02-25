@@ -17,7 +17,7 @@ import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
 public abstract class BaseViewModel extends AndroidViewModel {
-    private MutableLiveData<Throwable> throwableLiveData = new MutableLiveData<>();
+    protected MutableLiveData<Throwable> throwableLiveData = new MutableLiveData<>();
     protected CompositeDisposable disposable = new CompositeDisposable();
 
     public BaseViewModel(@NonNull Application application) {

@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="android.view.View"/>
+        <import type="com.kimjio.coral.R"/>
 
         <variable
             name="item"
@@ -19,7 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="?actionBarSize"
-            android:text="@{item.title}"
+            android:text="@{item.titleRes}"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
             android:textSize="23.25sp"
@@ -33,9 +35,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="@{item.desc}"
+            android:text="@{item.descRes}"
             android:textAlignment="center"
-            android:visibility="@{item.desc}"
+            android:visibility="@{item.descRes == R.string.gone ? View.GONE : View.VISIBLE}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/title"
