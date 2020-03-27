@@ -16,5 +16,7 @@
     <string name="error_title">Error</string>
     <string name="error_re_auth">Please sign in to your Nintendo Account again.</string>
     <string name="error_commu">A communication error has occurred.</string>
+    <string name="error_upgrade">Nintendo Switch Online has been update.\nPlease wait for updates.</string>
+    <string name="error_token">Invalid Auth Info</string>
     <string name="menu_settings">Settings</string>
 </resources>

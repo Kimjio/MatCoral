@@ -3,8 +3,8 @@ package com.kimjio.coral.data.auth.flapg;
 import com.google.gson.annotations.SerializedName;
 
 public class FToken {
-    public static final String WEB_APP = "login_app";
-    public static final String NSO = "login_nso";
+    public static final String APP = "app";
+    public static final String NSO = "nso";
 
     @SerializedName("p1")
     private String token;

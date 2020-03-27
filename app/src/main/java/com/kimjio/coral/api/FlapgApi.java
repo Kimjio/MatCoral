@@ -1,6 +1,7 @@
 package com.kimjio.coral.api;
 
 import com.kimjio.coral.data.auth.flapg.FToken;
+import com.kimjio.coral.data.auth.flapg.FTokenWrapper;
 
 import java.util.Map;
 
@@ -13,7 +14,7 @@ public interface FlapgApi {
 
     String FLAPG = "https://flapg.com/ika2/";
 
-    @GET("api/login")
-    @Headers({"X-Ver: 2"})
-    Observable<Map<String, FToken>> getFTokens(@Header("X-Token") String idToken, @Header("X-Time") String timestamp, @Header("X-Guid") String guid, @Header("X-Hash") String hash, @Header("X-IID") String iid);
+    @GET("api/login?public")
+    @Headers({"X-Ver: 3"})
+    Observable<FTokenWrapper> getFToken(@Header("X-Token") String idToken, @Header("X-Time") String timestamp, @Header("X-Guid") String guid, @Header("X-Hash") String hash, @Header("X-IID") String iid);
 }

@@ -1,7 +1,9 @@
 package com.kimjio.coral.api;
 
+import com.kimjio.coral.data.splat.Festivals;
 import com.kimjio.coral.data.splat.FullRecords;
 import com.kimjio.coral.data.splat.NicknameIcons;
+import com.kimjio.coral.data.splat.Stages;
 
 import io.reactivex.Observable;
 import retrofit2.Response;
@@ -21,6 +23,12 @@ public interface SplatNet2Api {
 
     @GET("api/records")
     Observable<FullRecords> getFullRecords();
+
+    @GET("api/data/stages")
+    Observable<Stages> getStages();
+
+    @GET("api/festivals/active")
+    Observable<Festivals> getActiveFestivals();
 
     @GET("api/nickname_and_icon")
     Observable<NicknameIcons> getNicknameIcon(@Query("id") String id);

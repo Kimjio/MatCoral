@@ -54,9 +54,7 @@ public class SplatActivity extends BaseActivity<SplatActivityBinding> implements
             else
                 binding.swipeRefreshLayout.setRefreshing(false);
         });
-        viewModel.getNicknameIconData().observe(this, nicknameIcons -> {
-            binding.swipeRefreshLayout.setRefreshing(false);
-        });
+        viewModel.getNicknameIconData().observe(this, nicknameIcons -> binding.swipeRefreshLayout.setRefreshing(false));
     }
 
     @Override

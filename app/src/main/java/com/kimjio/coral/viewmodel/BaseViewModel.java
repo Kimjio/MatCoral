@@ -7,6 +7,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.kimjio.coral.api.NintendoException;
 import com.kimjio.coral.data.Wrapper;
 
 import io.reactivex.Observable;
@@ -64,7 +65,11 @@ public abstract class BaseViewModel extends AndroidViewModel {
         return new DisposableObserver<W>() {
             @Override
             public void onNext(W result) {
-                liveData.postValue(result.getData());
+                if (result.getData() == null) {
+                    onError(new NintendoException(result.getStatus(), result.getErrorMessage()));
+                } else {
+                    liveData.postValue(result.getData());
+                }
             }
 
             @Override

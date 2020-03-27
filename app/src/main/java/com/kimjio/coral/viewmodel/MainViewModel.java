@@ -17,6 +17,7 @@ import com.kimjio.coral.data.auth.request.TokenRequestWrapper;
 import com.kimjio.coral.data.auth.request.WebServiceTokenRequest;
 import com.kimjio.coral.data.auth.request.WebServiceTokenRequestWrapper;
 import com.kimjio.coral.manager.TokenManager;
+import com.kimjio.coral.recycler.OnItemClickListener;
 
 import java.util.List;
 
@@ -31,7 +32,7 @@ import static com.kimjio.coral.api.NintendoApi.getUserAgent;
 
 public class MainViewModel extends LoginViewModel {
     private MutableLiveData<List<GameWebService>> gameWebServicesLiveData = new MutableLiveData<>();
-    private MutableLiveData<WebServiceToken> webServiceTokenLiveData = new MutableLiveData<>();
+    private OnItemClickListener<WebServiceToken> tokenListener;
 
     public MainViewModel(@NonNull Application application) {
         super(application);
@@ -63,11 +64,11 @@ public class MainViewModel extends LoginViewModel {
                         gameWebServicesLiveData));
     }
 
-    public LiveData<WebServiceToken> getWebServiceToken() {
-        return webServiceTokenLiveData;
+    public void setTokenListener(OnItemClickListener<WebServiceToken> tokenListener) {
+        this.tokenListener = tokenListener;
     }
 
-    public void loadWebServiceToken(long id) {
+    public void loadWebServiceToken(long id, int position) {
         disposable.add(
                 nintendoApi.getWebServiceToken(getUserAgent(), NSO_VERSION,
                         getAuthorization(TokenManager.getInstance().getWebApiServerCredential().getAccessToken()),
@@ -84,7 +85,7 @@ public class MainViewModel extends LoginViewModel {
                             public void onNext(WebServiceTokenWrapper result) {
                                 WebServiceToken token = result.getData();
                                 token.setId(id);
-                                webServiceTokenLiveData.postValue(token);
+                                tokenListener.onItemClick(token, position);
                             }
 
                             @Override

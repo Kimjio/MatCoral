@@ -2,13 +2,13 @@ package com.kimjio.coral.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 
 import androidx.lifecycle.ViewModelProviders;
 
 import com.kimjio.coral.R;
 import com.kimjio.coral.data.GameWebService;
-import com.kimjio.coral.data.auth.flapg.FToken;
 import com.kimjio.coral.databinding.MainActivityBinding;
 import com.kimjio.coral.manager.SessionTokenManager;
 import com.kimjio.coral.manager.TokenManager;
@@ -24,7 +24,7 @@ public class MainActivity extends BaseActivity<MainActivityBinding> {
 
     private GameWebServiceAdapter adapter = new GameWebServiceAdapter((item, position) -> {
         if (item.getId() == GameWebService.ID_SPLAT2) {
-            viewModel.loadWebServiceToken(item.getId());
+            viewModel.loadWebServiceToken(item.getId(), position);
         }
     });
 
@@ -44,27 +44,27 @@ public class MainActivity extends BaseActivity<MainActivityBinding> {
         viewModel.getMe().observe(this, me ->
                 UserManager.getInstance().setAccountUser(me)
         );
-        viewModel.getFTokens().observe(this, fTokenMap -> {
-            FToken nso = fTokenMap.get(FToken.NSO);
-            FToken webApp = fTokenMap.get(FToken.WEB_APP);
-            TokenManager.getInstance()
-                    .setNsoToken(nso)
-                    .setWebAppToken(webApp);
-            viewModel.loadToken(Objects.requireNonNull(nso));
+        viewModel.getFTokenNSO().observe(this, fToken -> {
+            TokenManager.getInstance().setNsoToken(fToken);
+            viewModel.loadToken(Objects.requireNonNull(fToken));
+        });
+        viewModel.getFTokenAPP().observe(this, fToken -> {
+            TokenManager.getInstance().setWebAppToken(fToken);
         });
         viewModel.getToken().observe(this, response -> {
             TokenManager.getInstance()
                     .setWebApiServerCredential(response.getWebApiServerCredential());
             UserManager.getInstance().setUser(response.getUser());
+            viewModel.loadFTokenAPP(TokenManager.getInstance().getWebApiServerCredential().getAccessToken());
             viewModel.loadGameWebServices();
         });
         viewModel.getAccountToken().observe(this, token -> {
             viewModel.loadMe(token.getAccessToken());
-            viewModel.loadFTokens(token.getIdToken());
+            viewModel.loadFTokenNSO(token.getIdToken());
         });
         viewModel.getGameWebServices().observe(this, gameWebServices ->
                 adapter.setGameWebServices(gameWebServices));
-        viewModel.getWebServiceToken().observe(this, webServiceToken -> {
+        viewModel.setTokenListener((webServiceToken, position) -> {
             if (webServiceToken.getId() == GameWebService.ID_SPLAT2) {
                 startActivity(new Intent(MainActivity.this, SplatActivity.class).putExtra("web_service_token", webServiceToken));
             } else if (webServiceToken.getId() == GameWebService.ID_SMASH) {

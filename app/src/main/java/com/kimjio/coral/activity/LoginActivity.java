@@ -9,8 +9,8 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.kimjio.coral.R;
+import com.kimjio.coral.api.NintendoException;
 import com.kimjio.coral.data.auth.SessionToken;
-import com.kimjio.coral.data.auth.flapg.FToken;
 import com.kimjio.coral.databinding.LoginActivityBinding;
 import com.kimjio.coral.manager.SessionTokenManager;
 import com.kimjio.coral.manager.TokenManager;
@@ -22,6 +22,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.Locale;
 import java.util.Objects;
 
 import okhttp3.ResponseBody;
@@ -45,8 +46,8 @@ public class LoginActivity extends BaseActivity<LoginActivityBinding> {
             login(sessionToken);
         } else {
             binding.animation.playAnimation();
-            binding.buttonSignIn.setOnClickListener(v -> startActivity(new Intent(Intent.ACTION_VIEW, viewModel.getLoginUri())));
         }
+        binding.buttonSignIn.setOnClickListener(v -> startActivity(new Intent(Intent.ACTION_VIEW, viewModel.getLoginUri())));
 
         observeData();
     }
@@ -60,29 +61,26 @@ public class LoginActivity extends BaseActivity<LoginActivityBinding> {
         viewModel.getThrowable().observe(this, throwable -> {
             if (throwable instanceof HttpException) {
                 handleHTTPException((HttpException) throwable);
+            } else if (throwable instanceof NintendoException) {
+                handleNintendoException((NintendoException) throwable);
+            } else {
+                finish();
             }
         });
         viewModel.getAccountToken().observe(this, token -> {
             viewModel.loadMe(token.getAccessToken());
-            viewModel.loadFTokens(token.getIdToken());
+            viewModel.loadFTokenNSO(token.getIdToken());
         });
         viewModel.getMe().observe(this, me -> {
             UserManager.getInstance().setAccountUser(me);
             viewModel.login(me, null);
         });
-        viewModel.getFTokens().observe(this, fTokenMap -> {
-            FToken nso = fTokenMap.get(FToken.NSO);
-            FToken webApp = fTokenMap.get(FToken.WEB_APP);
-            TokenManager.getInstance()
-                    .setNsoToken(nso)
-                    .setWebAppToken(webApp);
-            viewModel.login(null, Objects.requireNonNull(nso));
+        viewModel.getFTokenNSO().observe(this, fToken -> {
+            TokenManager.getInstance().setNsoToken(fToken);
+            viewModel.login(null, Objects.requireNonNull(fToken));
         });
-        viewModel.getTokenResponse().observe(this, response -> {
-            TokenManager.getInstance()
-                    .setWebApiServerCredential(response.getWebApiServerCredential());
-            UserManager.getInstance()
-                    .setUser(response.getUser());
+        viewModel.getFTokenAPP().observe(this, fToken -> {
+            TokenManager.getInstance().setWebAppToken(fToken);
             Intent intent = new Intent(this, MainActivity.class);
             if (!UIManager.getInstance(this).welcomeDisplayed()) {
                 intent.setComponent(new ComponentName(this, WelcomeActivity.class));
@@ -90,6 +88,13 @@ public class LoginActivity extends BaseActivity<LoginActivityBinding> {
             startActivity(intent);
             overridePendingTransition(0, 0);
             finish();
+        });
+        viewModel.getTokenResponse().observe(this, response -> {
+            TokenManager.getInstance()
+                    .setWebApiServerCredential(response.getWebApiServerCredential());
+            UserManager.getInstance()
+                    .setUser(response.getUser());
+            viewModel.loadFTokenAPP(TokenManager.getInstance().getWebApiServerCredential().getAccessToken());
         });
     }
 
@@ -132,7 +137,7 @@ public class LoginActivity extends BaseActivity<LoginActivityBinding> {
                         error = getString(R.string.error_re_auth);
 
                     new MaterialAlertDialogBuilder(this)
-                            .setIcon(R.drawable.ic_error)
+                            .setIcon(R.drawable.ic_error_outline)
                             .setTitle(R.string.error_title)
                             .setMessage(error)
                             .setCancelable(false)
@@ -144,6 +149,48 @@ public class LoginActivity extends BaseActivity<LoginActivityBinding> {
                             .show();
                 } catch (JSONException | IOException ignore) {
                 }
+        }
+    }
+
+    private void handleNintendoException(NintendoException e) {
+        int status = e.getStatus();
+        String error = e.getMessage();
+        if (error != null) {
+            if (error.equals("Upgrade required."))
+                error = getString(R.string.error_upgrade);
+            if (error.equals("Invalid token."))
+                error = getString(R.string.error_token);
+            if (error.equals("Nintendo Switch Onlineアプリの更新によりログインできません")) {
+                error = getString(R.string.error_upgrade);
+                status = NintendoException.ERROR_UPGRADE;
+            }
+        }
+        if (status == NintendoException.ERROR_UPGRADE || status == NintendoException.ERROR_INVALID_TOKEN) {
+            new MaterialAlertDialogBuilder(this)
+                    .setIcon(R.drawable.ic_error_outline)
+                    .setTitle(R.string.error_title)
+                    .setMessage(error)
+                    .setCancelable(false)
+                    .setPositiveButton(android.R.string.ok, (dialogInterface, which) -> {
+                        if (e.getStatus() == NintendoException.ERROR_INVALID_TOKEN) {
+                            sessionTokenManager.clear();
+                            hideProgress();
+                            showLogin();
+                        } else {
+                            finish();
+                        }
+                    })
+                    .show();
+        } else {
+            new MaterialAlertDialogBuilder(this)
+                    .setIcon(R.drawable.ic_error_outline)
+                    .setTitle(R.string.error_title)
+                    .setMessage(String.format(Locale.getDefault(), "%d: %s", e.getStatus(), error))
+                    .setCancelable(false)
+                    .setPositiveButton(android.R.string.ok, (dialogInterface, which) -> {
+                        finish();
+                    })
+                    .show();
         }
     }
 

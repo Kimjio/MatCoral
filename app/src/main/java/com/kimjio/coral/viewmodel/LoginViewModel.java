@@ -28,7 +28,6 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
@@ -61,7 +60,8 @@ public class LoginViewModel extends BaseViewModel {
     private MutableLiveData<SessionToken> sessionTokenLiveData = new MutableLiveData<>();
     protected MutableLiveData<Token> tokenLiveData = new MutableLiveData<>();
     protected MutableLiveData<Me> meLiveData = new MutableLiveData<>();
-    protected MutableLiveData<Map<String, FToken>> fTokensLiveData = new MutableLiveData<>();
+    protected MutableLiveData<FToken> fTokenNSOLiveData = new MutableLiveData<>();
+    protected MutableLiveData<FToken> fTokenAPPLiveData = new MutableLiveData<>();
     protected MutableLiveData<TokenResponse> tokenResponseLiveData = new MutableLiveData<>();
 
     public LoginViewModel(@NonNull Application application) {
@@ -101,19 +101,35 @@ public class LoginViewModel extends BaseViewModel {
         disposable.add(getDisposable(accountApi.getMe(getUserAgent(), getAuthorization(accessToken)), meLiveData));
     }
 
-    public LiveData<Map<String, FToken>> getFTokens() {
-        return fTokensLiveData;
+    public LiveData<FToken> getFTokenNSO() {
+        return fTokenNSOLiveData;
     }
 
-    public void loadFTokens(String idToken) {
+
+    public LiveData<FToken> getFTokenAPP() {
+        return fTokenAPPLiveData;
+    }
+
+    public void loadFTokenNSO(String idToken) {
         String timestamp = Long.toString(System.currentTimeMillis() / 1000);
         disposable.add(
-                getDisposable(
-                        flapgApi.getFTokens(idToken, timestamp,
+                getWrapperDisposable(
+                        flapgApi.getFToken(idToken, timestamp,
                                 UUID.randomUUID().toString(),
                                 HashTool.getHash(idToken, timestamp),
-                                getRandom()),
-                        fTokensLiveData));
+                                FToken.NSO),
+                        fTokenNSOLiveData));
+    }
+
+    public void loadFTokenAPP(String idToken) {
+        String timestamp = Long.toString(System.currentTimeMillis() / 1000);
+        disposable.add(
+                getWrapperDisposable(
+                        flapgApi.getFToken(idToken, timestamp,
+                                UUID.randomUUID().toString(),
+                                HashTool.getHash(idToken, timestamp),
+                                FToken.APP),
+                        fTokenAPPLiveData));
     }
 
     public LiveData<TokenResponse> getTokenResponse() {

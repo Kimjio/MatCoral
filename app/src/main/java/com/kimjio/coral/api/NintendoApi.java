@@ -17,7 +17,7 @@ import retrofit2.http.POST;
 public interface NintendoApi {
     String NINTENDO = "https://api-lp1.znc.srv.nintendo.net/";
     String NSO_PACKAGE = "com.nintendo.znca";
-    String NSO_VERSION = "1.5.2";
+    String NSO_VERSION = "1.6.1";
 
     static String getUserAgent() {
         return NSO_PACKAGE + "/" + NSO_VERSION + "(Android/" + Build.VERSION.RELEASE + ")";
