@@ -20,7 +20,7 @@ public interface NintendoApi {
     String NSO_VERSION = "1.6.1";
 
     static String getUserAgent() {
-        return NSO_PACKAGE + "/" + NSO_VERSION + "(Android/" + Build.VERSION.RELEASE + ")";
+        return NSO_PACKAGE + "/" + NSO_VERSION + " (Android/" + Build.VERSION.RELEASE + ")";
     }
 
     @POST("v1/Account/Login")

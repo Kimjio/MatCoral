@@ -25,6 +25,9 @@ public class MainActivity extends BaseActivity<MainActivityBinding> {
     private GameWebServiceAdapter adapter = new GameWebServiceAdapter((item, position) -> {
         if (item.getId() == GameWebService.ID_SPLAT2) {
             viewModel.loadWebServiceToken(item.getId(), position);
+        } else if (item.getId() == GameWebService.ID_SMASH) {
+        } else if (item.getId() == GameWebService.ID_AC_NEW_HORIZON) {
+            viewModel.loadWebServiceToken(item.getId(), position);
         }
     });
 
