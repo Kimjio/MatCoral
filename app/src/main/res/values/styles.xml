@@ -25,10 +25,16 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDarkSplat</item>
         <item name="colorSecondary">@color/colorSecondarySplat</item>
         <item name="android:windowBackground">@color/windowBackgroundSplat</item>
-        <item name="actionBarStyle">@style/ThemeOverlay.App.Splat.ActionBar</item>
         <item name="fontFamily">@font/splatoon_2</item>
         <item name="android:includeFontPadding">false</item>
         <item name="android:statusBarColor">?colorSecondary</item>
+    </style>
+
+    <style name="Theme.App.Nook" parent="Base.Theme.App">
+        <item name="colorPrimary">@color/colorPrimaryNook</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDarkNook</item>
+        <item name="colorSecondary">@color/colorSecondaryNook</item>
+        <item name="fontFamily">@font/nintendo_p_seurat</item>
     </style>
 
     <style name="ThemeOverlay.App.Splat.ActionBar" parent="ThemeOverlay.MaterialComponents.ActionBar">

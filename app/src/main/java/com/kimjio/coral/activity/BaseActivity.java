@@ -1,6 +1,7 @@
 package com.kimjio.coral.activity;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
@@ -57,5 +58,15 @@ public abstract class BaseActivity<VB extends ViewDataBinding> extends AppCompat
         }
 
         return 0;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        boolean result = false;
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            result = true;
+        }
+        return result || super.onOptionsItemSelected(item);
     }
 }

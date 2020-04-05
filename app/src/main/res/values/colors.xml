@@ -8,6 +8,10 @@
     <color name="colorPrimaryDarkSplat">#007700</color>
     <color name="colorSecondarySplat">#cf0466</color>
 
+    <color name="colorPrimaryNook">#96F5F5</color>
+    <color name="colorPrimaryDarkNook">#62c2c2</color>
+    <color name="colorSecondaryNook">#82FF96</color>
+
     <color name="windowBackgroundSplat">#dfdfdf</color>
 
     <color name="intro_background_color">#FFF</color>

@@ -11,10 +11,10 @@ public class GameWebService extends BaseData implements Parcelable {
     public static final long ID_SPLAT2 = 0x14657000000000L;
     public static final long ID_AC_NEW_HORIZON = 0x119990320F0000L;
 
-    private String name; //Splatoon 2
-    private String imageUri; //384 x 384
-    private String uri; //SplatNet URL
-    private List<String> whiteList; //redirect 허용 목록 또는 허용 주소
+    private String name; //ex. Splatoon 2
+    private String imageUri; //size. 384 x 384
+    private String uri; //ex. SplatNet URL
+    private List<String> whiteList; //WebView redirect 허용 주소들(와일드카드 포함); 사용 안함
 
     public GameWebService() {
     }

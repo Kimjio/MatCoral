@@ -48,10 +48,12 @@ public final class TokenManager {
     }
 
     public TokenManager setWebApiServerCredential(WebApiServerCredential webApiServerCredential) {
-        this.webApiServerCredential = webApiServerCredential;
-        webApiTimestamp = System.currentTimeMillis() / 1000;
-        webApiExpiresIn = webApiServerCredential.getExpiresIn();
-        return this;
+        synchronized (TokenManager.class) {
+            this.webApiServerCredential = webApiServerCredential;
+            webApiTimestamp = System.currentTimeMillis() / 1000;
+            webApiExpiresIn = webApiServerCredential.getExpiresIn();
+            return this;
+        }
     }
 
     public boolean expired() {

@@ -1,7 +1,6 @@
 package com.kimjio.coral.splat.activity;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
@@ -62,10 +61,6 @@ public class SplatActivity extends BaseActivity<SplatActivityBinding> implements
         int index = -1;
         boolean result = false;
         switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                result = true;
-                break;
             case R.id.menu_home:
                 index = 0;
                 result = true;

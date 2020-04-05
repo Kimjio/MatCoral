@@ -2,17 +2,18 @@ package com.kimjio.coral.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 
 import androidx.lifecycle.ViewModelProviders;
 
 import com.kimjio.coral.R;
+import com.kimjio.coral.api.NintendoException;
 import com.kimjio.coral.data.GameWebService;
 import com.kimjio.coral.databinding.MainActivityBinding;
 import com.kimjio.coral.manager.SessionTokenManager;
 import com.kimjio.coral.manager.TokenManager;
 import com.kimjio.coral.manager.UserManager;
+import com.kimjio.coral.nook.activity.NookActivity;
 import com.kimjio.coral.recycler.GameWebServiceAdapter;
 import com.kimjio.coral.splat.activity.SplatActivity;
 import com.kimjio.coral.viewmodel.MainViewModel;
@@ -21,12 +22,16 @@ import java.util.Objects;
 
 public class MainActivity extends BaseActivity<MainActivityBinding> {
     private static MainViewModel viewModel;
+    private CauseBy causeBy;
+    private LastClicked lastClicked;
 
     private GameWebServiceAdapter adapter = new GameWebServiceAdapter((item, position) -> {
         if (item.getId() == GameWebService.ID_SPLAT2) {
+            lastClicked = new LastClicked(item.getId(), position);
             viewModel.loadWebServiceToken(item.getId(), position);
         } else if (item.getId() == GameWebService.ID_SMASH) {
         } else if (item.getId() == GameWebService.ID_AC_NEW_HORIZON) {
+            lastClicked = new LastClicked(item.getId(), position);
             viewModel.loadWebServiceToken(item.getId(), position);
         }
     });
@@ -44,6 +49,13 @@ public class MainActivity extends BaseActivity<MainActivityBinding> {
 
     @Override
     protected void observeData() {
+        viewModel.getThrowable().observe(this, throwable -> {
+            if (throwable instanceof NintendoException) {
+                handleNintendoException((NintendoException) throwable);
+            } else {
+                throwable.printStackTrace();
+            }
+        });
         viewModel.getMe().observe(this, me ->
                 UserManager.getInstance().setAccountUser(me)
         );
@@ -53,6 +65,13 @@ public class MainActivity extends BaseActivity<MainActivityBinding> {
         });
         viewModel.getFTokenAPP().observe(this, fToken -> {
             TokenManager.getInstance().setWebAppToken(fToken);
+            if (causeBy != null && causeBy == CauseBy.INVALIDATE) {
+                if (lastClicked != null) {
+                    viewModel.loadWebServiceToken(lastClicked.id, lastClicked.position);
+                }
+                causeBy = null;
+                lastClicked = null;
+            }
         });
         viewModel.getToken().observe(this, response -> {
             TokenManager.getInstance()
@@ -73,7 +92,7 @@ public class MainActivity extends BaseActivity<MainActivityBinding> {
             } else if (webServiceToken.getId() == GameWebService.ID_SMASH) {
 
             } else if (webServiceToken.getId() == GameWebService.ID_AC_NEW_HORIZON) {
-
+                startActivity(new Intent(MainActivity.this, NookActivity.class).putExtra("web_service_token", webServiceToken));
             }
         });
     }
@@ -93,13 +112,44 @@ public class MainActivity extends BaseActivity<MainActivityBinding> {
                 finish();
                 return;
             }
-            getToken();
+            getToken(CauseBy.EXPIRED);
         } else {
             viewModel.loadGameWebServices();
         }
     }
 
-    private void getToken() {
+    private void getToken(CauseBy causeBy) {
+        this.causeBy = causeBy;
         viewModel.loadAccountToken(SessionTokenManager.getInstance(this).loadSessionToken().getSessionToken());
+    }
+
+    private void handleNintendoException(NintendoException e) {
+        int status = e.getStatus();
+        if (status == NintendoException.ERROR_INVALID_TOKEN) {
+            getToken(CauseBy.INVALIDATE);
+        }
+    }
+
+    private enum CauseBy {
+        EXPIRED,
+        INVALIDATE
+    }
+
+    private static class LastClicked{
+        long id;
+        int position;
+
+        public LastClicked(long id, int position) {
+            this.id = id;
+            this.position = position;
+        }
+
+        public long getId() {
+            return id;
+        }
+
+        public int getPosition() {
+            return position;
+        }
     }
 }

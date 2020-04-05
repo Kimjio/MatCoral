@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.kimjio.coral.api.NintendoAccountApi;
+import com.kimjio.coral.api.NintendoException;
 import com.kimjio.coral.data.GameWebService;
 import com.kimjio.coral.data.auth.TokenResponse;
 import com.kimjio.coral.data.auth.WebServiceToken;
@@ -83,9 +84,13 @@ public class MainViewModel extends LoginViewModel {
                         .subscribeWith(new DisposableObserver<WebServiceTokenWrapper>() {
                             @Override
                             public void onNext(WebServiceTokenWrapper result) {
-                                WebServiceToken token = result.getData();
-                                token.setId(id);
-                                tokenListener.onItemClick(token, position);
+                                if (result.getData() == null) {
+                                    onError(new NintendoException(result.getStatus(), result.getErrorMessage()));
+                                } else {
+                                    WebServiceToken token = result.getData();
+                                    token.setId(id);
+                                    tokenListener.onItemClick(token, position);
+                                }
                             }
 
                             @Override

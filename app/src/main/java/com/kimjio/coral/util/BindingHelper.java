@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RawRes;
@@ -125,6 +126,11 @@ public final class BindingHelper {
     @BindingConversion
     public static int setVisibleByString(String text) {
         return TextUtils.isEmpty(text) ? View.GONE : View.VISIBLE;
+    }
+
+    @BindingAdapter("character")
+    public static void setCharacter(TextView view, char character) {
+        view.setText(Character.valueOf(character).toString());
     }
 
     /*@BindingConversion

@@ -35,7 +35,7 @@
                 android:drawableStart="@drawable/ic_account"
                 android:drawablePadding="8dp"
                 android:gravity="center"
-                android:text="@{nicknameIcon.nickname}"
+                android:text="@{records.player.nickname}"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                 android:textSize="24sp"
                 app:drawableStartHeight="48dp"

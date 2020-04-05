@@ -58,6 +58,11 @@
             android:name=".splat.activity.SplatActivity"
             android:label="@string/title_splat"
             android:theme="@style/Theme.App.Splat" />
+        <activity
+            android:name=".nook.activity.NookActivity"
+            android:label="@string/title_nook"
+            android:theme="@style/Theme.App.Nook"/>
+
     </application>
 
 </manifest>
