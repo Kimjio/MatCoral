@@ -20,13 +20,14 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import com.google.android.material.card.MaterialCardView;
 import com.kimjio.coral.R;
 import com.kimjio.coral.databinding.NookCharsItemBinding;
 import com.kimjio.coral.recycler.OnItemClickListener;
 import com.kimjio.coral.style.CustomTypefaceSpan;
 
 
-public class NintendoCharactersView extends RecyclerView {
+public class NintendoCharactersView extends MaterialCardView {
 
     public static final char[] chars = {'Ǻ', '★', '☆', '♠', '♡', '♢', '♣', '♤', '♥', '♦', '♧', '♪',
             '\uE0A0', '\uE0A1', '\uE0A2', '\uE0A3', '\uE0A4',
@@ -84,8 +85,11 @@ public class NintendoCharactersView extends RecyclerView {
     public NintendoCharactersView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
 
-        setAdapter(new Adapter());
-        setLayoutManager(new GridLayoutManager(getContext(), 5));
+        RecyclerView recyclerView = new RecyclerView(context);
+        recyclerView.setAdapter(new Adapter());
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 5));
+
+        addView(recyclerView);
     }
 
     public void setOnItemClickListener(OnItemClickListener<CharSequence> onItemClickListener) {

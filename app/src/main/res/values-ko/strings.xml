@@ -15,7 +15,8 @@
     <string name="error_title">오류</string>
     <string name="error_re_auth">다시 로그인해주세요.</string>
     <string name="error_commu">통신 오류가 발생했습니다.</string>
-    <string name="error_upgrade">Nintendo Switch Online가 업데이트 되었습니.\n업데이트를 기다려주세요.</string>
+    <string name="error_upgrade">Nintendo Switch Online가 업데이트 되었습니다.\n업데이트를 기다려주세요.</string>
     <string name="error_token">잘못된 인증 정보</string>
+    <string name="error_unknown">알 수 없는 오류가 발생했습니다.</string>
     <string name="menu_settings">설정</string>
 </resources>

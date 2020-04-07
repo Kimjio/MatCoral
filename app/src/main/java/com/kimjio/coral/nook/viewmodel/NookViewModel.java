@@ -61,6 +61,14 @@ public class NookViewModel extends BaseViewModel {
     }
 
     public void sendMessage(String authorization, String message) {
-        disposable.add(getDisposable(nookLinkApi.sendMessage(authorization, new Message(message)), messageResponseStatusLiveData));
+        disposable.add(getDisposable(nookLinkApi.sendMessage(authorization, new Message("keyboard", message, null)), messageResponseStatusLiveData));
+    }
+
+    public void sendMessageFriend(String authorization, String message, String userId) {
+        disposable.add(getDisposable(nookLinkApi.sendMessage(authorization, new Message("friend", message, userId)), messageResponseStatusLiveData));
+    }
+
+    public void sendMessageAll(String authorization, String message) {
+        disposable.add(getDisposable(nookLinkApi.sendMessage(authorization, new Message("all_friend", message, null)), messageResponseStatusLiveData));
     }
 }

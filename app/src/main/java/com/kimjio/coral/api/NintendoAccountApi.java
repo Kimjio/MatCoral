@@ -43,10 +43,6 @@ public interface NintendoAccountApi {
     @GET("https://api.accounts.nintendo.com/2.0.0/users/me")
     Observable<Me> getMe(@Header("User-Agent") String userAgent, @Header("Authorization") String authorization);
 
-    static String getAuthorization(String accessToken) {
-        return String.format("Bearer %s",accessToken);
-    }
-
     static String getUserAgent() {
         return "OnlineLounge/" + NSO_VERSION + " NASDKAPI Android";
     }

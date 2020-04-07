@@ -27,7 +27,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
-import static com.kimjio.coral.api.NintendoAccountApi.getAuthorization;
+import static com.kimjio.coral.api.NintendoApi.getAuthorization;
 import static com.kimjio.coral.api.NintendoApi.NSO_VERSION;
 import static com.kimjio.coral.api.NintendoApi.getUserAgent;
 
@@ -47,7 +47,7 @@ public class MainViewModel extends LoginViewModel {
         disposable.add(
                 getWrapperDisposable(
                         nintendoApi.getToken(getUserAgent(), NSO_VERSION,
-                                NintendoAccountApi.getAuthorization(TokenManager.getInstance().getWebApiServerCredential().getAccessToken()),
+                                getAuthorization(TokenManager.getInstance().getWebApiServerCredential().getAccessToken()),
                                 new TokenRequestWrapper(
                                         new TokenRequest(f.getToken(), f.getUUID(), Long.parseLong(f.getTimestamp()), f.getF()))),
                         tokenResponseLiveData));

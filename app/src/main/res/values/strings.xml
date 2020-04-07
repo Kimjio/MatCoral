@@ -18,5 +18,6 @@
     <string name="error_commu">A communication error has occurred.</string>
     <string name="error_upgrade">Nintendo Switch Online has been update.\nPlease wait for updates.</string>
     <string name="error_token">Invalid Auth Info</string>
+    <string name="error_unknown">A unknown error occurred.</string>
     <string name="menu_settings">Settings</string>
 </resources>

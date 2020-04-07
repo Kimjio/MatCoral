@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.kimjio.coral.R;
+import com.kimjio.coral.api.FlapgApi;
 import com.kimjio.coral.api.NintendoException;
 import com.kimjio.coral.data.auth.SessionToken;
 import com.kimjio.coral.databinding.LoginActivityBinding;
@@ -22,6 +23,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -149,6 +151,17 @@ public class LoginActivity extends BaseActivity<LoginActivityBinding> {
                             .show();
                 } catch (JSONException | IOException ignore) {
                 }
+
+            if (response.raw().request().url().toString().contains(FlapgApi.FLAPG) && e.code() == HttpURLConnection.HTTP_NOT_FOUND)
+                new MaterialAlertDialogBuilder(this)
+                        .setIcon(R.drawable.ic_error_outline)
+                        .setTitle(R.string.error_title)
+                        .setMessage(R.string.error_unknown)
+                        .setCancelable(false)
+                        .setPositiveButton(android.R.string.ok, (dialogInterface, which) -> {
+                            finish();
+                        })
+                        .show();
         }
     }
 

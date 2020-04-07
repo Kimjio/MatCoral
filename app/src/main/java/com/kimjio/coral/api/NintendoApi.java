@@ -23,6 +23,10 @@ public interface NintendoApi {
         return NSO_PACKAGE + "/" + NSO_VERSION + " (Android/" + Build.VERSION.RELEASE + ")";
     }
 
+    static String getAuthorization(String accessToken) {
+        return String.format("Bearer %s",accessToken);
+    }
+
     @POST("v1/Account/Login")
     @Headers({
             "Content-Type: application/json",

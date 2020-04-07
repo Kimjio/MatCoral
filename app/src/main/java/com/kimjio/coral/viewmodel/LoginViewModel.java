@@ -38,7 +38,7 @@ import static com.kimjio.coral.api.NintendoAccountApi.NINTENDO_ACCOUNTS;
 import static com.kimjio.coral.api.NintendoAccountApi.RESPONSE_TYPE;
 import static com.kimjio.coral.api.NintendoAccountApi.SCOPE_STR;
 import static com.kimjio.coral.api.NintendoAccountApi.TOKEN_GRANT_TYPE;
-import static com.kimjio.coral.api.NintendoAccountApi.getAuthorization;
+import static com.kimjio.coral.api.NintendoApi.getAuthorization;
 import static com.kimjio.coral.api.NintendoAccountApi.getUserAgent;
 import static com.kimjio.coral.api.NintendoApi.NINTENDO;
 import static com.kimjio.coral.api.NintendoApi.NSO_VERSION;
