@@ -1,30 +1,24 @@
 package com.kimjio.coral.nook.widget;
 
 import android.content.Context;
-import android.graphics.Typeface;
-import android.text.SpannableStringBuilder;
-import android.text.Spanned;
-import android.text.style.TextAppearanceSpan;
-import android.text.style.TypefaceSpan;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.AppCompatTextView;
-import androidx.core.content.res.ResourcesCompat;
+import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.core.view.GravityCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.google.android.material.card.MaterialCardView;
 import com.kimjio.coral.R;
 import com.kimjio.coral.databinding.NookCharsItemBinding;
 import com.kimjio.coral.recycler.OnItemClickListener;
-import com.kimjio.coral.style.CustomTypefaceSpan;
+import com.kimjio.coral.util.ViewUtils;
 
 
 public class NintendoCharactersView extends MaterialCardView {
@@ -74,6 +68,8 @@ public class NintendoCharactersView extends MaterialCardView {
 
     private OnItemClickListener<CharSequence> onItemClickListener;
 
+    private OnClickListener onCloseClickListener;
+
     public NintendoCharactersView(Context context) {
         this(context, null);
     }
@@ -85,15 +81,40 @@ public class NintendoCharactersView extends MaterialCardView {
     public NintendoCharactersView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
 
-        RecyclerView recyclerView = new RecyclerView(context);
+        LinearLayout linearLayout = new LinearLayout(context, attrs, defStyle);
+        linearLayout.setOrientation(LinearLayout.VERTICAL);
+
+        AppCompatImageButton imageButton = new AppCompatImageButton(context, attrs, defStyle);
+        imageButton.setImageResource(R.drawable.ic_close);
+        int closeSize = ViewUtils.dpToPx(context, 32);
+        LinearLayout.LayoutParams paramsImage = new LinearLayout.LayoutParams(closeSize, closeSize);
+        int paddingImage = ViewUtils.dpToPx(context, 4);
+        imageButton.setPaddingRelative(paddingImage, paddingImage, paddingImage, paddingImage);
+        paramsImage.gravity = GravityCompat.END;
+        imageButton.setLayoutParams(paramsImage);
+        imageButton.setOnClickListener(v -> {
+            if (onCloseClickListener != null)
+                onCloseClickListener.onClick(v);
+        });
+        linearLayout.addView(imageButton);
+
+        RecyclerView recyclerView = new RecyclerView(context, attrs, defStyle);
         recyclerView.setAdapter(new Adapter());
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 5));
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        recyclerView.setLayoutParams(params);
+        linearLayout.addView(recyclerView);
 
-        addView(recyclerView);
+        linearLayout.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        addView(linearLayout);
     }
 
     public void setOnItemClickListener(OnItemClickListener<CharSequence> onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
+    }
+
+    public void setOnCloseClickListener(OnClickListener onCloseClickListener) {
+        this.onCloseClickListener = onCloseClickListener;
     }
 
     private class Adapter extends RecyclerView.Adapter<ViewHolder> {
@@ -122,6 +143,7 @@ public class NintendoCharactersView extends MaterialCardView {
 
     private static class ViewHolder extends RecyclerView.ViewHolder {
         NookCharsItemBinding binding;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             binding = DataBindingUtil.bind(itemView);

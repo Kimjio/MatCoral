@@ -29,11 +29,15 @@ public class NookActivity extends BaseActivity<NookActivityBinding> {
 
     private static final String TAG = "NookActivity";
 
+    // 1001 offline
+    // 3002 empty
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setSupportActionBar(binding.appBar);
         requireSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        requireSupportActionBar().setDisplayShowTitleEnabled(false);
         requireSupportActionBar().setLogo(R.drawable.logo_nooklink);
 
         viewModel = ViewModelProviders.of(this).get(NookViewModel.class);
@@ -50,6 +54,8 @@ public class NookActivity extends BaseActivity<NookActivityBinding> {
             popupWindow.showAsDropDown(v);
             nintendoCharactersView.setOnItemClickListener((charSeq, position) -> {
                 binding.editText.append(charSeq);
+            });
+            nintendoCharactersView.setOnCloseClickListener(view -> {
                 popupWindow.dismiss();
             });
         });
