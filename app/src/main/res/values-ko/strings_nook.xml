@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="title_nook">너굴포털</string>
+    <string name="select_user">플레이어를 선택해주세요</string>
 </resources>

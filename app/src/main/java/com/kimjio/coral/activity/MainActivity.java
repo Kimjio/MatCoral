@@ -65,7 +65,7 @@ public class MainActivity extends BaseActivity<MainActivityBinding> {
         });
         viewModel.getFTokenAPP().observe(this, fToken -> {
             TokenManager.getInstance().setWebAppToken(fToken);
-            if (causeBy != null && causeBy == CauseBy.INVALIDATE) {
+            if (causeBy != null && (causeBy == CauseBy.INVALIDATE || causeBy == CauseBy.EXPIRED)) {
                 if (lastClicked != null) {
                     viewModel.loadWebServiceToken(lastClicked.id, lastClicked.position);
                 }
@@ -125,8 +125,13 @@ public class MainActivity extends BaseActivity<MainActivityBinding> {
 
     private void handleNintendoException(NintendoException e) {
         int status = e.getStatus();
-        if (status == NintendoException.ERROR_INVALID_TOKEN) {
-            getToken(CauseBy.INVALIDATE);
+        switch (status) {
+            case NintendoException.ERROR_INVALID_TOKEN:
+                getToken(CauseBy.INVALIDATE);
+                break;
+            case NintendoException.ERROR_EXPIRED:
+                getToken(CauseBy.EXPIRED);
+                break;
         }
     }
 

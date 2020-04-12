@@ -39,7 +39,7 @@ public class SplatActivity extends BaseActivity<SplatActivityBinding> implements
 
         binding.swipeRefreshLayout.setOnRefreshListener(this);
         binding.swipeRefreshLayout.setRefreshing(true);
-        getData(false);
+        // getData(false);
     }
 
     @Override

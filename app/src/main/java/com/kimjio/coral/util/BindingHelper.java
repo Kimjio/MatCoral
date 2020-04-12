@@ -50,6 +50,14 @@ public final class BindingHelper {
                 .into(view);
     }
 
+    @BindingAdapter("srcCircleUri")
+    public static void setCircleDrawable(ImageView view, Uri uri) {
+        Glide.with(view)
+                .load(uri)
+                .transform(new CircleCrop())
+                .into(view);
+    }
+
     @BindingAdapter("drawableTopUri")
     public static void setDrawableTopUri(DrawableSizeTextView view, Uri uri) {
         Glide.with(view)
