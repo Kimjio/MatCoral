@@ -16,7 +16,9 @@
 
         <ImageView
             android:id="@+id/image"
-            srcCircleUri="@{user.imageUri}"
+            srcCircleUri="@{user.reported ? null : user.imageUri}"
+            srcReported="@{@drawable/ic_reported_user}"
+            reported="@{user.reported}"
             android:layout_width="56dp"
             android:layout_height="56dp"
             android:layout_marginStart="8dp"
@@ -26,32 +28,34 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/name"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-            android:text="@{user.name}"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-            app:layout_constraintBottom_toTopOf="@+id/land_name"
-            app:layout_constraintStart_toEndOf="@+id/image"
-            app:layout_constraintTop_toTopOf="@+id/image"
-            tools:text="지오" />
-
-        <TextView
-            android:id="@+id/land_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:layout_marginBottom="8dp"
-            android:text="@{user.land.name + @stringArray/land_suffix[user.land.displayId]}"
-            android:visibility="@{user.land.name}"
-            app:layout_constraintBottom_toBottomOf="@+id/image"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/image"
-            app:layout_constraintTop_toBottomOf="@+id/name"
-            tools:text="호라이즌섬" />
+            app:layout_constraintTop_toTopOf="parent">
 
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{user.reported ? @string/reported_user : user.name}"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                tools:text="지오" />
+
+            <TextView
+                android:id="@+id/land_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{user.land.name + @stringArray/land_suffix[user.land.displayId]}"
+                android:visibility="@{!(user.land.name == null || user.reported)}"
+                tools:text="호라이즌섬" />
+
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

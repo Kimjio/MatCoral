@@ -4,15 +4,18 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.DrawableRes;
 import androidx.annotation.Nullable;
 import androidx.annotation.RawRes;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.BindingAdapter;
 import androidx.databinding.BindingConversion;
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
@@ -50,11 +53,24 @@ public final class BindingHelper {
                 .into(view);
     }
 
-    @BindingAdapter("srcCircleUri")
-    public static void setCircleDrawable(ImageView view, Uri uri) {
+    @BindingAdapter({"srcCircleUri", "srcReported", "reported"})
+    public static void setCircleDrawable(ImageView view, Uri srcCircleUri, Drawable srcReported, boolean reported) {
+        if (srcCircleUri == null) {
+            if (reported && srcReported != null) {
+                view.setImageDrawable(srcReported);
+            }
+            return;
+        }
+        TypedValue value = new TypedValue();
+        view.getContext().getTheme().resolveAttribute (R.attr.colorSecondary, value, true);
+        CircularProgressDrawable drawable = new CircularProgressDrawable(view.getContext());
+        drawable.setColorSchemeColors(value.data);
+        drawable.setStyle(CircularProgressDrawable.DEFAULT);
+        drawable.start();
         Glide.with(view)
-                .load(uri)
+                .load(srcCircleUri)
                 .transform(new CircleCrop())
+                .placeholder(drawable)
                 .into(view);
     }
 
@@ -134,6 +150,11 @@ public final class BindingHelper {
     @BindingConversion
     public static int setVisibleByString(String text) {
         return TextUtils.isEmpty(text) ? View.GONE : View.VISIBLE;
+    }
+
+    @BindingConversion
+    public static int setVisibleByBoolean(boolean bool) {
+        return bool ? View.VISIBLE : View.GONE;
     }
 
     @BindingAdapter("character")
