@@ -17,7 +17,7 @@ import com.kimjio.coral.splat.viewpager2.SplatFragmentAdapter;
 import java.util.Objects;
 
 public class SplatActivity extends BaseActivity<SplatActivityBinding> implements SwipeRefreshLayout.OnRefreshListener {
-    private SplatViewModel viewModel;
+    protected SplatViewModel viewModel;
     private SplatFragmentAdapter adapter;
 
     @Override

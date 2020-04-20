@@ -11,6 +11,8 @@
     <color name="colorPrimaryNook">#96F5F5</color>
     <color name="colorPrimaryDarkNook">#62c2c2</color>
     <color name="colorSecondaryNook">#82FF96</color>
+    <color name="colorSecondaryDarkNook">#4BCB67</color>
+    <color name="colorErrorNook">#FF8080</color>
 
     <color name="windowBackgroundSplat">#dfdfdf</color>
 

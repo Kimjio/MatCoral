@@ -12,6 +12,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 
 import com.kimjio.coral.R;
+import com.kimjio.coral.viewmodel.BaseViewModel;
 
 import java.lang.reflect.ParameterizedType;
 import java.util.Objects;
@@ -19,6 +20,7 @@ import java.util.Objects;
 import dagger.android.support.DaggerAppCompatActivity;
 
 public abstract class BaseActivity<VB extends ViewDataBinding> extends AppCompatActivity {
+    protected BaseViewModel viewModel;
     protected VB binding;
 
     @Override

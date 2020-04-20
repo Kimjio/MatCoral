@@ -3,4 +3,6 @@
     <string name="title_nook">NookLink</string>
     <string name="select_user">Which player would you like to play as?</string>
     <string name="reported_user">Reported user</string>
+    <string name="error_offline">Offline</string>
+    <string name="error_empty">Cannot empty</string>
 </resources>

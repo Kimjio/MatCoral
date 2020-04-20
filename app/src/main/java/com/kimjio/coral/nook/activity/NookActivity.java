@@ -1,7 +1,14 @@
 package com.kimjio.coral.nook.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.Annotation;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.SpannedString;
+import android.text.TextUtils;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,18 +22,30 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 import com.kimjio.coral.R;
 import com.kimjio.coral.activity.BaseActivity;
 import com.kimjio.coral.data.auth.WebServiceToken;
 import com.kimjio.coral.data.nook.User;
 import com.kimjio.coral.databinding.NookActivityBinding;
 import com.kimjio.coral.databinding.NookUserItemBinding;
+import com.kimjio.coral.nook.util.MyDesignParser;
 import com.kimjio.coral.nook.viewmodel.NookViewModel;
 import com.kimjio.coral.nook.widget.NintendoCharactersView;
 import com.kimjio.coral.util.ViewUtils;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
+
+import okhttp3.ResponseBody;
+import retrofit2.HttpException;
+import retrofit2.Response;
 
 import static com.kimjio.coral.api.NintendoApi.getAuthorization;
 
@@ -44,8 +63,6 @@ public class NookActivity extends BaseActivity<NookActivityBinding> {
         super.onCreate(savedInstanceState);
         setSupportActionBar(binding.appBar);
         requireSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        requireSupportActionBar().setDisplayShowTitleEnabled(false);
-        requireSupportActionBar().setLogo(R.drawable.logo_nooklink);
 
         viewModel = ViewModelProviders.of(this).get(NookViewModel.class);
         observeData();
@@ -60,7 +77,7 @@ public class NookActivity extends BaseActivity<NookActivityBinding> {
             popupWindow.setElevation(8);
             popupWindow.showAsDropDown(v);
             nintendoCharactersView.setOnItemClickListener((charSeq, position) -> {
-                binding.editText.append(charSeq);
+                binding.editText.getText().insert(binding.editText.getSelectionStart(), charSeq);
             });
             nintendoCharactersView.setOnCloseClickListener(view -> {
                 popupWindow.dismiss();
@@ -68,13 +85,26 @@ public class NookActivity extends BaseActivity<NookActivityBinding> {
         });
 
         binding.buttonSend.setOnClickListener(v -> {
-            viewModel.sendMessage(getAuthorization(token), binding.editText.getText().toString());
+            if (TextUtils.isEmpty(binding.editText.getText())) {
+                binding.textInputLayout.setError(getText(R.string.error_empty));
+            } else {
+                binding.textInputLayout.setError(null);
+                viewModel.sendMessage(getAuthorization(token), binding.editText.getText().toString());
+            }
+        });
+
+        binding.button2.setOnClickListener(v -> {
+            new IntentIntegrator(this).initiateScan();
         });
     }
 
     @Override
     protected void observeData() {
-        viewModel.getThrowable().observe(this, Throwable::printStackTrace);
+        viewModel.getThrowable().observe(this, throwable -> {
+            if (throwable instanceof HttpException) {
+                handleHTTPException((HttpException) throwable);
+            }
+        });
         viewModel.getCookieResponseData().observe(this, response -> viewModel.loadUsers());
         viewModel.getUsers().observe(this, users -> {
             new AlertDialog.Builder(this)
@@ -103,6 +133,64 @@ public class NookActivity extends BaseActivity<NookActivityBinding> {
     private void getSessionCookie(@NonNull String accessToken) {
         if (viewModel.getCookieResponseData().getValue() == null)
             viewModel.loadCookieResponseData(accessToken);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if (result != null) {
+            if (result.getContents() == null) {
+                Log.d(TAG, "onActivityResult: Canceled");
+            } else {
+                if (result.getRawBytes() != null)
+                    Log.d(TAG, "onActivityResult: " + MyDesignParser.analyzeQrBinary(result.getRawBytes()));
+                else
+                    Log.w(TAG, "onActivityResult: Not correctly read");
+            }
+        }
+    }
+
+    private void handleHTTPException(HttpException e) {
+        Response<?> response = e.response();
+        if (response != null) {
+            ResponseBody body = response.errorBody();
+            if (body != null)
+                try {
+                    JSONObject object = new JSONObject(body.string());
+                    CharSequence error = object.getString("code");
+                    if (error.equals("1001"))
+                        error = getText(R.string.error_offline);
+
+                    if (error instanceof SpannedString) {
+                        SpannedString spannedString = (SpannedString) error;
+                        Annotation[] annotations = spannedString.getSpans(0, spannedString.length(), Annotation.class);
+                        SpannableString spannableString = new SpannableString(spannedString);
+                        for (Annotation annotation : annotations) {
+                            if (annotation.getKey().equals("name")) {
+                                String fontName = annotation.getValue();
+                                if (fontName.equals("color")) {
+                                    spannableString.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorSecondaryDarkNook)),
+                                            spannedString.getSpanStart(annotation),
+                                            spannedString.getSpanEnd(annotation),
+                                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                                }
+                            }
+                        }
+                        error = spannableString;
+                    }
+
+                    new MaterialAlertDialogBuilder(this)
+                            .setIcon(R.drawable.ic_error_outline)
+                            .setTitle(R.string.error_title)
+                            .setMessage(error)
+                            .setCancelable(false)
+                            .setPositiveButton(android.R.string.ok, (dialogInterface, which) -> {
+                            })
+                            .show();
+                } catch (JSONException | IOException ignore) {
+                }
+        }
     }
 
     private static class UserListAdapter extends ArrayAdapter<User> {

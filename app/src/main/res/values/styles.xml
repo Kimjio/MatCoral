@@ -34,6 +34,7 @@
         <item name="colorPrimary">@color/colorPrimaryNook</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDarkNook</item>
         <item name="colorSecondary">@color/colorSecondaryNook</item>
+        <item name="colorError">@color/colorErrorNook</item>
         <item name="fontFamily">@font/nintendo_p_seurat</item>
     </style>
 

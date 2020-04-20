@@ -1,6 +1,7 @@
 package com.kimjio.coral.viewmodel;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -9,6 +10,10 @@ import androidx.lifecycle.ViewModel;
 
 import com.kimjio.coral.api.NintendoException;
 import com.kimjio.coral.data.Wrapper;
+
+import java.net.ConnectException;
+import java.net.SocketTimeoutException;
+import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -32,7 +37,12 @@ public abstract class BaseViewModel extends AndroidViewModel {
     protected <T, D extends MutableLiveData<T>> Disposable getDisposable(Observable<T> observable, D liveData) {
         return observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .retryWhen(throwableObservable -> throwableObservable.flatMap(Observable::error))
+                .retryWhen(throwableObservable -> throwableObservable.take(2).flatMap(throwable -> {
+                    if (throwable instanceof SocketTimeoutException || throwable instanceof ConnectException) {
+                        return Observable.timer(1, TimeUnit.SECONDS);
+                    }
+                    return Observable.error(throwable);
+                }))
                 .subscribeWith(getDisposableObserver(liveData));
     }
 
@@ -57,7 +67,12 @@ public abstract class BaseViewModel extends AndroidViewModel {
     protected <T, W extends Wrapper<T>, D extends MutableLiveData<T>> Disposable getWrapperDisposable(Observable<W> observable, D liveData) {
         return observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .retryWhen(throwableObservable -> throwableObservable.flatMap(Observable::error))
+                .retryWhen(throwableObservable -> throwableObservable.take(2).flatMap(throwable -> {
+                    if (throwable instanceof SocketTimeoutException || throwable instanceof ConnectException) {
+                        return Observable.timer(1, TimeUnit.SECONDS);
+                    }
+                    return Observable.error(throwable);
+                }))
                 .subscribeWith(getWrapperDisposableObserver(liveData));
     }
 
@@ -74,6 +89,7 @@ public abstract class BaseViewModel extends AndroidViewModel {
 
             @Override
             public void onError(Throwable e) {
+
                 throwableLiveData.setValue(e);
             }
 
