@@ -10,12 +10,12 @@
 
     <application
         android:allowBackup="true"
+        android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.App"
-        android:hardwareAccelerated="true">
+        android:theme="@style/Theme.App">
         <activity
             android:name=".activity.SplashActivity"
             android:theme="@style/Theme.App.Splash">
@@ -66,6 +66,10 @@
         <activity
             android:name=".nook.activity.NookActivity"
             android:label="@string/title_nook"
+            android:theme="@style/Theme.App.Nook" />
+
+        <activity
+            android:name=".nook.activity.MyDesignCaptureActivity"
             android:theme="@style/Theme.App.Nook"/>
 
     </application>

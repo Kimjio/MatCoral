@@ -2,7 +2,6 @@ package com.kimjio.coral.nook.util;
 
 import android.text.TextUtils;
 import android.util.Base64;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -111,7 +110,7 @@ public final class MyDesignParser {
                     throw new IllegalArgumentException("invalid sheet index");
             }
         }
-        return null;
+        throw new IllegalArgumentException("invalid as my design");
     }
 
     private static int extractConsecutiveId(byte[] buffer) {

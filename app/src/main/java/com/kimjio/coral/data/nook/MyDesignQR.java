@@ -126,6 +126,7 @@ public class MyDesignQR {
 
     private Type getDesignTypeByUsage() {
         switch (usage) {
+            case -1:
             case 0:
             case 1:
             case 2:

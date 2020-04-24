@@ -2,6 +2,7 @@ package com.kimjio.coral.nook.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.Annotation;
 import android.text.Spannable;
@@ -28,10 +29,12 @@ import com.google.zxing.integration.android.IntentResult;
 import com.kimjio.coral.R;
 import com.kimjio.coral.activity.BaseActivity;
 import com.kimjio.coral.data.auth.WebServiceToken;
+import com.kimjio.coral.data.nook.MyDesignQR;
 import com.kimjio.coral.data.nook.User;
 import com.kimjio.coral.databinding.NookActivityBinding;
 import com.kimjio.coral.databinding.NookUserItemBinding;
 import com.kimjio.coral.nook.util.MyDesignParser;
+import com.kimjio.coral.nook.util.MyDesignRenderer;
 import com.kimjio.coral.nook.viewmodel.NookViewModel;
 import com.kimjio.coral.nook.widget.NintendoCharactersView;
 import com.kimjio.coral.util.ViewUtils;
@@ -57,6 +60,7 @@ public class NookActivity extends BaseActivity<NookActivityBinding> {
 
     // 1001 offline
     // 3002 empty
+    // 4002 expired
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,7 +98,11 @@ public class NookActivity extends BaseActivity<NookActivityBinding> {
         });
 
         binding.button2.setOnClickListener(v -> {
-            new IntentIntegrator(this).initiateScan();
+            new IntentIntegrator(this)
+                    .setDesiredBarcodeFormats(IntentIntegrator.QR_CODE)
+                    .setOrientationLocked(false)
+                    .setCaptureActivity(MyDesignCaptureActivity.class)
+                    .initiateScan();
         });
     }
 
@@ -138,17 +146,31 @@ public class NookActivity extends BaseActivity<NookActivityBinding> {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        if (result != null) {
-            if (result.getContents() == null) {
-                Log.d(TAG, "onActivityResult: Canceled");
-            } else {
-                if (result.getRawBytes() != null)
-                    Log.d(TAG, "onActivityResult: " + MyDesignParser.analyzeQrBinary(result.getRawBytes()));
-                else
-                    Log.w(TAG, "onActivityResult: Not correctly read");
+        if (data != null) {
+            IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+            if (result != null) {
+                boolean multiple = data.getBooleanExtra(MyDesignCaptureActivity.RESULT_MULTIPLE, false);
+                byte[] rawBytes2 = data.getByteArrayExtra(MyDesignCaptureActivity.RESULT_BYTES_BACK);
+                byte[] rawBytes3 = data.getByteArrayExtra(MyDesignCaptureActivity.RESULT_BYTES_LEFT);
+                byte[] rawBytes4 = data.getByteArrayExtra(MyDesignCaptureActivity.RESULT_BYTES_RIGHT);
+                if (result.getContents() == null) {
+                    Log.d(TAG, "onActivityResult: Canceled");
+                } else {
+                    if (result.getRawBytes() != null) {
+                        MyDesignQR qr = MyDesignParser.analyzeQrBinary(result.getRawBytes());
+                        Bitmap bitmap = null;
+                        if (qr.getDesignType() == MyDesignQR.Type.NORMAL) {
+                            bitmap = MyDesignRenderer.renderNormalToCanvas(qr.getPaletteColors(), qr.getColorData());
+                        } else if (qr.getDesignType() == MyDesignQR.Type.PRO && multiple) {
+                            bitmap = MyDesignRenderer.renderProToCanvas(qr.getPaletteColors(), new byte[][]{result.getRawBytes(), rawBytes2, rawBytes3, rawBytes4}, qr.getUsage());
+                        }
+                        binding.imageView2.setImageBitmap(bitmap);
+                    } else
+                        Log.w(TAG, "onActivityResult: Not correctly read");
+                }
             }
         }
+
     }
 
     private void handleHTTPException(HttpException e) {
