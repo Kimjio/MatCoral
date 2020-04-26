@@ -36,6 +36,8 @@
         <item name="colorSecondary">@color/colorSecondaryNook</item>
         <item name="colorError">@color/colorErrorNook</item>
         <item name="fontFamily">@font/nintendo_p_seurat</item>
+        <item name="backgroundColor">#AAA</item>
+        <item name="foregroundColor">#CCC</item>
     </style>
 
     <style name="ThemeOverlay.App.Splat.ActionBar" parent="ThemeOverlay.MaterialComponents.ActionBar">

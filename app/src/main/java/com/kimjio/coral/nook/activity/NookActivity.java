@@ -150,9 +150,9 @@ public class NookActivity extends BaseActivity<NookActivityBinding> {
             IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
             if (result != null) {
                 boolean multiple = data.getBooleanExtra(MyDesignCaptureActivity.RESULT_MULTIPLE, false);
-                byte[] rawBytes2 = data.getByteArrayExtra(MyDesignCaptureActivity.RESULT_BYTES_BACK);
-                byte[] rawBytes3 = data.getByteArrayExtra(MyDesignCaptureActivity.RESULT_BYTES_LEFT);
-                byte[] rawBytes4 = data.getByteArrayExtra(MyDesignCaptureActivity.RESULT_BYTES_RIGHT);
+                byte[] rawBytes2 = data.getByteArrayExtra(MyDesignCaptureActivity.RESULT_COLOR_DATA_BACK);
+                byte[] rawBytes3 = data.getByteArrayExtra(MyDesignCaptureActivity.RESULT_COLOR_DATA_LEFT);
+                byte[] rawBytes4 = data.getByteArrayExtra(MyDesignCaptureActivity.RESULT_COLOR_DATA_RIGHT);
                 if (result.getContents() == null) {
                     Log.d(TAG, "onActivityResult: Canceled");
                 } else {
@@ -162,7 +162,7 @@ public class NookActivity extends BaseActivity<NookActivityBinding> {
                         if (qr.getDesignType() == MyDesignQR.Type.NORMAL) {
                             bitmap = MyDesignRenderer.renderNormalToCanvas(qr.getPaletteColors(), qr.getColorData());
                         } else if (qr.getDesignType() == MyDesignQR.Type.PRO && multiple) {
-                            bitmap = MyDesignRenderer.renderProToCanvas(qr.getPaletteColors(), new byte[][]{result.getRawBytes(), rawBytes2, rawBytes3, rawBytes4}, qr.getUsage());
+                            bitmap = MyDesignRenderer.renderProToCanvas(qr.getPaletteColors(), new byte[][]{qr.getColorData(), rawBytes2, rawBytes3, rawBytes4}, qr.getUsage());
                         }
                         binding.imageView2.setImageBitmap(bitmap);
                     } else

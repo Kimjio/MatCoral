@@ -2,6 +2,7 @@ package com.kimjio.coral.nook.util;
 
 import android.text.TextUtils;
 import android.util.Base64;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -15,10 +16,14 @@ import java.util.List;
 
 public final class MyDesignParser {
 
+    private static final String TAG = "MyDesignParser";
+
     public static MyDesignQR analyzeQrBinary(@NonNull byte[] buffer) {
         final String encodeText = Base64.encodeToString(buffer, Base64.DEFAULT);
         final MyDesignQR.Type type = detectMyDesignType(buffer);
         final byte[] bytes = newByteArr(buffer, type);
+
+        Log.d(TAG, "analyzeQrBinary: " + buffer.length);
 
         if (type == MyDesignQR.Type.NORMAL) {
             return new MyDesignQR(

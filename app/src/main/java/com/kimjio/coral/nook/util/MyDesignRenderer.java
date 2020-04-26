@@ -108,6 +108,7 @@ public final class MyDesignRenderer {
         Canvas canvas = new Canvas(bitmap);
 
         final int squareSize = CANVAS_SIZE / 64;
+        final int size = (int) Math.round(squareSize + 0.5);
 
         byte[] colorData = Bytes.concat(colorDataGroup[0], colorDataGroup[1], colorDataGroup[2], colorDataGroup[3]);
         byte[] squareData = new byte[colorData.length * 2];
@@ -141,7 +142,6 @@ public final class MyDesignRenderer {
                 Rect rect = new Rect();
                 int x = Math.round(j * squareSize - 0.5f);
                 int y = Math.round(i * squareSize - 0.5f);
-                int size = Math.round(squareSize + 0.5f);
                 rect.left = x;
                 rect.top = y;
                 rect.right = x + size;
@@ -174,7 +174,6 @@ public final class MyDesignRenderer {
                 Rect rect = new Rect();
                 int x = Math.round((j + 32) * squareSize - 0.5f);
                 int y = Math.round(i * squareSize - 0.5f);
-                int size = Math.round(squareSize + 0.5f);
                 rect.left = x;
                 rect.top = y;
                 rect.right = x + size;
@@ -202,7 +201,6 @@ public final class MyDesignRenderer {
                 Rect rect = new Rect();
                 int x = Math.round(j * squareSize - 0.5f);
                 int y = Math.round((i + 48) * squareSize - 0.5f);
-                int size = Math.round(squareSize + 0.5f);
                 rect.left = x;
                 rect.top = y;
                 rect.right = x + size;
@@ -230,7 +228,6 @@ public final class MyDesignRenderer {
                 Rect rect = new Rect();
                 int x = Math.round((j + 32) * squareSize - 0.5f);
                 int y = Math.round((i + 48) * squareSize - 0.5f);
-                int size = Math.round(squareSize + 0.5f);
                 rect.left = x;
                 rect.top = y;
                 rect.right = x + size;
@@ -244,7 +241,7 @@ public final class MyDesignRenderer {
 
     private static byte[] concat(byte[]... bytes) {
         int length = 0;
-        for (byte[] bytes1: bytes) {
+        for (byte[] bytes1 : bytes) {
             length += bytes1.length;
         }
         byte[] concat = new byte[length];
