@@ -7,4 +7,8 @@
         <attr name="backgroundColor" format="color|reference" />
         <attr name="foregroundColor" format="color|reference" />
     </declare-styleable>
+    <declare-styleable name="PassportWaveView">
+        <attr name="startColor" format="color|reference" />
+        <attr name="endColor" format="color|reference" />
+    </declare-styleable>
 </resources>

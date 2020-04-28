@@ -1,12 +1,14 @@
 package com.kimjio.coral.nook.activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 
 import androidx.annotation.NonNull;
 
+import com.google.zxing.integration.android.IntentIntegrator;
 import com.journeyapps.barcodescanner.BarcodeCallback;
 import com.journeyapps.barcodescanner.BarcodeResult;
 import com.journeyapps.barcodescanner.CaptureManager;
@@ -37,7 +39,7 @@ public class MyDesignCaptureActivity extends BaseActivity<MyDesignCaptureActivit
                         if (extraProColorDataIndex < 3) {
                             binding.barcodeScanner.setStatusText(Integer.toString(extraProColorDataIndex));
                             MyDesignQR qrPro = MyDesignParser.analyzeQrBinary(result1.getRawBytes());
-                            if (qrPro.getSheetIndex() == extraProColorDataIndex) {
+                            if (qrPro.getSheetIndex() == extraProColorDataIndex + 1) {
                                 extraProColorData[extraProColorDataIndex++] = qrPro.getColorData();
                             }
                             if (extraProColorDataIndex == 3) {
@@ -112,5 +114,13 @@ public class MyDesignCaptureActivity extends BaseActivity<MyDesignCaptureActivit
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         return binding.barcodeScanner.onKeyDown(keyCode, event) || super.onKeyDown(keyCode, event);
+    }
+
+    public static void start(Activity activity) {
+        new IntentIntegrator(activity)
+                .setDesiredBarcodeFormats(IntentIntegrator.QR_CODE)
+                .setOrientationLocked(false)
+                .setCaptureActivity(MyDesignCaptureActivity.class)
+                .initiateScan();
     }
 }

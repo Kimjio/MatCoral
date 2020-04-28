@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 
+import androidx.lifecycle.SavedStateViewModelFactory;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.kimjio.coral.R;
@@ -42,7 +43,7 @@ public class MainActivity extends BaseActivity<MainActivityBinding> {
         setSupportActionBar(binding.appBar);
         binding.list.setAdapter(adapter);
 
-        viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        viewModel = ViewModelProviders.of(this, new SavedStateViewModelFactory(getApplication(), this, getIntent().getExtras())).get(MainViewModel.class);
 
         observeData();
     }

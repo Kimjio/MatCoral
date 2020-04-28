@@ -5,6 +5,7 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.SavedStateHandle;
 
 import com.kimjio.coral.api.NintendoAccountApi;
 import com.kimjio.coral.api.NintendoException;
@@ -35,8 +36,8 @@ public class MainViewModel extends LoginViewModel {
     private MutableLiveData<List<GameWebService>> gameWebServicesLiveData = new MutableLiveData<>();
     private OnItemClickListener<WebServiceToken> tokenListener;
 
-    public MainViewModel(@NonNull Application application) {
-        super(application);
+    public MainViewModel(@NonNull Application application, SavedStateHandle savedStateHandle) {
+        super(application, savedStateHandle);
     }
 
     public LiveData<TokenResponse> getToken() {

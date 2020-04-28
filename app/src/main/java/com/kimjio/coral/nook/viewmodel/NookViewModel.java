@@ -5,6 +5,7 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.SavedStateHandle;
 
 import com.kimjio.coral.api.NookLinkApi;
 import com.kimjio.coral.data.nook.Message;
@@ -24,11 +25,12 @@ public class NookViewModel extends BaseViewModel {
 
     private MutableLiveData<Response<Void>> cookieResponseLiveData = new MutableLiveData<>();
     private MutableLiveData<List<User>> usersLiveData = new MutableLiveData<>();
+    private MutableLiveData<User> userLiveData = new MutableLiveData<>();
     private MutableLiveData<Token> tokenLiveData = new MutableLiveData<>();
     private MutableLiveData<ResponseStatus> messageResponseStatusLiveData = new MutableLiveData<>();
 
-    public NookViewModel(@NonNull Application application) {
-        super(application);
+    public NookViewModel(@NonNull Application application, SavedStateHandle savedStateHandle) {
+        super(application, savedStateHandle);
         nookLinkApi = RetrofitUtil.getInstance(application.getApplicationContext(), NookLinkApi.NOOK_LINK).create(NookLinkApi.class);
     }
 
@@ -46,6 +48,14 @@ public class NookViewModel extends BaseViewModel {
 
     public void loadUsers() {
         disposable.add(getWrapperDisposable(nookLinkApi.getUsers(), usersLiveData));
+    }
+
+    public LiveData<User> getUser() {
+        return userLiveData;
+    }
+
+    public void setUser(User user) {
+        this.userLiveData.postValue(user);
     }
 
     public LiveData<Token> getToken() {

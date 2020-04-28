@@ -21,6 +21,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.SavedStateViewModelFactory;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -54,7 +56,6 @@ import static com.kimjio.coral.api.NintendoApi.getAuthorization;
 
 public class NookActivity extends BaseActivity<NookActivityBinding> {
     private NookViewModel viewModel;
-    private String token;
 
     private static final String TAG = "NookActivity";
 
@@ -68,24 +69,14 @@ public class NookActivity extends BaseActivity<NookActivityBinding> {
         setSupportActionBar(binding.appBar);
         requireSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        viewModel = ViewModelProviders.of(this).get(NookViewModel.class);
+        viewModel = ViewModelProviders.of(this, new SavedStateViewModelFactory(getApplication(), this, getIntent().getExtras())).get(NookViewModel.class);
         observeData();
 
         WebServiceToken webServiceToken = getIntent().getParcelableExtra("web_service_token");
         getSessionCookie(Objects.requireNonNull(webServiceToken).getAccessToken());
 
-        binding.button.setOnClickListener(v -> {
-            NintendoCharactersView nintendoCharactersView = new NintendoCharactersView(this);
-            PopupWindow popupWindow = new PopupWindow(nintendoCharactersView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewUtils.dpToPx(this, 240));
-            popupWindow.setOutsideTouchable(true);
-            popupWindow.setElevation(8);
-            popupWindow.showAsDropDown(v);
-            nintendoCharactersView.setOnItemClickListener((charSeq, position) -> {
-                binding.editText.getText().insert(binding.editText.getSelectionStart(), charSeq);
-            });
-            nintendoCharactersView.setOnCloseClickListener(view -> {
-                popupWindow.dismiss();
-            });
+        /*binding.button.setOnClickListener(v -> {
+            NintendoCharactersView.showPopup(this, v, binding.editText);
         });
 
         binding.buttonSend.setOnClickListener(v -> {
@@ -93,17 +84,13 @@ public class NookActivity extends BaseActivity<NookActivityBinding> {
                 binding.textInputLayout.setError(getText(R.string.error_empty));
             } else {
                 binding.textInputLayout.setError(null);
-                viewModel.sendMessage(getAuthorization(token), binding.editText.getText().toString());
+                viewModel.sendMessage(getAuthorization(viewModel.getToken().getValue().getToken()), binding.editText.getText().toString());
             }
         });
 
         binding.button2.setOnClickListener(v -> {
-            new IntentIntegrator(this)
-                    .setDesiredBarcodeFormats(IntentIntegrator.QR_CODE)
-                    .setOrientationLocked(false)
-                    .setCaptureActivity(MyDesignCaptureActivity.class)
-                    .initiateScan();
-        });
+            MyDesignCaptureActivity.start(this);
+        });*/
     }
 
     @Override
@@ -113,28 +100,31 @@ public class NookActivity extends BaseActivity<NookActivityBinding> {
                 handleHTTPException((HttpException) throwable);
             }
         });
-        viewModel.getCookieResponseData().observe(this, response -> viewModel.loadUsers());
-        viewModel.getUsers().observe(this, users -> {
-            new AlertDialog.Builder(this)
-                    .setTitle(R.string.select_user)
-                    .setCancelable(false)
-                    .setAdapter(new UserListAdapter(this, users), (dialog, which) -> {
-                        binding.userProfile.setUser(users.get(which));
-                        viewModel.loadToken(users.get(which).getId());
-                    })
-                    .create()
-                    .show();
-            /*if (users.size() > 1) {
-                //TODO Select User
-            } else {
-                binding.userProfile.setUser(users.get(0));
-                viewModel.loadToken(users.get(0).getId());
-            }*/
+        viewModel.getCookieResponseData().observe(this, response -> {
+            if (viewModel.getUser().getValue() == null) {
+                viewModel.loadUsers();
+            }
         });
-        viewModel.getToken().observe(this, token -> {
-            //TODO NookTokenManager
-            Log.d(TAG, "observeData: " + token.getToken());
-            this.token = token.getToken();
+        viewModel.getUser().observe(this, user -> {
+            binding.userProfile.setUser(user);
+            viewModel.loadToken(user.getId());
+        });
+        viewModel.getUsers().observe(this, users -> {
+            if (viewModel.getUser().getValue() == null) {
+                if (users.size() > 1) {
+                    new AlertDialog.Builder(this)
+                            .setTitle(R.string.select_user)
+                            .setCancelable(false)
+                            .setAdapter(new UserListAdapter(this, users), (dialog, which) -> {
+                                viewModel.setUser(users.get(which));
+                            })
+                            .create()
+                            .show();
+                } else {
+                    viewModel.setUser(users.get(0));
+
+                }
+            }
         });
     }
 

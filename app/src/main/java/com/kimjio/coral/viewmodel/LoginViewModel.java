@@ -7,6 +7,7 @@ import android.util.Base64;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.SavedStateHandle;
 
 import com.kimjio.coral.api.FlapgApi;
 import com.kimjio.coral.api.NintendoAccountApi;
@@ -64,8 +65,8 @@ public class LoginViewModel extends BaseViewModel {
     protected MutableLiveData<FToken> fTokenAPPLiveData = new MutableLiveData<>();
     protected MutableLiveData<TokenResponse> tokenResponseLiveData = new MutableLiveData<>();
 
-    public LoginViewModel(@NonNull Application application) {
-        super(application);
+    public LoginViewModel(@NonNull Application application, SavedStateHandle savedStateHandle) {
+        super(application, savedStateHandle);
     }
 
     public Uri getLoginUri() {

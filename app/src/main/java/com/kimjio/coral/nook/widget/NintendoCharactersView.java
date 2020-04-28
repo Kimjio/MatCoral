@@ -5,7 +5,9 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageButton;
@@ -115,6 +117,18 @@ public class NintendoCharactersView extends MaterialCardView {
 
     public void setOnCloseClickListener(OnClickListener onCloseClickListener) {
         this.onCloseClickListener = onCloseClickListener;
+    }
+
+    public static void showPopup(Context context, View showAs, EditText editText) {
+        NintendoCharactersView nintendoCharactersView = new NintendoCharactersView(context);
+        PopupWindow popupWindow = new PopupWindow(nintendoCharactersView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewUtils.dpToPx(context, 240));
+        popupWindow.setOutsideTouchable(true);
+        popupWindow.setElevation(8);
+        popupWindow.showAsDropDown(showAs);
+        nintendoCharactersView.setOnItemClickListener((charSeq, position) -> {
+            editText.getText().insert(editText.getSelectionStart(), charSeq);
+        });
+        nintendoCharactersView.setOnCloseClickListener(view -> popupWindow.dismiss());
     }
 
     private class Adapter extends RecyclerView.Adapter<ViewHolder> {

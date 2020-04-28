@@ -5,6 +5,7 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.SavedStateHandle;
 
 import com.kimjio.coral.api.SplatNet2Api;
 import com.kimjio.coral.data.splat.FullRecords;
@@ -23,8 +24,8 @@ public class SplatViewModel extends BaseViewModel {
     private MutableLiveData<FullRecords> fullRecordsLiveData = new MutableLiveData<>();
     private MutableLiveData<List<NicknameIcon>> nicknameIconsLiveData = new MutableLiveData<>();
 
-    public SplatViewModel(@NonNull Application application) {
-        super(application);
+    public SplatViewModel(@NonNull Application application, SavedStateHandle savedStateHandle) {
+        super(application, savedStateHandle);
         splatNet2Api = RetrofitUtil.getInstance(application.getApplicationContext(), SplatNet2Api.SPLAT_NET_2).create(SplatNet2Api.class);
     }
 

@@ -15,12 +15,10 @@ public class PassportPatternLayout extends FrameLayout {
 
     public PassportPatternLayout(Context context) {
         this(context, null);
-        init(null, 0);
     }
 
     public PassportPatternLayout(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
-        init(attrs, 0);
     }
 
     public PassportPatternLayout(Context context, AttributeSet attrs, int defStyle) {
@@ -29,7 +27,6 @@ public class PassportPatternLayout extends FrameLayout {
     }
 
     private void init(AttributeSet attrs, int defStyle) {
-
         final TypedArray a = getContext().obtainStyledAttributes(
                 attrs, R.styleable.PassportPatternLayout, defStyle, 0);
 

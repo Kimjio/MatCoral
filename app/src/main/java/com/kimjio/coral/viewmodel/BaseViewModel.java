@@ -6,7 +6,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.SavedStateHandle;
 
 import com.kimjio.coral.api.NintendoException;
 import com.kimjio.coral.data.Wrapper;
@@ -21,13 +21,16 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
+import retrofit2.Response;
 
 public abstract class BaseViewModel extends AndroidViewModel {
+    protected SavedStateHandle savedStateHandle;
     protected MutableLiveData<Throwable> throwableLiveData = new MutableLiveData<>();
     protected CompositeDisposable disposable = new CompositeDisposable();
 
-    public BaseViewModel(@NonNull Application application) {
+    public BaseViewModel(@NonNull Application application, SavedStateHandle savedStateHandle) {
         super(application);
+        this.savedStateHandle = savedStateHandle;
     }
 
     public MutableLiveData<Throwable> getThrowable() {
