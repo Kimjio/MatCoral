@@ -10,20 +10,24 @@ import com.kimjio.coral.manager.SessionTokenManager;
 import com.kimjio.coral.databinding.SplashActivityBinding;
 
 public class SplashActivity extends BaseActivity<SplashActivityBinding> {
-    private static final String TAG = "SplashActivity";
+    Handler handler = new Handler();
+    Runnable runnable = () -> {
+        Class<? extends Activity> activityClass = IntroActivity.class;
+        if (SessionTokenManager.getInstance(getApplication()).loadSessionToken() != null)
+            activityClass = LoginActivity.class;
+        startActivity(new Intent(this, activityClass));
+        finish();
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        handler.postDelayed(runnable, 2000);
+    }
 
-        Log.d(TAG, "onCreate: " + System.getProperty("http.agent"));
-
-        new Handler().postDelayed(() -> {
-            Class<? extends Activity> activityClass = IntroActivity.class;
-            if (SessionTokenManager.getInstance(getApplication()).loadSessionToken() != null)
-                activityClass = LoginActivity.class;
-            startActivity(new Intent(this, activityClass));
-            finish();
-        }, 2000);
+    @Override
+    public void finish() {
+        handler.removeCallbacks(runnable);
+        super.finish();
     }
 }
