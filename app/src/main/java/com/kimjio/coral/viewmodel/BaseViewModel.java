@@ -40,8 +40,8 @@ public abstract class BaseViewModel extends AndroidViewModel {
     protected <T, D extends MutableLiveData<T>> Disposable getDisposable(Observable<T> observable, D liveData) {
         return observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .retryWhen(throwableObservable -> throwableObservable.take(2).flatMap(throwable -> {
-                    if (throwable instanceof SocketTimeoutException || throwable instanceof ConnectException) {
+                .retryWhen(throwableObservable -> throwableObservable.take(3).flatMap(throwable -> {
+                    if (throwable instanceof SocketTimeoutException) {
                         return Observable.timer(1, TimeUnit.SECONDS);
                     }
                     return Observable.error(throwable);
@@ -70,8 +70,8 @@ public abstract class BaseViewModel extends AndroidViewModel {
     protected <T, W extends Wrapper<T>, D extends MutableLiveData<T>> Disposable getWrapperDisposable(Observable<W> observable, D liveData) {
         return observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .retryWhen(throwableObservable -> throwableObservable.take(2).flatMap(throwable -> {
-                    if (throwable instanceof SocketTimeoutException || throwable instanceof ConnectException) {
+                .retryWhen(throwableObservable -> throwableObservable.take(3).flatMap(throwable -> {
+                    if (throwable instanceof SocketTimeoutException) {
                         return Observable.timer(1, TimeUnit.SECONDS);
                     }
                     return Observable.error(throwable);

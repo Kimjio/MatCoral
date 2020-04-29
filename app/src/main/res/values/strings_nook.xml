@@ -5,6 +5,7 @@
     <string name="reported_user">Reported user</string>
     <string name="error_offline">You can only send messages when <annotation name="color">Animal Crossing: New Horizons</annotation> is connected to the internet.\nPlease check to see if you are connected to the internet.</string>
     <string name="error_empty">Cannot empty</string>
+    <string name="error_net_unstable">A connection error has occurred.\nPlease check your network and try again.</string>
     <string name="design_usage_0">Long-sleeve dress</string>
     <string name="design_usage_1">Short-sleeve dress</string>
     <string name="design_usage_2">Sleeveless dress</string>

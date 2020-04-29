@@ -5,6 +5,7 @@
     <string name="reported_user">신고된 플레이어</string>
     <string name="error_offline"><annotation name="color">모여봐요 동물의 숲</annotation>이 온라인 플레이 중일 때에만 메시지를 보낼 수 있습니다.\n온라인 상황을 확인해 주십시오.</string>
     <string name="error_empty">비울 수 없습니다</string>
+    <string name="error_net_unstable">통신 에러가 발생했습니다.\n네트워크 접속 상태를 확인한 후 다시 시도해 주십시오.</string>
     <string name="design_usage_0">긴소매 원피스</string>
     <string name="design_usage_1">반소매 원피스</string>
     <string name="design_usage_2">민소매 원피스</string>

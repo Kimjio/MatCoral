@@ -81,7 +81,7 @@ public class MainViewModel extends LoginViewModel {
                                         Long.parseLong(TokenManager.getInstance().getWebAppToken().getTimestamp()),
                                         TokenManager.getInstance().getWebAppToken().getF()))).subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .retryWhen(throwableObservable -> throwableObservable.flatMap(Observable::error))
+                        .retryWhen(throwableObservable -> throwableObservable.take(3).flatMap(Observable::error))
                         .subscribeWith(new DisposableObserver<WebServiceTokenWrapper>() {
                             @Override
                             public void onNext(WebServiceTokenWrapper result) {

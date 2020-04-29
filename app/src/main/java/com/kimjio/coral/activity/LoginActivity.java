@@ -67,7 +67,15 @@ public class LoginActivity extends BaseActivity<LoginActivityBinding> {
             } else if (throwable instanceof NintendoException) {
                 handleNintendoException((NintendoException) throwable);
             } else {
-                finish();
+                new MaterialAlertDialogBuilder(this)
+                        .setIcon(R.drawable.ic_error_outline)
+                        .setTitle(R.string.error_title)
+                        .setMessage(R.string.error_net_unstable)
+                        .setCancelable(false)
+                        .setPositiveButton(android.R.string.ok, (dialogInterface, which) -> {
+                            finish();
+                        })
+                        .show();
             }
         });
         viewModel.getAccountToken().observe(this, token -> {
