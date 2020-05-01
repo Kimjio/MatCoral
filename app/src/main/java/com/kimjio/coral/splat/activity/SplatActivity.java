@@ -40,13 +40,18 @@ public class SplatActivity extends BaseActivity<SplatActivityBinding> implements
 
         binding.swipeRefreshLayout.setOnRefreshListener(this);
         binding.swipeRefreshLayout.setRefreshing(true);
-        // getData(false);
     }
 
     @Override
     protected void observeData() {
         viewModel.getThrowable().observe(this, Throwable::printStackTrace);
-        viewModel.getCookieResponseData().observe(this, response -> getData(false));
+        viewModel.getCookieResponseData().observe(this, response -> {
+            if (!response.raw().request().url().encodedPath().contains("introduction")) {
+                getData(false);
+            } else {
+                // TODO Not registered
+            }
+        });
         viewModel.getFullRecordsData().observe(this, fullRecords -> {
             binding.bottomNavigationView.getMenu().getItem(0).setIcon(fullRecords.getRecords().getPlayer().getType().getSpecies().equals("inklings") ? R.drawable.ic_splat_squid : R.drawable.ic_splat_octo);
             if (viewModel.getNicknameIconData().getValue() == null)

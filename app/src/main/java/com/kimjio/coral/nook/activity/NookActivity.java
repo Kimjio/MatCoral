@@ -121,9 +121,10 @@ public class NookActivity extends BaseActivity<NookActivityBinding> {
                             })
                             .create()
                             .show();
-                } else {
+                } else if (!users.isEmpty()) {
                     viewModel.setUser(users.get(0));
-
+                } else {
+                    // TODO Not registered
                 }
             }
         });

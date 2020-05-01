@@ -14,6 +14,7 @@ import retrofit2.http.Query;
 
 public interface SplatNet2Api {
     String SPLAT_NET_2 = "https://app.splatoon2.nintendo.net/";
+    // https://app.splatoon2.nintendo.net/introduction
 
     @GET(".")
     @Headers({

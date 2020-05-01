@@ -77,21 +77,6 @@ public final class BindingHelper {
                 .into(view);
     }
 
-    @BindingAdapter("srcNookProfileUri")
-    public static void setNookProfileDrawable(ImageView view, Uri uri) {
-        TypedValue value = new TypedValue();
-        view.getContext().getTheme().resolveAttribute(R.attr.colorSecondary, value, true);
-        CircularProgressDrawable drawable = new CircularProgressDrawable(view.getContext());
-        drawable.setColorSchemeColors(value.data);
-        drawable.setStyle(CircularProgressDrawable.DEFAULT);
-        drawable.start();
-        Glide.with(view)
-                .load(uri)
-                .transform(new RoundedCornersTransformation(ViewUtils.dpToPx(view.getContext(), 8), 0))
-                .placeholder(drawable)
-                .into(view);
-    }
-
     @BindingAdapter("drawableTopUri")
     public static void setDrawableTopUri(DrawableSizeTextView view, Uri uri) {
         Glide.with(view)

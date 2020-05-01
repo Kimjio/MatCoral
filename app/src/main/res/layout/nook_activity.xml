@@ -42,10 +42,7 @@
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="4dp"
-                    android:layout_marginBottom="4dp"
+                    android:layout_margin="4dp"
                     app:cardBackgroundColor="#FAF7DA"
                     app:cardCornerRadius="24dp"
                     app:cardElevation="0dp">
@@ -84,15 +81,15 @@
                                 android:layout_marginStart="16dp"
                                 android:layout_marginTop="12dp"
                                 app:cardBackgroundColor="#FAF7DA"
-                                app:cardCornerRadius="8dp"
+                                app:cardCornerRadius="12dp"
                                 app:cardElevation="0dp"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent">
 
                                 <ImageView
                                     android:id="@+id/image_profile"
-                                    android:layout_width="76dp"
-                                    android:layout_height="76dp"
+                                    android:layout_width="84dp"
+                                    android:layout_height="84dp"
                                     android:padding="4dp"
                                     app:srcNookProfileUri="@{viewModel.user.imageUri}"
                                     tools:srcCompat="@tools:sample/avatars" />
