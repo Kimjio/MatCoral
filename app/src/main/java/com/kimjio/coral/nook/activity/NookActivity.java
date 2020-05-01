@@ -70,6 +70,7 @@ public class NookActivity extends BaseActivity<NookActivityBinding> {
         requireSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         viewModel = ViewModelProviders.of(this, new SavedStateViewModelFactory(getApplication(), this, getIntent().getExtras())).get(NookViewModel.class);
+        binding.setViewModel(viewModel);
         observeData();
 
         WebServiceToken webServiceToken = getIntent().getParcelableExtra("web_service_token");
@@ -106,7 +107,7 @@ public class NookActivity extends BaseActivity<NookActivityBinding> {
             }
         });
         viewModel.getUser().observe(this, user -> {
-            binding.userProfile.setUser(user);
+            // binding.userProfile.setUser(user);
             viewModel.loadToken(user.getId());
         });
         viewModel.getUsers().observe(this, users -> {
@@ -154,7 +155,7 @@ public class NookActivity extends BaseActivity<NookActivityBinding> {
                         } else if (qr.getDesignType() == MyDesignQR.Type.PRO && multiple) {
                             bitmap = MyDesignRenderer.renderProToCanvas(qr.getPaletteColors(), new byte[][]{qr.getColorData(), rawBytes2, rawBytes3, rawBytes4}, qr.getUsage());
                         }
-                        binding.imageView2.setImageBitmap(bitmap);
+                        // binding.imageView2.setImageBitmap(bitmap);
                     } else
                         Log.w(TAG, "onActivityResult: Not correctly read");
                 }

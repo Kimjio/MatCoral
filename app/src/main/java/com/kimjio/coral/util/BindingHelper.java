@@ -1,5 +1,6 @@
 package com.kimjio.coral.util;
 
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.text.TextUtils;
@@ -26,9 +27,11 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.kimjio.coral.R;
+import com.kimjio.coral.util.glide.RoundedCornersWithBorderTransformation;
 import com.kimjio.coral.widget.DrawableSizeTextView;
 
 import jp.wasabeef.glide.transformations.CropCircleWithBorderTransformation;
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 public final class BindingHelper {
 
@@ -62,7 +65,7 @@ public final class BindingHelper {
             return;
         }
         TypedValue value = new TypedValue();
-        view.getContext().getTheme().resolveAttribute (R.attr.colorSecondary, value, true);
+        view.getContext().getTheme().resolveAttribute(R.attr.colorSecondary, value, true);
         CircularProgressDrawable drawable = new CircularProgressDrawable(view.getContext());
         drawable.setColorSchemeColors(value.data);
         drawable.setStyle(CircularProgressDrawable.DEFAULT);
@@ -70,6 +73,21 @@ public final class BindingHelper {
         Glide.with(view)
                 .load(srcCircleUri)
                 .transform(new CircleCrop())
+                .placeholder(drawable)
+                .into(view);
+    }
+
+    @BindingAdapter("srcNookProfileUri")
+    public static void setNookProfileDrawable(ImageView view, Uri uri) {
+        TypedValue value = new TypedValue();
+        view.getContext().getTheme().resolveAttribute(R.attr.colorSecondary, value, true);
+        CircularProgressDrawable drawable = new CircularProgressDrawable(view.getContext());
+        drawable.setColorSchemeColors(value.data);
+        drawable.setStyle(CircularProgressDrawable.DEFAULT);
+        drawable.start();
+        Glide.with(view)
+                .load(uri)
+                .transform(new RoundedCornersTransformation(ViewUtils.dpToPx(view.getContext(), 8), 0))
                 .placeholder(drawable)
                 .into(view);
     }

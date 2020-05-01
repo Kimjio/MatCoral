@@ -4,6 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".nook.activity.NookActivity">
 
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.kimjio.coral.nook.viewmodel.NookViewModel" />
+    </data>
+
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -18,13 +25,14 @@
                 layout="@layout/nook_user_item"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:user="@{viewModel.user}" />
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="0dp"
                 android:layout_height="260dp"
                 android:layout_margin="16dp"
-                app:cardBackgroundColor="#faf7da"
+                app:cardBackgroundColor="#FAF7DA"
                 app:cardCornerRadius="24dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -38,7 +46,7 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="4dp"
                     android:layout_marginBottom="4dp"
-                    app:cardBackgroundColor="#faf7da"
+                    app:cardBackgroundColor="#FAF7DA"
                     app:cardCornerRadius="24dp"
                     app:cardElevation="0dp">
 
@@ -47,7 +55,16 @@
                         android:layout_height="24dp"
                         android:layout_gravity="top"
                         app:endColor="#F3F5DF"
-                        app:startColor="#F9F1D8" />
+                        app:startColor="#F9F1D8">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:src="@drawable/passport_title" />
+
+                    </com.kimjio.coral.nook.widget.PassportWaveTopView>
+
 
                     <com.kimjio.coral.nook.widget.PassportPatternLayout
                         android:layout_width="match_parent"
@@ -56,21 +73,67 @@
                         android:layout_marginBottom="40dp"
                         app:passportPattern="@style/Pattern.Libra">
 
-                        <ImageView
-                            android:id="@+id/imageView2"
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginTop="16dp"
-                            android:layout_marginEnd="16dp"
-                            android:layout_marginBottom="16dp" />
+                            android:layout_height="match_parent">
 
-                        <ImageView
-                            android:layout_width="88dp"
-                            android:layout_height="88dp"
-                            android:layout_gravity="bottom|end"
-                            android:layout_marginEnd="8dp"
-                            android:src="@drawable/passport_palmtree" />
+                            <androidx.cardview.widget.CardView
+                                android:id="@+id/image_profile_wrapper"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="16dp"
+                                android:layout_marginTop="12dp"
+                                app:cardBackgroundColor="#FAF7DA"
+                                app:cardCornerRadius="8dp"
+                                app:cardElevation="0dp"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent">
+
+                                <ImageView
+                                    android:id="@+id/image_profile"
+                                    android:layout_width="76dp"
+                                    android:layout_height="76dp"
+                                    android:padding="4dp"
+                                    app:srcNookProfileUri="@{viewModel.user.imageUri}"
+                                    tools:srcCompat="@tools:sample/avatars" />
+
+                            </androidx.cardview.widget.CardView>
+
+
+                            <TextView
+                                android:id="@+id/text_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingTop="4dp"
+                                android:paddingBottom="4dp"
+                                android:text="@{viewModel.user.name}"
+                                android:textColor="#4d3906"
+                                android:textSize="20sp"
+                                app:layout_constraintStart_toStartOf="@+id/image_profile_wrapper"
+                                app:layout_constraintTop_toBottomOf="@+id/image_profile_wrapper"
+                                tools:text="지오" />
+
+                            <View
+                                android:id="@+id/divider2"
+                                android:layout_width="0dp"
+                                android:layout_height="2dp"
+                                android:layout_marginEnd="8dp"
+                                android:background="#FAF7DA"
+                                app:layout_constraintEnd_toStartOf="@+id/image_palm"
+                                app:layout_constraintStart_toStartOf="@+id/text_name"
+                                app:layout_constraintTop_toBottomOf="@+id/text_name" />
+
+                            <ImageView
+                                android:id="@+id/image_palm"
+                                android:layout_width="88dp"
+                                android:layout_height="88dp"
+                                android:layout_gravity="bottom|end"
+                                android:layout_marginEnd="6dp"
+                                android:src="@drawable/passport_palmtree"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
                     </com.kimjio.coral.nook.widget.PassportPatternLayout>
 

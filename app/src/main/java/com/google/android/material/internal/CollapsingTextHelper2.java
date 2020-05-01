@@ -299,12 +299,7 @@ public final class CollapsingTextHelper2 {
         }
         collapsedFontCallback =
                 new CancelableFontCallback(
-                        new ApplyFont() {
-                            @Override
-                            public void apply(Typeface font) {
-                                setCollapsedTypeface(font);
-                            }
-                        },
+                        this::setCollapsedTypeface,
                         textAppearance.getFallbackFont());
         textAppearance.getFontAsync(view.getContext(), collapsedFontCallback);
 
@@ -332,12 +327,7 @@ public final class CollapsingTextHelper2 {
         }
         expandedFontCallback =
                 new CancelableFontCallback(
-                        new ApplyFont() {
-                            @Override
-                            public void apply(Typeface font) {
-                                setExpandedTypeface(font);
-                            }
-                        },
+                        this::setExpandedTypeface,
                         textAppearance.getFallbackFont());
         textAppearance.getFontAsync(view.getContext(), expandedFontCallback);
 

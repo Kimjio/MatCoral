@@ -15,14 +15,16 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.FrameLayout;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.Nullable;
 
 import com.kimjio.coral.R;
 
-public abstract class PassportWaveView extends View {
+public abstract class PassportWaveView extends FrameLayout {
     private Paint maskPaint;
     private Paint gradientPaint;
 
@@ -32,6 +34,13 @@ public abstract class PassportWaveView extends View {
     private final ViewTreeObserver.OnGlobalLayoutListener globalLayoutListener = () -> {
         LinearGradient shader = new LinearGradient(0, 0, getMeasuredWidth(), 0, startColor, endColor, Shader.TileMode.CLAMP);
         gradientPaint.setShader(shader);
+        Bitmap bitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+
+        canvas.drawPaint(gradientPaint);
+        canvas.drawPaint(maskPaint);
+
+        setBackground(new BitmapDrawable(getResources(), bitmap));
         getViewTreeObserver().removeOnGlobalLayoutListener(this.globalLayoutListener);
     };
 
@@ -67,12 +76,6 @@ public abstract class PassportWaveView extends View {
 
         setLayerType(LAYER_TYPE_HARDWARE, maskPaint);
         setLayerType(LAYER_TYPE_HARDWARE, gradientPaint);
-    }
-
-    @Override
-    protected void onDraw(Canvas canvas) {
-        canvas.drawPaint(gradientPaint);
-        canvas.drawPaint(maskPaint);
     }
 
     private Bitmap getBitmap(Drawable drawable) {
