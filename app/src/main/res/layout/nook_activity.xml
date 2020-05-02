@@ -81,22 +81,23 @@
                                 android:layout_marginStart="16dp"
                                 android:layout_marginTop="12dp"
                                 app:cardBackgroundColor="#FAF7DA"
-                                app:cardCornerRadius="12dp"
+                                app:cardCornerRadius="16dp"
                                 app:cardElevation="0dp"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent">
 
                                 <ImageView
                                     android:id="@+id/image_profile"
-                                    android:layout_width="84dp"
-                                    android:layout_height="84dp"
-                                    android:padding="4dp"
+                                    android:layout_width="86dp"
+                                    android:layout_height="86dp"
+                                    android:padding="5dp"
                                     app:srcNookProfileUri="@{viewModel.user.imageUri}"
                                     tools:srcCompat="@tools:sample/avatars" />
 
                             </androidx.cardview.widget.CardView>
 
 
+                            <!--FIXME cutoff-->
                             <TextView
                                 android:id="@+id/text_name"
                                 android:layout_width="wrap_content"
