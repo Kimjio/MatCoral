@@ -6,8 +6,8 @@
     <data>
 
         <variable
-            name="character"
-            type="char" />
+            name="charItem"
+            type="java.lang.Character" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -21,7 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="24sp"
-            app:character="@{character}"
+            app:character="@{charItem}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

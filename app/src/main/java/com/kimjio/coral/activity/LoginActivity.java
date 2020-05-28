@@ -50,6 +50,7 @@ public class LoginActivity extends BaseActivity<LoginActivityBinding> {
         } else {
             binding.animation.playAnimation();
         }
+        //TODO CustomTab
         binding.buttonSignIn.setOnClickListener(v -> startActivity(new Intent(Intent.ACTION_VIEW, viewModel.getLoginUri())));
 
         observeData();

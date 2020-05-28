@@ -141,7 +141,7 @@ public class NintendoCharactersView extends MaterialCardView {
 
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            holder.binding.setCharacter(chars[position]);
+            holder.binding.setCharItem(chars[position]);
             holder.itemView.setOnClickListener(view -> {
                 if (onItemClickListener != null) {
                     onItemClickListener.onItemClick(holder.binding.character.getText(), position);

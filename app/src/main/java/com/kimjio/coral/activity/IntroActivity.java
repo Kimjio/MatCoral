@@ -19,7 +19,7 @@ public class IntroActivity extends AppIntro3 {
 
         pager = findViewById(R.id.view_pager);
         addSlide(new IntroFragment(new IntroItem(R.string.title_intro_1, R.string.desc_intro_1, R.raw.tutorial_image_01)));
-        addSlide(new IntroFragment(new IntroItem(R.string.title_intro_2, R.raw.tutorial_image_02)));
+        //addSlide(new IntroFragment(new IntroItem(R.string.title_intro_2, R.raw.tutorial_image_02)));
         addSlide(new IntroFragment(new IntroItem(R.string.title_intro_3, R.raw.tutorial_image_03)));
     }
 
