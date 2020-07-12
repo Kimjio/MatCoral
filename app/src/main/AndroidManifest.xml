@@ -7,6 +7,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -58,7 +59,14 @@
                 <data android:pathPattern="/.*" />
                 <data android:scheme="lounge" />
             </intent-filter>
+
+            <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
         </activity>
+        <activity
+            android:name=".activity.SettingsActivity"
+            android:label="@string/title_settings" />
         <activity
             android:name=".splat.activity.SplatActivity"
             android:label="@string/title_splat"
@@ -67,11 +75,9 @@
             android:name=".nook.activity.NookActivity"
             android:label="@string/title_nook"
             android:theme="@style/Theme.App.Nook" />
-
         <activity
             android:name=".nook.activity.MyDesignCaptureActivity"
-            android:theme="@style/Theme.App.Nook"/>
-
+            android:theme="@style/Theme.App.Nook" />
     </application>
 
 </manifest>

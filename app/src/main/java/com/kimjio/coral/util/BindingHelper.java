@@ -1,6 +1,5 @@
 package com.kimjio.coral.util;
 
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.text.TextUtils;
@@ -10,9 +9,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.DrawableRes;
 import androidx.annotation.Nullable;
 import androidx.annotation.RawRes;
+import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.BindingAdapter;
 import androidx.databinding.BindingConversion;
@@ -27,11 +26,14 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.kimjio.coral.R;
-import com.kimjio.coral.util.glide.RoundedCornersWithBorderTransformation;
+import com.kimjio.coral.data.nook.Fruit;
+import com.kimjio.coral.data.nook.UserProfile;
+import com.kimjio.coral.data.nook.ZodiacSign;
+import com.kimjio.coral.nook.widget.PassportPatternLayout;
+import com.kimjio.coral.nook.widget.PassportWaveView;
 import com.kimjio.coral.widget.DrawableSizeTextView;
 
 import jp.wasabeef.glide.transformations.CropCircleWithBorderTransformation;
-import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 public final class BindingHelper {
 
@@ -51,7 +53,7 @@ public final class BindingHelper {
         Glide.with(view)
                 .load(uri)
                 .placeholder(R.drawable.ic_account)
-                .error(Glide.with(view).load(R.drawable.ic_user_red).transform(new CropCircleWithBorderTransformation(ViewUtils.dpToPx(view.getContext(), 1), ContextCompat.getColor(view.getContext(), R.color.stroke_color))))
+                .error(Glide.with(view).load(R.drawable.ic_user_red).transform(new CropCircleWithBorderTransformation(ViewUtils.dpToPx(view.getContext(), 3), ContextCompat.getColor(view.getContext(), R.color.stroke_color))))
                 .transform(new CropCircleWithBorderTransformation(ViewUtils.dpToPx(view.getContext(), 3), ContextCompat.getColor(view.getContext(), R.color.stroke_color)))
                 .into(view);
     }
@@ -165,8 +167,34 @@ public final class BindingHelper {
         view.setText(Character.valueOf(character).toString());
     }
 
-    /*@BindingConversion
-    public static int setVisibleByInt(int i) {
-        return i <= 0 ? View.GONE : View.VISIBLE;
-    }*/
+    @BindingAdapter({"fruit", "zodiacSign"})
+    public static void setFruit(PassportWaveView view, Fruit fruit, ZodiacSign zodiacSign) {
+        view.setFruit(fruit);
+        view.setZodiacSign(zodiacSign);
+        view.background();
+    }
+
+    @BindingAdapter("birth")
+    public static void setBirthdayText(TextView view, UserProfile.Birth birth) {
+        if (birth != null)
+            view.setText(view.getContext().getString(R.string.birthday, birth.getMonth(), birth.getDay()));
+    }
+
+    @BindingAdapter("timeStamp")
+    public static void setTimeStampText(TextView view, UserProfile.TimeStamp timeStamp) {
+        if (timeStamp != null)
+            view.setText(view.getContext().getString(R.string.registered_at, timeStamp.getYear(), timeStamp.getMonth(), timeStamp.getDay()));
+    }
+
+    @BindingAdapter("titleTheme")
+    public static void setTitleThemeByZodiacSign(ImageView view, ZodiacSign zodiacSign) {
+        if (zodiacSign != null)
+            view.setImageDrawable(new ContextThemeWrapper(view.getContext(), zodiacSign.getTitleTheme()).getDrawable(R.drawable.passport_title));
+    }
+
+    @BindingAdapter("patternTheme")
+    public static void setPatternThemeByZodiacSign(PassportPatternLayout view, ZodiacSign zodiacSign) {
+        if (zodiacSign != null)
+            view.background(zodiacSign.getPatternTheme());
+    }
 }

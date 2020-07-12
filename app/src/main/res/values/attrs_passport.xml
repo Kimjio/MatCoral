@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="PassportPattern">
+        <attr name="backgroundColor" format="color" />
+        <attr name="foregroundColor" format="color" />
+    </declare-styleable>
+    <declare-styleable name="PassportWaveView">
+        <attr name="cornerRadius" format="dimension" />
+    </declare-styleable>
+    <declare-styleable name="PassportTitle">
+        <attr name="titleColor" format="color" />
+    </declare-styleable>
+</resources>

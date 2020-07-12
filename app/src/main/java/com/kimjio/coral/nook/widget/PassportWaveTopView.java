@@ -24,4 +24,9 @@ public class PassportWaveTopView extends PassportWaveView {
     protected int getDrawableResource() {
         return R.drawable.passport_wave_top;
     }
+
+    @Override
+    protected Type getType() {
+        return Type.TOP;
+    }
 }

@@ -1,27 +1,31 @@
 package com.kimjio.coral.nook.activity;
 
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.ParcelFileDescriptor;
+import android.provider.MediaStore;
 import android.text.Annotation;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannedString;
-import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.PopupWindow;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.SavedStateViewModelFactory;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -38,14 +42,17 @@ import com.kimjio.coral.databinding.NookUserItemBinding;
 import com.kimjio.coral.nook.util.MyDesignParser;
 import com.kimjio.coral.nook.util.MyDesignRenderer;
 import com.kimjio.coral.nook.viewmodel.NookViewModel;
-import com.kimjio.coral.nook.widget.NintendoCharactersView;
-import com.kimjio.coral.util.ViewUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 import okhttp3.ResponseBody;
@@ -60,7 +67,9 @@ public class NookActivity extends BaseActivity<NookActivityBinding> {
     private static final String TAG = "NookActivity";
 
     // 1001 offline
+    // 3001 required parameter not included (?)
     // 3002 empty
+    // 3006 invalid parameter value (?)
     // 4002 expired
 
     @Override
@@ -92,6 +101,45 @@ public class NookActivity extends BaseActivity<NookActivityBinding> {
         binding.button2.setOnClickListener(v -> {
             MyDesignCaptureActivity.start(this);
         });*/
+        binding.button.setOnClickListener(v -> {
+            Bitmap bitmap = Bitmap.createBitmap(binding.passportCard.passportCard.getWidth(), binding.passportCard.passportCard.getHeight(), Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(bitmap);
+            binding.passportCard.passportCard.draw(canvas);
+            writeBitmap(bitmap);
+        });
+    }
+
+    private void writeBitmap(Bitmap bitmap) {
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Images.Media.DISPLAY_NAME, "passport_" + new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss", Locale.getDefault()).format(new Date()) + ".png");
+        values.put(MediaStore.Images.Media.MIME_TYPE, "image/*");
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            values.put(MediaStore.Images.Media.IS_PENDING, 1);
+        }
+
+        ContentResolver contentResolver = getContentResolver();
+        Uri uri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+
+        if (uri != null)
+            try {
+                ParcelFileDescriptor descriptor = contentResolver.openFileDescriptor(uri, "w", null);
+
+                if (descriptor != null) {
+                    FileOutputStream outputStream = new FileOutputStream(descriptor.getFileDescriptor());
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+                    outputStream.flush();
+                    outputStream.close();
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                        values.clear();
+                        values.put(MediaStore.Images.Media.IS_PENDING, 0);
+                        contentResolver.update(uri, values, null, null);
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
     }
 
     @Override
@@ -127,6 +175,10 @@ public class NookActivity extends BaseActivity<NookActivityBinding> {
                     // TODO Not registered
                 }
             }
+        });
+        viewModel.getToken().observe(this, token -> {
+            viewModel.loadUserProfile(getAuthorization(token.getToken()), viewModel.getUser().getValue().getId());
+            viewModel.loadLandProfile(getAuthorization(token.getToken()), viewModel.getUser().getValue().getLand().getId());
         });
     }
 

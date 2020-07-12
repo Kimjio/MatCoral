@@ -1,55 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Pattern" parent="Theme.App">
+
+    <style name="Pattern" parent="Theme.App.Nook">
         <item name="backgroundColor">#AAA</item>
         <item name="foregroundColor">#CCC</item>
     </style>
+
     <style name="Pattern.Aries" parent="Pattern">
         <item name="backgroundColor">#E9EBCD</item>
         <item name="foregroundColor">#F5F8DE</item>
     </style>
+
     <style name="Pattern.Taurus" parent="Pattern">
         <item name="backgroundColor">#E6EED4</item>
         <item name="foregroundColor">#F2F9E1</item>
     </style>
+
     <style name="Pattern.Gemini" parent="Pattern">
         <item name="backgroundColor">#E7E9DB</item>
         <item name="foregroundColor">#F2F7EA</item>
     </style>
+
     <style name="Pattern.Cancer" parent="Pattern">
         <item name="backgroundColor">#FBE6C4</item>
         <item name="foregroundColor">#FEF6DC</item>
     </style>
+
     <style name="Pattern.Leo" parent="Pattern">
         <item name="backgroundColor">#E6ECB9</item>
         <item name="foregroundColor">#F3FAD0</item>
     </style>
+
     <style name="Pattern.Virgo" parent="Pattern">
         <item name="backgroundColor">#E7E4E1</item>
         <item name="foregroundColor">#F3F1F1</item>
     </style>
+
     <style name="Pattern.Libra" parent="Pattern">
         <item name="backgroundColor">#DDEBCA</item>
         <item name="foregroundColor">#EAF6D6</item>
     </style>
+
     <style name="Pattern.Scorpio" parent="Pattern">
         <item name="backgroundColor">#F7E9B3</item>
         <item name="foregroundColor">#FDF7C9</item>
     </style>
+
     <style name="Pattern.Sagittarius" parent="Pattern">
         <item name="backgroundColor">#E1EDDA</item>
         <item name="foregroundColor">#EDF8E6</item>
     </style>
+
     <style name="Pattern.Capricorn" parent="Pattern">
         <item name="backgroundColor">#F7E7D6</item>
         <item name="foregroundColor">#FEF3E3</item>
     </style>
+
     <style name="Pattern.Aquarius" parent="Pattern">
         <item name="backgroundColor">#EEE4DB</item>
         <item name="foregroundColor">#F9F0E7</item>
     </style>
+
     <style name="Pattern.Pisces" parent="Pattern">
         <item name="backgroundColor">#DFEDDF</item>
         <item name="foregroundColor">#EBF8E8</item>
+    </style>
+
+    <style name="Title" parent="Theme.App.Nook">
+        <item name="titleColor">@android:color/darker_gray</item>
+    </style>
+
+    <style name="Title.Aries" parent="Title">
+        <item name="titleColor">#AFAF93</item>
+    </style>
+
+    <style name="Title.Taurus" parent="Title">
+        <item name="titleColor">#85AC94</item>
+    </style>
+
+    <style name="Title.Gemini" parent="Title">
+        <item name="titleColor">#A3A0AA</item>
+    </style>
+
+    <style name="Title.Cancer" parent="Title">
+        <item name="titleColor">#C9AB9C</item>
+    </style>
+
+    <style name="Title.Leo" parent="Title">
+        <item name="titleColor">#8EA582</item>
+    </style>
+
+    <style name="Title.Virgo" parent="Title">
+        <item name="titleColor">#AA9FB7</item>
+    </style>
+
+    <style name="Title.Libra" parent="Title">
+        <item name="titleColor">#83A097</item>
+    </style>
+
+    <style name="Title.Scorpio" parent="Title">
+        <item name="titleColor">#A39774</item>
+    </style>
+
+    <style name="Title.Sagittarius" parent="Title">
+        <item name="titleColor">#8F9CA7</item>
+    </style>
+
+    <style name="Title.Capricorn" parent="Title">
+        <item name="titleColor">#C79585</item>
+    </style>
+
+    <style name="Title.Aquarius" parent="Title">
+        <item name="titleColor">#B491AE</item>
+    </style>
+
+    <style name="Title.Pisces" parent="Title">
+        <item name="titleColor">#8594A4</item>
     </style>
 </resources>

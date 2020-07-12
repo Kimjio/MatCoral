@@ -25,7 +25,7 @@ public interface NintendoAccountApi {
     String NINTENDO_ACCOUNTS = "https://accounts.nintendo.com/";
     String CLIENT_ID = "71b963c1b7b6d119";
     String[] SCOPE = new String[] {"openid", "user", "user.birthday", "user.mii", "user.screenName"};
-    String AUTH_SCHEME = getEncodedString("npf71b963c1b7b6d119") + "://auth";
+    String AUTH_SCHEME = getEncodedString("npf" + CLIENT_ID) + "://auth";
     String SCOPE_STR = getEncodedString(TextUtils.join(" ", SCOPE));
     String RESPONSE_TYPE = getEncodedString("session_token_code");
     String TOKEN_GRANT_TYPE = "urn:ietf:params:oauth:grant-type:jwt-bearer-session-token";

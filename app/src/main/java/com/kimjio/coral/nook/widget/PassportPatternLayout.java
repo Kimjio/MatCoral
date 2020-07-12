@@ -1,12 +1,13 @@
 package com.kimjio.coral.nook.widget;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.view.ContextThemeWrapper;
 import android.widget.FrameLayout;
+
+import androidx.annotation.StyleRes;
+import androidx.appcompat.view.ContextThemeWrapper;
 
 import com.kimjio.coral.R;
 import com.kimjio.coral.nook.drawable.TileDrawable;
@@ -23,17 +24,10 @@ public class PassportPatternLayout extends FrameLayout {
 
     public PassportPatternLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        init(attrs, defStyle);
     }
 
-    private void init(AttributeSet attrs, int defStyle) {
-        final TypedArray a = getContext().obtainStyledAttributes(
-                attrs, R.styleable.PassportPatternLayout, defStyle, 0);
-
-        Drawable drawable = getResources().getDrawable(R.drawable.passport_pattern, new ContextThemeWrapper(getContext(),
-                a.getResourceId(R.styleable.PassportPatternLayout_passportPattern, R.style.Pattern)).getTheme());
+    public void background(@StyleRes int theme) {
+        Drawable drawable = getResources().getDrawable(R.drawable.passport_pattern, new ContextThemeWrapper(getContext(), theme).getTheme());
         setBackground(new TileDrawable(drawable, Shader.TileMode.REPEAT));
-
-        a.recycle();
     }
 }

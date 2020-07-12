@@ -7,7 +7,7 @@ import com.kimjio.coral.data.BaseData;
 
 public class WebApiServerCredential extends BaseData implements Parcelable {
     private String accessToken;
-    private int expiresIn;
+    private long expiresIn;
 
     protected WebApiServerCredential(Parcel in) {
         super(in);
@@ -31,7 +31,7 @@ public class WebApiServerCredential extends BaseData implements Parcelable {
         return accessToken;
     }
 
-    public int getExpiresIn() {
+    public long getExpiresIn() {
         return expiresIn;
     }
 
@@ -44,6 +44,6 @@ public class WebApiServerCredential extends BaseData implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         super.writeToParcel(dest, flags);
         dest.writeString(accessToken);
-        dest.writeInt(expiresIn);
+        dest.writeLong(expiresIn);
     }
 }

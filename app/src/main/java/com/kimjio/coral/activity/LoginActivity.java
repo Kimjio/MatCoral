@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.lifecycle.SavedStateViewModelFactory;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -19,6 +20,7 @@ import com.kimjio.coral.manager.TokenManager;
 import com.kimjio.coral.manager.UIManager;
 import com.kimjio.coral.manager.UserManager;
 import com.kimjio.coral.viewmodel.LoginViewModel;
+import com.kimjio.customtabs.CustomTabActivityHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -50,8 +52,17 @@ public class LoginActivity extends BaseActivity<LoginActivityBinding> {
         } else {
             binding.animation.playAnimation();
         }
-        //TODO CustomTab
-        binding.buttonSignIn.setOnClickListener(v -> startActivity(new Intent(Intent.ACTION_VIEW, viewModel.getLoginUri())));
+        binding.buttonSignIn.setOnClickListener(v -> {
+            CustomTabsIntent intent = new CustomTabsIntent.Builder()
+                    .setToolbarColor(getResources().getColor(R.color.colorPrimary))
+                    .setShowTitle(true)
+                    .build();
+
+            CustomTabActivityHelper.openCustomTab(
+                    this,
+                    intent,
+                    viewModel.getLoginUri());
+        });
 
         observeData();
     }
@@ -108,6 +119,15 @@ public class LoginActivity extends BaseActivity<LoginActivityBinding> {
                     .setUser(response.getUser());
             viewModel.loadFTokenAPP(TokenManager.getInstance().getWebApiServerCredential().getAccessToken());
         });
+        viewModel.setProgressChangedListener((text, step) -> {
+            if (binding.progressText.getTag() != null && binding.progressText.getTag().equals(step))
+                binding.progressText.append("\n" + getText(text));
+            else
+                binding.progressText.setText(text);
+            if (text == R.string.progress_issue_token && step > 0)
+                binding.progressText.append(" (" + step + ")");
+            binding.progressText.setTag(step);
+        });
     }
 
     private void showLogin() {
@@ -121,10 +141,12 @@ public class LoginActivity extends BaseActivity<LoginActivityBinding> {
 
     private void showProgress() {
         binding.progressBar.setVisibility(View.VISIBLE);
+        binding.progressText.setVisibility(View.VISIBLE);
     }
 
     private void hideProgress() {
         binding.progressBar.setVisibility(View.GONE);
+        binding.progressText.setVisibility(View.GONE);
     }
 
     @Override
@@ -147,6 +169,8 @@ public class LoginActivity extends BaseActivity<LoginActivityBinding> {
                     String error = object.getString("error");
                     if (error.equals("invalid_grant"))
                         error = getString(R.string.error_re_auth);
+                    if (error.equals("invalid_request"))
+                        error = getString(R.string.error_token);
 
                     new MaterialAlertDialogBuilder(this)
                             .setIcon(R.drawable.ic_error_outline)

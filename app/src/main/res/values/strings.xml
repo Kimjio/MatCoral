@@ -3,9 +3,9 @@
     <string name="gone" translatable="false" />
     <string name="title_welcome">Welcome!</string>
     <string name="btn_start">Start</string>
-    <string name="btn_login">Sign In</string>
+    <string name="btn_sign_in">Sign In</string>
     <string name="btn_skip">Skip</string>
-    <string name="btn_logout">Sign Out</string>
+    <string name="btn_sign_out">Sign Out</string>
     <string name="btn_later">Later</string>
     <string name="title_intro_1" translatable="false">Nintendo Switch Online</string>
     <string name="title_intro_2">Enjoy voice chat while gaming!</string>
@@ -20,4 +20,9 @@
     <string name="error_token">Invalid Auth Info</string>
     <string name="error_unknown">A unknown error occurred.</string>
     <string name="menu_settings">Settings</string>
+    <string name="title_settings">Settings</string>
+    <string name="confirm_sign_out">Would you like to sign out?</string>
+    <string name="progress_issue_token">Token is being issued…</string>
+    <string name="progress_query_user">Querying user information…</string>
+    <string name="progress_sign_in">Signing in…</string>
 </resources>

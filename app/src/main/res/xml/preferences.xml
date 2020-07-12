@@ -1,0 +1,34 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <PreferenceCategory app:title="사용자 정보">
+
+        <com.kimjio.coral.preference.IconButtonPreference
+            android:key="user_info"
+            android:src="@drawable/ic_sign_out"
+            app:contentDescription="@string/btn_sign_out"
+            app:icon="@drawable/ic_user_red"
+            tools:title="지오" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="닌텐도 어카운트">
+
+        <Preference
+            android:key="user_account"
+            app:title="Account"
+            tools:summary="ki***@g***/kjo***">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="https://accounts.nintendo.com" />
+        </Preference>
+
+        <Preference
+            android:key="support_code"
+            app:title="Support Code"
+            tools:summary="0799-0000-0000-0000-0000-0" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

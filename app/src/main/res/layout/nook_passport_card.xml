@@ -6,17 +6,23 @@
     <data>
 
         <variable
-            name="user"
-            type="com.kimjio.coral.data.nook.User" />
+            name="profile"
+            type="com.kimjio.coral.data.nook.UserProfile" />
+
+        <variable
+            name="land"
+            type="com.kimjio.coral.data.nook.LandProfile" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/passport_card"
         android:layout_width="match_parent"
-        android:layout_height="260dp"
+        android:layout_height="256dp"
         app:cardBackgroundColor="#FAF7DA"
         app:cardCornerRadius="24dp">
 
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/passport_inner_card"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="4dp"
@@ -28,14 +34,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="24dp"
                 android:layout_gravity="top"
-                app:endColor="#F3F5DF"
-                app:startColor="#F9F1D8">
+                app:cornerRadius="24dp"
+                app:fruit="@{land.fruit}"
+                app:zodiacSign="@{profile.birth.zodiacSign}">
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:src="@drawable/passport_title" />
+                    android:src="@drawable/passport_title"
+                    app:titleTheme="@{profile.birth.zodiacSign}"
+                    tools:theme="@style/Title" />
 
             </com.kimjio.coral.nook.widget.PassportWaveTopView>
 
@@ -44,7 +53,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginTop="24dp"
                 android:layout_marginBottom="40dp"
-                app:passportPattern="@style/Pattern.Libra">
+                app:patternTheme="@{profile.birth.zodiacSign}">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -64,36 +73,58 @@
 
                         <ImageView
                             android:id="@+id/image_profile"
-                            tools:srcCompat="@tools:sample/avatars"
                             android:layout_width="86dp"
                             android:layout_height="86dp"
+                            android:contentDescription="@string/residents_thumbnail"
                             android:padding="5dp"
-                            app:srcNookProfileUri="@{user.imageUri}" />
+                            app:srcNookProfileUri="@{profile.imageUri}"
+                            tools:srcCompat="@tools:sample/avatars" />
 
                     </androidx.cardview.widget.CardView>
 
-                    <!--FIXME cutoff-->
                     <TextView
                         android:id="@+id/text_name"
-                        tools:text="지오"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="4dp"
-                        android:text="@{user.name}"
+                        android:paddingTop="4dp"
+                        android:paddingBottom="6dp"
+                        android:text="@{profile.playerName}"
                         android:textColor="#4d3906"
                         android:textSize="20sp"
                         app:layout_constraintStart_toStartOf="@+id/image_profile_wrapper"
-                        app:layout_constraintTop_toBottomOf="@+id/image_profile_wrapper" />
+                        app:layout_constraintTop_toBottomOf="@+id/image_profile_wrapper"
+                        tools:text="지오" />
 
                     <View
                         android:id="@+id/divider2"
                         android:layout_width="0dp"
                         android:layout_height="2dp"
-                        android:layout_marginEnd="8dp"
                         android:background="#FAF7DA"
                         app:layout_constraintEnd_toStartOf="@+id/image_palm"
                         app:layout_constraintStart_toStartOf="@+id/text_name"
                         app:layout_constraintTop_toBottomOf="@+id/text_name" />
+
+                    <View
+                        android:id="@+id/divider4"
+                        android:layout_width="0dp"
+                        android:layout_height="2dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="16dp"
+                        android:background="#FAF7DA"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/layout_land"
+                        app:layout_constraintTop_toBottomOf="@+id/layout_land" />
+
+                    <View
+                        android:id="@+id/divider6"
+                        android:layout_width="0dp"
+                        android:layout_height="2dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="16dp"
+                        android:background="#FAF7DA"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/layout_land"
+                        app:layout_constraintTop_toBottomOf="@+id/text_handle" />
 
                     <ImageView
                         android:id="@+id/image_palm"
@@ -105,6 +136,119 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent" />
 
+                    <LinearLayout
+                        android:id="@+id/layout_birth"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        app:layout_constraintStart_toStartOf="@+id/text_name"
+                        app:layout_constraintTop_toBottomOf="@+id/divider2">
+
+                        <ImageView
+                            android:id="@+id/image_zodiac_sign"
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            app:imageResource="@{profile.birth.zodiacSign.drawableRes}"
+                            tools:src="@drawable/ic_nook_libra" />
+
+                        <TextView
+                            android:id="@+id/text_birthday"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="4dp"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+                            android:textColor="#938666"
+                            app:birth="@{profile.birth}"
+                            tools:ignore="SmallSp"
+                            tools:text="9월 27일생" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:id="@+id/divider3"
+                        android:layout_width="0dp"
+                        android:layout_height="2dp"
+                        android:layout_marginTop="4dp"
+                        android:background="#FAF7DA"
+                        app:layout_constraintEnd_toStartOf="@+id/image_palm"
+                        app:layout_constraintStart_toStartOf="@+id/text_name"
+                        app:layout_constraintTop_toBottomOf="@+id/layout_birth" />
+
+                    <LinearLayout
+                        android:id="@+id/layout_land"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="20dp"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        app:layout_constraintStart_toEndOf="@+id/image_profile_wrapper"
+                        app:layout_constraintTop_toTopOf="@+id/image_profile_wrapper">
+
+                        <ImageView
+                            android:id="@+id/image_island"
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:src="@drawable/ic_nook_island" />
+
+                        <TextView
+                            android:id="@+id/text_land"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="4dp"
+                            android:text="@{land.name}"
+                            android:textColor="#4d3906"
+                            android:textSize="10sp"
+                            tools:ignore="SmallSp"
+                            tools:text="호라이즌섬" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/layout_fruit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        app:layout_constraintEnd_toEndOf="@+id/divider4"
+                        app:layout_constraintStart_toEndOf="@+id/layout_land"
+                        app:layout_constraintTop_toTopOf="@+id/layout_land">
+
+                        <ImageView
+                            android:id="@+id/image_fruit"
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            app:imageResource="@{land.fruit.type.drawableRes}"
+                            tools:src="@drawable/ic_nook_apple" />
+
+                        <TextView
+                            android:id="@+id/text_fruit"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="4dp"
+                            android:text="@{land.fruit.name}"
+                            android:textColor="#938666"
+                            android:textSize="10sp"
+                            tools:ignore="SmallSp"
+                            tools:text="사과" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/text_handle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="@{profile.handleName}"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+                        android:textColor="#4d3906"
+                        app:layout_constraintStart_toStartOf="@+id/layout_land"
+                        app:layout_constraintTop_toBottomOf="@+id/divider4"
+                        tools:text="동물의 숲" />
+
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </com.kimjio.coral.nook.widget.PassportPatternLayout>
@@ -113,8 +257,44 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_gravity="bottom"
-                app:endColor="#FAE0CE"
-                app:startColor="#EAF6DF" />
+                app:cornerRadius="24dp"
+                app:fruit="@{land.fruit}"
+                app:zodiacSign="@{profile.birth.zodiacSign}">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp">
+
+                    <TextView
+                        android:id="@+id/text_registered_at"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:textColor="#938666"
+                        android:textSize="10sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:timeStamp="@{profile.registeredTimeStamp}"
+                        tools:ignore="SmallSp"
+                        tools:text="등록: 2020년 3월 20일" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:src="@drawable/passport_carets"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.kimjio.coral.nook.widget.PassportWaveBottomView>
 
         </com.google.android.material.card.MaterialCardView>
 

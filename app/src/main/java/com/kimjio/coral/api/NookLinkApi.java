@@ -1,9 +1,11 @@
 package com.kimjio.coral.api;
 
+import com.kimjio.coral.data.nook.LandProfile;
 import com.kimjio.coral.data.nook.Message;
 import com.kimjio.coral.data.nook.ResponseStatus;
 import com.kimjio.coral.data.nook.Token;
 import com.kimjio.coral.data.nook.TokenRequest;
+import com.kimjio.coral.data.nook.UserProfile;
 import com.kimjio.coral.data.nook.Users;
 
 import io.reactivex.Observable;
@@ -13,6 +15,8 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface NookLinkApi {
     String NOOK_LINK = "https://web.sd.lp1.acbaa.srv.nintendo.net/";
@@ -32,4 +36,9 @@ public interface NookLinkApi {
     @POST("api/sd/v1/messages")
     Observable<ResponseStatus> sendMessage(@Header("Authorization") String authorization, @Body Message message);
 
+    @GET("api/sd/v1/users/{id}/profile")
+    Observable<UserProfile> getUserProfile(@Header("Authorization") String authorization, @Path("id") String id, @Query("language") String language);
+
+    @GET("api/sd/v1/lands/{id}/profile")
+    Observable<LandProfile> getLandProfile(@Header("Authorization") String authorization, @Path("id") String id, @Query("language") String language);
 }

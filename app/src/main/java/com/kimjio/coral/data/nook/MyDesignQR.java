@@ -8,7 +8,7 @@ public class MyDesignQR {
     private String title;
     private long playerId;
     private String creator;
-    // sex 0: boy 1: girl
+    // 0: boy 1: girl
     private int gender;
     private long villageId;
     private String village;

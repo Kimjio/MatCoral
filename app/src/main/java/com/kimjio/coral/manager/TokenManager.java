@@ -59,4 +59,10 @@ public final class TokenManager {
     public boolean expired() {
         return System.currentTimeMillis() / 1000 > webApiTimestamp + webApiExpiresIn || webApiServerCredential == null;
     }
+
+    public void clear() {
+        nsoToken = webAppToken = null;
+        webApiServerCredential = null;
+        webApiTimestamp = webApiExpiresIn = 0;
+    }
 }

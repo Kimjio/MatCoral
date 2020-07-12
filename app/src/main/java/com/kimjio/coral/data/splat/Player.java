@@ -32,11 +32,11 @@ public class Player {
     @SerializedName("udemae_clam")
     private RankBattle rankClamBlitz;
     @SerializedName("udemae_rainmaker")
-    private RankBattle rankClamRainmaker;
+    private RankBattle rankRainmaker;
     @SerializedName("udemae_zones")
-    private RankBattle rankClamSplatZones;
+    private RankBattle rankSplatZones;
     @SerializedName("udemae_tower")
-    private RankBattle rankClamTowerControl;
+    private RankBattle rankTowerControl;
     private Weapon weapon;
 
     public Gear getHead() {
@@ -95,23 +95,23 @@ public class Player {
         return rankClamBlitz;
     }
 
-    public RankBattle getRankClamRainmaker() {
-        return rankClamRainmaker;
+    public RankBattle getRankRainmaker() {
+        return rankRainmaker;
     }
 
-    public RankBattle getRankClamSplatZones() {
-        return rankClamSplatZones;
+    public RankBattle getRankSplatZones() {
+        return rankSplatZones;
     }
 
-    public RankBattle getRankClamTowerControl() {
-        return rankClamTowerControl;
+    public RankBattle getRankTowerControl() {
+        return rankTowerControl;
     }
 
     public String getMaxRank() {
         int rankClam = rankClamBlitz.getNumber();
-        int rankRain = rankClamRainmaker.getNumber();
-        int rankZones = rankClamSplatZones.getNumber();
-        int rankTower = rankClamTowerControl.getNumber();
+        int rankRain = rankRainmaker.getNumber();
+        int rankZones = rankSplatZones.getNumber();
+        int rankTower = rankTowerControl.getNumber();
 
         int maxRank = Math.max(rankClam, Math.max(rankRain, Math.max(rankZones, rankTower)));
 

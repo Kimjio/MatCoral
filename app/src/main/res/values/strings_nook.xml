@@ -15,4 +15,9 @@
     <string name="design_usage_6">Horned hat</string>
     <string name="design_usage_7">Knit cap</string>
     <string name="design_usage_9">Custom design</string>
+    <string name="birthday">Birthday: %1$d/%2$d</string>
+    <string name="residents">Residents of %1$s</string>
+    <string name="registered_at">Registered on: %2$d/%3$d/%1$d</string>
+    <string name="thumbnail">Player icon</string>
+    <string name="residents_thumbnail">Profile picture of island resident</string>
 </resources>

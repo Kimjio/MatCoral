@@ -15,4 +15,9 @@
     <string name="design_usage_6">뿔 모자</string>
     <string name="design_usage_7">니트캡</string>
     <string name="design_usage_9">마이 디자인</string>
+    <string name="birthday">%1$d월 %2$d일생</string>
+    <string name="residents">%1$s 주민</string>
+    <string name="registered_at">등록: %1$d년 %2$d월 %3$d일</string>
+    <string name="thumbnail">플레이어 사진</string>
+    <string name="residents_thumbnail">주민 프로필 사진</string>
 </resources>

@@ -5,10 +5,12 @@ import android.net.Uri;
 import android.util.Base64;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.SavedStateHandle;
 
+import com.kimjio.coral.R;
 import com.kimjio.coral.api.FlapgApi;
 import com.kimjio.coral.api.NintendoAccountApi;
 import com.kimjio.coral.api.NintendoApi;
@@ -58,6 +60,9 @@ public class LoginViewModel extends BaseViewModel {
     private Me me;
     private FToken f;
 
+    private OnProgressChangedListener progressChangedListener;
+    private int step = 1;
+
     private MutableLiveData<SessionToken> sessionTokenLiveData = new MutableLiveData<>();
     protected MutableLiveData<Token> tokenLiveData = new MutableLiveData<>();
     protected MutableLiveData<Me> meLiveData = new MutableLiveData<>();
@@ -83,6 +88,7 @@ public class LoginViewModel extends BaseViewModel {
     }
 
     public void loadSessionToken() {
+        if (progressChangedListener != null) progressChangedListener.onProgressChanged(R.string.progress_issue_token, step++);
         disposable.add(getDisposable(accountApi.getSessionToken(CLIENT_ID, sessionTokenCode, state), sessionTokenLiveData));
     }
 
@@ -91,6 +97,7 @@ public class LoginViewModel extends BaseViewModel {
     }
 
     public void loadAccountToken(String sessionToken) {
+        if (progressChangedListener != null) progressChangedListener.onProgressChanged(R.string.progress_issue_token, step++);
         disposable.add(getDisposable(accountApi.getAccountToken(getUserAgent(), new AccountTokenRequest(CLIENT_ID, TOKEN_GRANT_TYPE, sessionToken)), tokenLiveData));
     }
 
@@ -99,6 +106,7 @@ public class LoginViewModel extends BaseViewModel {
     }
 
     public void loadMe(String accessToken) {
+        if (progressChangedListener != null) progressChangedListener.onProgressChanged(R.string.progress_query_user, step);
         disposable.add(getDisposable(accountApi.getMe(getUserAgent(), getAuthorization(accessToken)), meLiveData));
     }
 
@@ -112,6 +120,7 @@ public class LoginViewModel extends BaseViewModel {
     }
 
     public void loadFTokenNSO(String idToken) {
+        if (progressChangedListener != null) progressChangedListener.onProgressChanged(R.string.progress_issue_token, step++);
         String timestamp = Long.toString(System.currentTimeMillis() / 1000);
         disposable.add(
                 getWrapperDisposable(
@@ -123,6 +132,7 @@ public class LoginViewModel extends BaseViewModel {
     }
 
     public void loadFTokenAPP(String idToken) {
+        if (progressChangedListener != null) progressChangedListener.onProgressChanged(R.string.progress_issue_token, step++);
         String timestamp = Long.toString(System.currentTimeMillis() / 1000);
         disposable.add(
                 getWrapperDisposable(
@@ -137,16 +147,22 @@ public class LoginViewModel extends BaseViewModel {
         return tokenResponseLiveData;
     }
 
+    public void setProgressChangedListener(OnProgressChangedListener progressChangedListener) {
+        this.progressChangedListener = progressChangedListener;
+    }
+
     public void login(Me me, FToken f) {
         if (me != null) this.me = me;
         if (f != null) this.f = f;
         synchronized (LoginViewModel.class) {
-            if (this.me != null && this.f != null)
+            if (this.me != null && this.f != null) {
+                if (progressChangedListener != null) progressChangedListener.onProgressChanged(R.string.progress_sign_in, -1);
                 disposable.add(getWrapperDisposable(nintendoApi.login(getUserAgent(), NSO_VERSION,
                         new TokenRequestWrapper(
                                 new TokenRequest(this.me.getBirthday(), this.me.getCountry(), this.f.getToken(), this.f.getUUID(), Long.parseLong(this.f.getTimestamp()), this.f.getF())
                         )),
                         tokenResponseLiveData));
+            }
         }
     }
 
@@ -184,5 +200,9 @@ public class LoginViewModel extends BaseViewModel {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public interface OnProgressChangedListener {
+        void onProgressChanged(@StringRes int text, int step);
     }
 }

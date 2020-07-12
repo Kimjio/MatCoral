@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Preference.IconButton" parent="Preference.Material">
+        <item name="android:widgetLayout">@layout/preference_widget_icon_button</item>
+    </style>
+</resources>

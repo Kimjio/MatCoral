@@ -2,13 +2,13 @@ package com.kimjio.coral.data.auth;
 
 public class FirebaseCredential {
     private String accessToken;
-    private int expiresIn;
+    private long expiresIn;
 
     public String getAccessToken() {
         return accessToken;
     }
 
-    public int getExpiresIn() {
+    public long getExpiresIn() {
         return expiresIn;
     }
 }

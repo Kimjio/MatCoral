@@ -17,7 +17,7 @@ import retrofit2.http.POST;
 public interface NintendoApi {
     String NINTENDO = "https://api-lp1.znc.srv.nintendo.net/";
     String NSO_PACKAGE = "com.nintendo.znca";
-    String NSO_VERSION = "1.6.1";
+    String NSO_VERSION = "1.7.0";
 
     static String getUserAgent() {
         return NSO_PACKAGE + "/" + NSO_VERSION + " (Android/" + Build.VERSION.RELEASE + ")";
@@ -30,7 +30,7 @@ public interface NintendoApi {
     @POST("v1/Account/Login")
     @Headers({
             "Content-Type: application/json",
-            "X-Platform: Android"
+            "X-Platform: Android",
     })
     Observable<TokenResponseWrapper> login(@Header("User-Agent") String userAgent, @Header("X-ProductVersion") String version, @Body TokenRequestWrapper tokenRequestWrapper);
 

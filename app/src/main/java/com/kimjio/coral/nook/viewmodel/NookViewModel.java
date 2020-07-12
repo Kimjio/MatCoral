@@ -8,15 +8,18 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.SavedStateHandle;
 
 import com.kimjio.coral.api.NookLinkApi;
+import com.kimjio.coral.data.nook.LandProfile;
 import com.kimjio.coral.data.nook.Message;
 import com.kimjio.coral.data.nook.ResponseStatus;
 import com.kimjio.coral.data.nook.Token;
 import com.kimjio.coral.data.nook.TokenRequest;
 import com.kimjio.coral.data.nook.User;
+import com.kimjio.coral.data.nook.UserProfile;
 import com.kimjio.coral.util.RetrofitUtil;
 import com.kimjio.coral.viewmodel.BaseViewModel;
 
 import java.util.List;
+import java.util.Locale;
 
 import retrofit2.Response;
 
@@ -28,6 +31,8 @@ public class NookViewModel extends BaseViewModel {
     private MutableLiveData<User> userLiveData = new MutableLiveData<>();
     private MutableLiveData<Token> tokenLiveData = new MutableLiveData<>();
     private MutableLiveData<ResponseStatus> messageResponseStatusLiveData = new MutableLiveData<>();
+    private MutableLiveData<UserProfile> userProfileLiveData = new MutableLiveData<>();
+    private MutableLiveData<LandProfile> landProfileLiveData = new MutableLiveData<>();
 
     public NookViewModel(@NonNull Application application, SavedStateHandle savedStateHandle) {
         super(application, savedStateHandle);
@@ -80,5 +85,21 @@ public class NookViewModel extends BaseViewModel {
 
     public void sendMessageAll(String authorization, String message) {
         disposable.add(getDisposable(nookLinkApi.sendMessage(authorization, new Message("all_friend", message, null)), messageResponseStatusLiveData));
+    }
+
+    public LiveData<UserProfile> getUserProfile() {
+        return userProfileLiveData;
+    }
+
+    public void loadUserProfile(String authorization, String id) {
+        disposable.add(getDisposable(nookLinkApi.getUserProfile(authorization, id, Locale.getDefault().toLanguageTag()), userProfileLiveData));
+    }
+
+    public LiveData<LandProfile> getLandProfile() {
+        return landProfileLiveData;
+    }
+
+    public void loadLandProfile(String authorization, String id) {
+        disposable.add(getDisposable(nookLinkApi.getLandProfile(authorization, id, Locale.getDefault().toLanguageTag()), landProfileLiveData));
     }
 }
