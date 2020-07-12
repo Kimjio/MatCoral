@@ -35,7 +35,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDarkNook</item>
         <item name="colorSecondary">@color/colorSecondaryNook</item>
         <item name="colorError">@color/colorErrorNook</item>
-        <item name="fontFamily">@font/nintendo_p_seurat</item>
+        <item name="fontFamily">@font/asia_ksdnr</item>
         <item name="backgroundColor">#AAA</item>
         <item name="foregroundColor">#CCC</item>
     </style>
