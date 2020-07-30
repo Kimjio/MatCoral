@@ -30,6 +30,7 @@ import androidx.lifecycle.SavedStateViewModelFactory;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.kimjio.coral.R;
@@ -136,6 +137,7 @@ public class NookActivity extends BaseActivity<NookActivityBinding> {
                         values.put(MediaStore.Images.Media.IS_PENDING, 0);
                         contentResolver.update(uri, values, null, null);
                     }
+                    Snackbar.make(binding.getRoot(), "Saved.", Snackbar.LENGTH_SHORT).show();
                 }
             } catch (IOException e) {
                 e.printStackTrace();
