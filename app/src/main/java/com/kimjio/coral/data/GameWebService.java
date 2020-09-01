@@ -4,7 +4,9 @@ import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class GameWebService extends BaseData implements Parcelable {
     public static final long ID_SMASH = 0x13E3EF9E7E0000L;
@@ -15,9 +17,7 @@ public class GameWebService extends BaseData implements Parcelable {
     private String imageUri; //size. 384 x 384
     private String uri; //ex. SplatNet URL
     private List<String> whiteList; //WebView redirect 허용 주소들(와일드카드 포함); 사용 안함
-
-    public GameWebService() {
-    }
+    private List<Attribute> customAttributes;
 
     protected GameWebService(Parcel in) {
         super(in);
@@ -25,6 +25,7 @@ public class GameWebService extends BaseData implements Parcelable {
         imageUri = in.readString();
         uri = in.readString();
         whiteList = in.createStringArrayList();
+        customAttributes = in.createTypedArrayList(Attribute.CREATOR);
     }
 
     @Override
@@ -34,6 +35,7 @@ public class GameWebService extends BaseData implements Parcelable {
         dest.writeString(imageUri);
         dest.writeString(uri);
         dest.writeStringList(whiteList);
+        dest.writeTypedList(customAttributes);
     }
 
     @Override
@@ -67,5 +69,17 @@ public class GameWebService extends BaseData implements Parcelable {
 
     public List<String> getWhiteList() {
         return whiteList;
+    }
+
+    public List<Attribute> getCustomAttributeList() {
+        return customAttributes;
+    }
+
+    public Map<String, Object> getCustomAttributes() {
+        Map<String, Object> map = new HashMap<>();
+        for (Attribute attribute : customAttributes) {
+            map.put(attribute.getKey(), attribute.getValue(Attribute.getTypeByKey(attribute.getKey())));
+        }
+        return map;
     }
 }

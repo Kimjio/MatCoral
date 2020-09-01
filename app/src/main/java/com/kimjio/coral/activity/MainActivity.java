@@ -93,7 +93,7 @@ public class MainActivity extends BaseActivity<MainActivityBinding> {
             if (webServiceToken.getId() == GameWebService.ID_SPLAT2) {
                 startActivity(new Intent(MainActivity.this, SplatActivity.class).putExtra("web_service_token", webServiceToken));
             } else if (webServiceToken.getId() == GameWebService.ID_SMASH) {
-
+                // TODO Smash
             } else if (webServiceToken.getId() == GameWebService.ID_AC_NEW_HORIZON) {
                 startActivity(new Intent(MainActivity.this, NookActivity.class).putExtra("web_service_token", webServiceToken));
             }
@@ -152,7 +152,7 @@ public class MainActivity extends BaseActivity<MainActivityBinding> {
         INVALIDATE
     }
 
-    private static class LastClicked{
+    private static class LastClicked {
         long id;
         int position;
 
