@@ -28,11 +28,24 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:user="@{viewModel.user}" />
 
-            <include
+            <!--<include
                 android:id="@+id/passport_card"
                 layout="@layout/nook_passport_card"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                app:land="@{viewModel.landProfile}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="W,8:5"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/user_profile"
+                app:profile="@{viewModel.userProfile}" />-->
+
+            <com.kimjio.coral.nook.widget.PassportCard
+                android:id="@+id/passport_card"
+                android:layout_width="0dp"
+                android:layout_height="256dp"
                 android:layout_margin="16dp"
                 app:land="@{viewModel.landProfile}"
                 app:layout_constraintBottom_toBottomOf="parent"

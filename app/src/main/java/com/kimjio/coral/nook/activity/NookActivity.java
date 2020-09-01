@@ -103,9 +103,9 @@ public class NookActivity extends BaseActivity<NookActivityBinding> {
             MyDesignCaptureActivity.start(this);
         });*/
         binding.button.setOnClickListener(v -> {
-            Bitmap bitmap = Bitmap.createBitmap(binding.passportCard.passportCard.getWidth(), binding.passportCard.passportCard.getHeight(), Bitmap.Config.ARGB_8888);
+            Bitmap bitmap = Bitmap.createBitmap(binding.passportCard.getWidth(), binding.passportCard.getHeight(), Bitmap.Config.ARGB_8888);
             Canvas canvas = new Canvas(bitmap);
-            binding.passportCard.passportCard.draw(canvas);
+            binding.passportCard.draw(canvas);
             writeBitmap(bitmap);
         });
     }

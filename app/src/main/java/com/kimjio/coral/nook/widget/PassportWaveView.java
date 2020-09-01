@@ -94,6 +94,7 @@ public abstract class PassportWaveView extends FrameLayout {
             endColor = getEndColor();
         else
             startColor = getStartColor();
+        background();
     }
 
     public void setFruit(Fruit fruit) {
@@ -102,6 +103,12 @@ public abstract class PassportWaveView extends FrameLayout {
             startColor = getStartColor();
         else
             endColor = getEndColor();
+        background();
+    }
+
+    public void setCornerRadius(float cornerRadius) {
+        this.cornerRadius = cornerRadius;
+        background();
     }
 
     protected int getStartColor() {

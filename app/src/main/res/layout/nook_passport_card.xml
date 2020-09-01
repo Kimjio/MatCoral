@@ -96,7 +96,7 @@
                         tools:text="지오" />
 
                     <View
-                        android:id="@+id/divider2"
+                        android:id="@+id/divider1"
                         android:layout_width="0dp"
                         android:layout_height="2dp"
                         android:background="#FAF7DA"
@@ -105,7 +105,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/text_name" />
 
                     <View
-                        android:id="@+id/divider4"
+                        android:id="@+id/divider2"
                         android:layout_width="0dp"
                         android:layout_height="2dp"
                         android:layout_marginTop="4dp"
@@ -116,7 +116,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/layout_land" />
 
                     <View
-                        android:id="@+id/divider6"
+                        android:id="@+id/divider3"
                         android:layout_width="0dp"
                         android:layout_height="2dp"
                         android:layout_marginTop="4dp"
@@ -130,7 +130,6 @@
                         android:id="@+id/image_palm"
                         android:layout_width="88dp"
                         android:layout_height="88dp"
-                        android:layout_gravity="bottom|end"
                         android:layout_marginEnd="6dp"
                         android:src="@drawable/passport_palmtree"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -144,7 +143,7 @@
                         android:gravity="center"
                         android:orientation="horizontal"
                         app:layout_constraintStart_toStartOf="@+id/text_name"
-                        app:layout_constraintTop_toBottomOf="@+id/divider2">
+                        app:layout_constraintTop_toBottomOf="@+id/divider1">
 
                         <ImageView
                             android:id="@+id/image_zodiac_sign"
@@ -167,7 +166,7 @@
                     </LinearLayout>
 
                     <View
-                        android:id="@+id/divider3"
+                        android:id="@+id/divider4"
                         android:layout_width="0dp"
                         android:layout_height="2dp"
                         android:layout_marginTop="4dp"
@@ -182,7 +181,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="20dp"
-                        android:gravity="center"
                         android:orientation="horizontal"
                         app:layout_constraintStart_toEndOf="@+id/image_profile_wrapper"
                         app:layout_constraintTop_toTopOf="@+id/image_profile_wrapper">
@@ -212,7 +210,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:orientation="horizontal"
-                        app:layout_constraintEnd_toEndOf="@+id/divider4"
+                        app:layout_constraintEnd_toEndOf="@+id/divider2"
                         app:layout_constraintStart_toEndOf="@+id/layout_land"
                         app:layout_constraintTop_toTopOf="@+id/layout_land">
 
@@ -245,7 +243,7 @@
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
                         android:textColor="#4d3906"
                         app:layout_constraintStart_toStartOf="@+id/layout_land"
-                        app:layout_constraintTop_toBottomOf="@+id/divider4"
+                        app:layout_constraintTop_toBottomOf="@+id/divider2"
                         tools:text="동물의 숲" />
 
 

@@ -108,6 +108,7 @@ public class MyDesignCaptureActivity extends BaseActivity<MyDesignCaptureActivit
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         capture.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
