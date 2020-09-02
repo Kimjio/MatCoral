@@ -8,7 +8,7 @@ import com.kimjio.coral.data.nook.TokenRequest;
 import com.kimjio.coral.data.nook.UserProfile;
 import com.kimjio.coral.data.nook.Users;
 
-import io.reactivex.Observable;
+import io.reactivex.rxjava3.core.Observable;
 import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.GET;

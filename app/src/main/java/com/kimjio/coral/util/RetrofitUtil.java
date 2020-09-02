@@ -18,7 +18,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public final class RetrofitUtil {
@@ -42,7 +42,7 @@ public final class RetrofitUtil {
                                     .addInterceptor(loggingInterceptor)
                                     .build())
                             .addConverterFactory(GsonConverterFactory.create())
-                            .addCallAdapterFactory(RxJava2CallAdapterFactory.createAsync())
+                            .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
                             .build();
                     INSTANCES.put(url, retrofit);
                 }
@@ -65,7 +65,7 @@ public final class RetrofitUtil {
                                     .cookieJar(new PersistentCookieJar(new SetCookieCache(), new SharedPrefsCookiePersistor(context)))
                                     .build())
                             .addConverterFactory(GsonConverterFactory.create())
-                            .addCallAdapterFactory(RxJava2CallAdapterFactory.createAsync())
+                            .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
                             .build();
                     INSTANCES.put(url, retrofit);
                 }

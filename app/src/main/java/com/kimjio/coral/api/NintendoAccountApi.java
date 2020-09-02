@@ -8,7 +8,7 @@ import com.kimjio.coral.data.auth.Token;
 import com.kimjio.coral.data.auth.request.AccountTokenRequest;
 import com.kimjio.coral.data.me.Me;
 
-import io.reactivex.Observable;
+import io.reactivex.rxjava3.core.Observable;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
