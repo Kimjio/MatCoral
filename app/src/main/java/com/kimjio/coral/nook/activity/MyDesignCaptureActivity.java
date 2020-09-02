@@ -17,8 +17,6 @@ import com.kimjio.coral.data.nook.MyDesignQR;
 import com.kimjio.coral.databinding.MyDesignCaptureActivityBinding;
 import com.kimjio.coral.nook.util.MyDesignParser;
 
-import org.jetbrains.annotations.NotNull;
-
 public class MyDesignCaptureActivity extends BaseActivity<MyDesignCaptureActivityBinding> {
 
     public static final String RESULT_MULTIPLE = "SCAN_RESULT_MULTIPLE";
@@ -101,7 +99,7 @@ public class MyDesignCaptureActivity extends BaseActivity<MyDesignCaptureActivit
     }
 
     @Override
-    protected void onSaveInstanceState(@NotNull Bundle outState) {
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         capture.onSaveInstanceState(outState);
     }

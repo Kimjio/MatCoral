@@ -2,11 +2,12 @@ package com.kimjio.coral.util;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
+
 import com.franmontiel.persistentcookiejar.PersistentCookieJar;
 import com.franmontiel.persistentcookiejar.cache.SetCookieCache;
 import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor;
 
-import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.util.Map;
@@ -74,9 +75,9 @@ public final class RetrofitUtil {
 
     private static class DNTInterceptor implements Interceptor {
 
-        @NotNull
+        @NonNull
         @Override
-        public Response intercept(@NotNull Chain chain) throws IOException {
+        public Response intercept(@NonNull Chain chain) throws IOException {
             return chain.proceed(chain.request().newBuilder().addHeader("DNT", "1").build());
         }
     }
