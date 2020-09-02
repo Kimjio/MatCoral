@@ -8,7 +8,7 @@ import com.kimjio.coral.data.auth.WebServiceTokenWrapper;
 import com.kimjio.coral.data.auth.request.TokenRequestWrapper;
 import com.kimjio.coral.data.auth.request.WebServiceTokenRequestWrapper;
 
-import io.reactivex.Observable;
+import io.reactivex.rxjava3.core.Observable;
 import retrofit2.http.Body;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;

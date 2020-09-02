@@ -5,7 +5,7 @@ import com.kimjio.coral.data.splat.FullRecords;
 import com.kimjio.coral.data.splat.NicknameIcons;
 import com.kimjio.coral.data.splat.Stages;
 
-import io.reactivex.Observable;
+import io.reactivex.rxjava3.core.Observable;
 import retrofit2.Response;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
