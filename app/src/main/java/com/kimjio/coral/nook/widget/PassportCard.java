@@ -8,6 +8,7 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -36,6 +37,8 @@ public class PassportCard extends MaterialCardView {
     private ImageView titleImage;
     private PassportPatternLayout patternLayout;
     private ImageView profileView;
+    private MaterialCardView commentWrapper;
+    private TextView commentView;
     private TextView nameView;
     private TextView handleView;
     private ImageView zodiacView;
@@ -127,11 +130,9 @@ public class PassportCard extends MaterialCardView {
             nameView.setPadding(0, ViewUtils.dpToPx(context, 4), 0, ViewUtils.dpToPx(context, 6));
             nameView.setTextColor(textColor1);
             nameView.setTextSize(20);
-            ConstraintLayout.LayoutParams nameParams = new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            nameParams.startToStart = imageProfileWrapper.getId();
-            nameParams.topToBottom = imageProfileWrapper.getId();
-            nameView.setLayoutParams(nameParams);
-            layout.addView(nameView);
+
+            commentWrapper = new MaterialCardView(context);
+            commentWrapper.setId(generateViewId());
 
             AppCompatImageView palmView = new AppCompatImageView(context);
             palmView.setId(generateViewId());
@@ -199,10 +200,10 @@ public class PassportCard extends MaterialCardView {
                 landLayout.addView(landView);
             }
             ConstraintLayout.LayoutParams landParams = new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            landParams.topMargin = ViewUtils.dpToPx(context, 20);
+            landParams.topMargin = ViewUtils.dpToPx(context, 8);
             landParams.setMarginStart(ViewUtils.dpToPx(context, 8));
             landParams.startToEnd = imageProfileWrapper.getId();
-            landParams.topToTop = imageProfileWrapper.getId();
+            landParams.topToBottom = commentWrapper.getId();
             landLayout.setLayoutParams(landParams);
             layout.addView(landLayout);
 
@@ -234,6 +235,25 @@ public class PassportCard extends MaterialCardView {
             handleView.setLayoutParams(handleParams);
             layout.addView(handleView);
 
+            View divider3 = new View(context);
+            divider3.setId(generateViewId());
+            divider3.setBackgroundColor(backgroundColor);
+            ConstraintLayout.LayoutParams divider3Params = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_CONSTRAINT, ViewUtils.dpToPx(context, 2));
+            divider3Params.startToStart = landLayout.getId();
+            divider3Params.endToEnd = ConstraintLayout.LayoutParams.PARENT_ID;
+            divider3Params.topToBottom = handleView.getId();
+            divider3Params.topMargin = ViewUtils.dpToPx(context, 4);
+            divider3Params.setMarginEnd(ViewUtils.dpToPx(context, 16));
+            divider3.setLayoutParams(divider3Params);
+            layout.addView(divider3);
+
+            ConstraintLayout.LayoutParams nameParams = new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            nameParams.startToEnd = imageProfileWrapper.getId();
+            nameParams.topToBottom = divider3.getId();
+            nameParams.setMarginStart(ViewUtils.dpToPx(context, 8));
+            nameView.setLayoutParams(nameParams);
+            layout.addView(nameView);
+
             LinearLayout fruitLayout = new LinearLayout(context);
             fruitLayout.setId(generateViewId());
             fruitLayout.setOrientation(LinearLayout.HORIZONTAL);
@@ -257,28 +277,33 @@ public class PassportCard extends MaterialCardView {
             fruitLayout.setLayoutParams(fruitParams);
             layout.addView(fruitLayout);
 
-            View divider3 = new View(context);
-            divider3.setId(generateViewId());
-            divider3.setBackgroundColor(backgroundColor);
-            ConstraintLayout.LayoutParams divider3Params = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_CONSTRAINT, ViewUtils.dpToPx(context, 2));
-            divider3Params.startToStart = landLayout.getId();
-            divider3Params.endToEnd = ConstraintLayout.LayoutParams.PARENT_ID;
-            divider3Params.topToBottom = handleView.getId();
-            divider3Params.topMargin = ViewUtils.dpToPx(context, 4);
-            divider3Params.setMarginEnd(ViewUtils.dpToPx(context, 16));
-            divider3.setLayoutParams(divider3Params);
-            layout.addView(divider3);
-
-            View divider4 = new View(context);
-            divider4.setId(generateViewId());
-            divider4.setBackgroundColor(backgroundColor);
-            ConstraintLayout.LayoutParams divider4Params = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_CONSTRAINT, ViewUtils.dpToPx(context, 2));
-            divider4Params.topMargin = ViewUtils.dpToPx(context, 4);
-            divider4Params.startToStart = nameView.getId();
-            divider4Params.endToStart = palmView.getId();
-            divider4Params.topToBottom = birthLayout.getId();
-            divider4.setLayoutParams(divider4Params);
-            layout.addView(divider4);
+            commentWrapper.setVisibility(GONE);
+            commentWrapper.setCardBackgroundColor(backgroundColor);
+            commentWrapper.setRadius(ViewUtils.dpToPx(context, 16));
+            commentWrapper.setCardElevation(0);
+            {
+                commentView = new TextView(context);
+                commentView.setId(generateViewId());
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    commentView.setTextAppearance(R.style.TextAppearance_MaterialComponents_Caption);
+                } else {
+                    commentView.setTextAppearance(context, R.style.TextAppearance_MaterialComponents_Caption);
+                }
+                commentView.setTextColor(textColor1);
+                commentView.setIncludeFontPadding(false);
+                FrameLayout.LayoutParams commentParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                int vertical = ViewUtils.dpToPx(context, 4);
+                int horizontal = ViewUtils.dpToPx(context, 8);
+                commentParams.setMargins(horizontal, vertical, horizontal, vertical);
+                commentView.setLayoutParams(commentParams);
+                commentWrapper.addView(commentView);
+            }
+            ConstraintLayout.LayoutParams commentWrapperParams = new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            commentWrapperParams.setMarginStart(ViewUtils.dpToPx(context, 8));
+            commentWrapperParams.startToEnd = imageProfileWrapper.getId();
+            commentWrapperParams.topToTop = imageProfileWrapper.getId();
+            commentWrapper.setLayoutParams(commentWrapperParams);
+            layout.addView(commentWrapper);
 
             layout.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
             patternLayout.addView(layout);
@@ -333,7 +358,8 @@ public class PassportCard extends MaterialCardView {
         }
 
         LayoutParams innerCardParam = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        innerCardParam.setMargins(4, 4, 4, 4);
+        int margin = ViewUtils.dpToPx(context, 6);
+        innerCardParam.setMargins(margin, margin, margin, margin);
         innerCard.setLayoutParams(innerCardParam);
         addView(innerCard);
     }
@@ -355,6 +381,12 @@ public class PassportCard extends MaterialCardView {
                     .transform(new RoundedCornersTransformation(ViewUtils.dpToPx(profileView.getContext(), 12), 0))
                     .placeholder(drawable)
                     .into(profileView);
+            if (profile.getComment() != null) {
+                commentWrapper.setVisibility(VISIBLE);
+                commentView.setText(profile.getComment());
+            } else {
+                commentWrapper.setVisibility(GONE);
+            }
             nameView.setText(profile.getPlayerName());
             handleView.setText(profile.getHandleName());
             zodiacView.setImageResource(profile.getBirth().getZodiacSign().getDrawableRes());

@@ -15,57 +15,83 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layout_behavior=".widget.ScrollingViewBehavior"
+            app:spanCount="5"
+            tools:listitem="@layout/reaction_item" />
 
-            <include
-                android:id="@+id/user_profile"
-                layout="@layout/nook_user_item"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:user="@{viewModel.user}" />
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
 
-            <!--<include
-                android:id="@+id/passport_card"
-                layout="@layout/nook_passport_card"
-                android:layout_width="0dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                app:land="@{viewModel.landProfile}"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintDimensionRatio="W,8:5"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/user_profile"
-                app:profile="@{viewModel.userProfile}" />-->
+                android:orientation="vertical">
 
-            <com.kimjio.coral.nook.widget.PassportCard
-                android:id="@+id/passport_card"
-                android:layout_width="0dp"
-                android:layout_height="256dp"
-                android:layout_margin="16dp"
-                app:land="@{viewModel.landProfile}"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintDimensionRatio="W,8:5"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/user_profile"
-                app:profile="@{viewModel.userProfile}" />
+                <include
+                    android:id="@+id/user_profile"
+                    layout="@layout/nook_user_item"
+                    app:user="@{viewModel.user}" />
 
-            <Button
-                android:id="@+id/button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Extract Passport"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/passport_card" />
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                    <!--<include
+                        android:id="@+id/passport_card"
+                        layout="@layout/nook_passport_card"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="16dp"
+                        app:land="@{viewModel.landProfile}"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintDimensionRatio="W,8:5"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/user_profile"
+                        app:profile="@{viewModel.userProfile}" />-->
+
+                    <com.kimjio.coral.nook.widget.PassportCard
+                        android:id="@+id/passport_card"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        app:land="@{viewModel.landProfile}"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintDimensionRatio="W,8:5.5"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHeight_max="256dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:profile="@{viewModel.userProfile}" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <Button
+                    android:id="@+id/button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Extract Passport"
+                    app:layout_constraintTop_toBottomOf="@+id/passport_card" />
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_nav"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            app:menu="@menu/menu_nook" />
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/app_bar_layout"

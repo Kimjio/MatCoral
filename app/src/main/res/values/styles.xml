@@ -13,6 +13,21 @@
         <item name="android:statusBarColor">?colorPrimary</item>
         <item name="android:navigationBarColor">?colorPrimary</item>
         <item name="android:windowBackground">?colorPrimary</item>
+        <item name="splashImage">@drawable/ic_logo</item>
+    </style>
+
+    <style name="Theme.App.Splash.Splat" parent="Theme.App.Splat">
+        <item name="android:statusBarColor">?colorPrimary</item>
+        <item name="android:navigationBarColor">?colorPrimary</item>
+        <item name="android:windowBackground">?colorPrimary</item>
+        <item name="splashImage">@drawable/ic_logo</item>
+    </style>
+
+    <style name="Theme.App.Splash.Nook" parent="Theme.App.Nook">
+        <item name="android:statusBarColor">#685853</item>
+        <item name="android:navigationBarColor">#685853</item>
+        <item name="android:windowBackground">#685853</item>
+        <item name="splashImage">@drawable/ic_nooklink</item>
     </style>
 
     <style name="Theme.App.Intro" parent="Base.Theme.App">

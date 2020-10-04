@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="title_splat">오징어링\ue06c</string>
+    <string name="title_splat_short">오징어링2</string>
     <string name="splat_home">홈</string>
     <string name="splat_stages">스테이지</string>
     <string name="splat_stats">통계</string>

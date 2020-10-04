@@ -1,19 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shortcuts xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:targetApi="n_mr1">
     <shortcut
+        android:icon="@drawable/ic_nooklink"
         android:shortcutId="nook"
-        android:shortcutShortLabel="@string/title_nook"
-        android:icon="@drawable/ic_nook_apple"
-        tools:targetApi="n_mr1" >
+        android:shortcutShortLabel="@string/title_nook">
 
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetClass="com.kimjio.coral.activity.SplashActivity"
+            android:targetPackage="com.kimjio.coral">
+
+            <extra
+                android:name="shortcut"
+                android:value="nook" />
+        </intent>
     </shortcut>
 
     <shortcut
-        android:shortcutId="splat"
-        android:shortcutShortLabel="@string/title_splat"
         android:icon="@drawable/ic_splat_squid"
-        tools:targetApi="n_mr1" >
+        android:shortcutId="splat"
+        android:shortcutShortLabel="@string/title_splat_short">
 
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetClass="com.kimjio.coral.activity.SplashActivity"
+            android:targetPackage="com.kimjio.coral">
+
+            <extra
+                android:name="shortcut"
+                android:value="splat" />
+        </intent>
     </shortcut>
 </shortcuts>

@@ -1,7 +1,6 @@
 package com.kimjio.coral.viewmodel;
 
 import android.app.Application;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -11,7 +10,6 @@ import androidx.lifecycle.SavedStateHandle;
 import com.kimjio.coral.api.NintendoException;
 import com.kimjio.coral.data.Wrapper;
 
-import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 import java.util.concurrent.TimeUnit;
 
@@ -21,7 +19,6 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.observers.DisposableObserver;
 import io.reactivex.rxjava3.schedulers.Schedulers;
-import retrofit2.Response;
 
 public abstract class BaseViewModel extends AndroidViewModel {
     protected SavedStateHandle savedStateHandle;
@@ -46,18 +43,19 @@ public abstract class BaseViewModel extends AndroidViewModel {
                     }
                     return Observable.error(throwable);
                 }))
-                .subscribeWith(getDisposableObserver(liveData));
+                .subscribeWith(getDisposableObserver(observable, liveData));
     }
 
-    protected <T, D extends MutableLiveData<T>> DisposableObserver<T> getDisposableObserver(D liveData) {
+    protected <T, D extends MutableLiveData<T>> DisposableObserver<T> getDisposableObserver(Observable<T> observable, D liveData) {
         return new DisposableObserver<T>() {
             @Override
-            public void onNext(T result) {
+            public void onNext(@NonNull T result) {
                 liveData.postValue(result);
             }
 
             @Override
-            public void onError(Throwable e) {
+            public void onError(@NonNull Throwable e) {
+                BaseViewModel.this.onError(observable, e);
                 throwableLiveData.postValue(e);
             }
 
@@ -76,13 +74,13 @@ public abstract class BaseViewModel extends AndroidViewModel {
                     }
                     return Observable.error(throwable);
                 }))
-                .subscribeWith(getWrapperDisposableObserver(liveData));
+                .subscribeWith(getWrapperDisposableObserver(observable, liveData));
     }
 
-    protected  <T, W extends Wrapper<T>, D extends MutableLiveData<T>> DisposableObserver<W> getWrapperDisposableObserver(D liveData) {
+    protected  <T, W extends Wrapper<T>, D extends MutableLiveData<T>> DisposableObserver<W> getWrapperDisposableObserver(Observable<W> observable, D liveData) {
         return new DisposableObserver<W>() {
             @Override
-            public void onNext(W result) {
+            public void onNext(@NonNull W result) {
                 if (result.getData() == null) {
                     onError(new NintendoException(result.getStatus(), result.getErrorMessage()));
                 } else {
@@ -91,8 +89,8 @@ public abstract class BaseViewModel extends AndroidViewModel {
             }
 
             @Override
-            public void onError(Throwable e) {
-
+            public void onError(@NonNull Throwable e) {
+                BaseViewModel.this.onErrorWrapper(observable, e);
                 throwableLiveData.setValue(e);
             }
 
@@ -101,6 +99,10 @@ public abstract class BaseViewModel extends AndroidViewModel {
             }
         };
     }
+
+    protected abstract <T> void onError(Observable<T> observable, Throwable e);
+
+    protected abstract <T, W extends Wrapper<T>> void onErrorWrapper(Observable<W> observable, Throwable e);
 
     @Override
     protected void onCleared() {

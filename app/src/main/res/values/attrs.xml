@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <declare-styleable name="Splash">
+        <attr name="splashImage" format="reference" />
+    </declare-styleable>
     <declare-styleable name="introColors">
         <attr name="introBackground" format="color" />
         <attr name="introBar" format="color" />

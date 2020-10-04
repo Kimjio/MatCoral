@@ -8,8 +8,11 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.SavedStateHandle;
 
 import com.kimjio.coral.api.NookLinkApi;
+import com.kimjio.coral.data.Wrapper;
 import com.kimjio.coral.data.nook.LandProfile;
 import com.kimjio.coral.data.nook.Message;
+import com.kimjio.coral.data.nook.Reaction;
+import com.kimjio.coral.data.nook.Reactions;
 import com.kimjio.coral.data.nook.ResponseStatus;
 import com.kimjio.coral.data.nook.Token;
 import com.kimjio.coral.data.nook.TokenRequest;
@@ -21,18 +24,20 @@ import com.kimjio.coral.viewmodel.BaseViewModel;
 import java.util.List;
 import java.util.Locale;
 
+import io.reactivex.rxjava3.core.Observable;
 import retrofit2.Response;
 
 public class NookViewModel extends BaseViewModel {
     private final NookLinkApi nookLinkApi;
 
-    private MutableLiveData<Response<Void>> cookieResponseLiveData = new MutableLiveData<>();
-    private MutableLiveData<List<User>> usersLiveData = new MutableLiveData<>();
-    private MutableLiveData<User> userLiveData = new MutableLiveData<>();
-    private MutableLiveData<Token> tokenLiveData = new MutableLiveData<>();
-    private MutableLiveData<ResponseStatus> messageResponseStatusLiveData = new MutableLiveData<>();
-    private MutableLiveData<UserProfile> userProfileLiveData = new MutableLiveData<>();
-    private MutableLiveData<LandProfile> landProfileLiveData = new MutableLiveData<>();
+    private final MutableLiveData<Response<Void>> cookieResponseLiveData = new MutableLiveData<>();
+    private final MutableLiveData<List<User>> usersLiveData = new MutableLiveData<>();
+    private final MutableLiveData<User> userLiveData = new MutableLiveData<>();
+    private final MutableLiveData<Token> tokenLiveData = new MutableLiveData<>();
+    private final MutableLiveData<ResponseStatus> messageResponseStatusLiveData = new MutableLiveData<>();
+    private final MutableLiveData<UserProfile> userProfileLiveData = new MutableLiveData<>();
+    private final MutableLiveData<LandProfile> landProfileLiveData = new MutableLiveData<>();
+    private final MutableLiveData<Reactions> reactionsLiveData = new MutableLiveData<>();
 
     public NookViewModel(@NonNull Application application, SavedStateHandle savedStateHandle) {
         super(application, savedStateHandle);
@@ -87,6 +92,11 @@ public class NookViewModel extends BaseViewModel {
         disposable.add(getDisposable(nookLinkApi.sendMessage(authorization, new Message("all_friend", message, null)), messageResponseStatusLiveData));
     }
 
+    public void sendMessageReaction(String authorization, String message) {
+        disposable.add(getDisposable(nookLinkApi.sendMessage(authorization, new Message("emoticon", message, null)), messageResponseStatusLiveData));
+
+    }
+
     public LiveData<UserProfile> getUserProfile() {
         return userProfileLiveData;
     }
@@ -101,5 +111,23 @@ public class NookViewModel extends BaseViewModel {
 
     public void loadLandProfile(String authorization, String id) {
         disposable.add(getDisposable(nookLinkApi.getLandProfile(authorization, id, Locale.getDefault().toLanguageTag()), landProfileLiveData));
+    }
+
+    public LiveData<Reactions> getReactions() {
+        return reactionsLiveData;
+    }
+
+    public void loadReactions(String authorization) {
+        disposable.add(getDisposable(nookLinkApi.getReactions(authorization, Locale.getDefault().toLanguageTag()), reactionsLiveData));
+    }
+
+    @Override
+    protected <T> void onError(Observable<T> observable, Throwable e) {
+
+    }
+
+    @Override
+    protected <T, W extends Wrapper<T>> void onErrorWrapper(Observable<W> observable, Throwable e) {
+
     }
 }

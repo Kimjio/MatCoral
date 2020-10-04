@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="land_suffix">
-        <item />
-        <item />
-        <item />
-        <item />
+        <item>@string/land_suffix_0</item>
+        <item>@string/land_suffix_1</item>
+        <item>@string/land_suffix_2</item>
+        <item>@string/land_suffix_3</item>
     </string-array>
 </resources>

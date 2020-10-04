@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.ViewDataBinding;
 import androidx.lifecycle.SavedStateViewModelFactory;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.kimjio.coral.fragment.BaseFragment;
 import com.kimjio.coral.splat.viewmodel.SplatViewModel;
@@ -30,7 +30,7 @@ public abstract class SplatBaseFragment<VB extends ViewDataBinding> extends Base
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewModel = ViewModelProviders.of(requireActivity(), new SavedStateViewModelFactory(requireActivity().getApplication(), this, getArguments())).get(SplatViewModel.class);
+        viewModel = new ViewModelProvider(requireActivity(), new SavedStateViewModelFactory(requireActivity().getApplication(), this, getArguments())).get(SplatViewModel.class);
     }
 
     @Override

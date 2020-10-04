@@ -2,6 +2,7 @@ package com.kimjio.coral.api;
 
 import com.kimjio.coral.data.nook.LandProfile;
 import com.kimjio.coral.data.nook.Message;
+import com.kimjio.coral.data.nook.Reactions;
 import com.kimjio.coral.data.nook.ResponseStatus;
 import com.kimjio.coral.data.nook.Token;
 import com.kimjio.coral.data.nook.TokenRequest;
@@ -41,4 +42,7 @@ public interface NookLinkApi {
 
     @GET("api/sd/v1/lands/{id}/profile")
     Observable<LandProfile> getLandProfile(@Header("Authorization") String authorization, @Path("id") String id, @Query("language") String language);
+
+    @GET("api/sd/v1/emoticons")
+    Observable<Reactions> getReactions(@Header("Authorization") String authorization, @Query("language") String language);
 }

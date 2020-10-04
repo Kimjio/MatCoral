@@ -7,7 +7,7 @@ import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.SavedStateViewModelFactory;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.kimjio.coral.R;
 import com.kimjio.coral.api.NintendoException;
@@ -45,7 +45,7 @@ public class MainActivity extends BaseActivity<MainActivityBinding> {
         setSupportActionBar(binding.appBar);
         binding.list.setAdapter(adapter);
 
-        viewModel = ViewModelProviders.of(this, new SavedStateViewModelFactory(getApplication(), this, getIntent().getExtras())).get(MainViewModel.class);
+        viewModel = new ViewModelProvider(this, new SavedStateViewModelFactory(getApplication(), this, getIntent().getExtras())).get(MainViewModel.class);
 
         observeData();
     }

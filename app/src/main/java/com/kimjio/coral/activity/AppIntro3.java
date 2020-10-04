@@ -3,7 +3,7 @@ package com.kimjio.coral.activity;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
-import com.github.paolorotolo.appintro.AppIntro2;
+import com.github.appintro.AppIntro2;
 import com.kimjio.coral.R;
 
 public abstract class AppIntro3 extends AppIntro2 {

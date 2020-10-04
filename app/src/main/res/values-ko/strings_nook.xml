@@ -3,7 +3,7 @@
     <string name="title_nook">너굴포털</string>
     <string name="select_user">플레이어를 선택해주세요</string>
     <string name="reported_user">신고된 플레이어</string>
-    <string name="error_offline"><annotation name="color">모여봐요 동물의 숲</annotation>이 온라인 플레이 중일 때에만 메시지를 보낼 수 있습니다.\n온라인 상황을 확인해 주십시오.</string>
+    <string name="error_offline"><annotation name="color">모여봐요 동물의 숲</annotation>이 온라인 플레이 중일 때에만 메시지를 보낼 수 있습니다.\n온라인 상황을 확인해주십시오.</string>
     <string name="error_empty">비울 수 없습니다</string>
     <string name="error_net_unstable">통신 에러가 발생했습니다.\n네트워크 접속 상태를 확인한 후 다시 시도해 주십시오.</string>
     <string name="design_usage_0">긴소매 원피스</string>
@@ -15,9 +15,14 @@
     <string name="design_usage_6">뿔 모자</string>
     <string name="design_usage_7">니트캡</string>
     <string name="design_usage_9">마이 디자인</string>
+    <string name="land_suffix_0">섬</string>
+    <string name="land_suffix_1">@string/land_suffix_0</string>
+    <string name="land_suffix_2">@string/land_suffix_0</string>
+    <string name="land_suffix_3">도</string>
     <string name="birthday">%1$d월 %2$d일생</string>
     <string name="residents">%1$s 주민</string>
     <string name="registered_at">등록: %1$d년 %2$d월 %3$d일</string>
     <string name="thumbnail">플레이어 사진</string>
     <string name="residents_thumbnail">주민 프로필 사진</string>
+    <string name="land_master">주민 대표</string>
 </resources>
