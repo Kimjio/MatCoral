@@ -5,7 +5,7 @@ import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.SavedStateViewModelFactory;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.kimjio.coral.R;
@@ -27,7 +27,7 @@ public class SplatActivity extends BaseActivity<SplatActivityBinding> implements
         setSupportActionBar(binding.appBar);
         requireSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        viewModel = ViewModelProviders.of(this, new SavedStateViewModelFactory(getApplication(), this, getIntent().getExtras())).get(SplatViewModel.class);
+        viewModel = new ViewModelProvider(this, new SavedStateViewModelFactory(getApplication(), this, getIntent().getExtras())).get(SplatViewModel.class);
         observeData();
 
         WebServiceToken webServiceToken = getIntent().getParcelableExtra("web_service_token");

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="title_splat">SplatNet\ue06c</string>
+    <string name="title_splat_short">SplatNet2</string>
     <string name="splat_home">Home</string>
     <string name="splat_stages">Stages</string>
     <string name="splat_stats">My Stats</string>

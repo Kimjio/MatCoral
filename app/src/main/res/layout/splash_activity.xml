@@ -7,7 +7,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?colorPrimary">
+        android:background="?android:windowBackground">
 
         <ImageView
             android:id="@+id/imageView"
@@ -17,6 +17,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_logo" />
+            app:srcCompat="?splashImage" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

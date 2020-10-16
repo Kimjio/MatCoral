@@ -1,6 +1,5 @@
 package com.kimjio.coral.nook.util;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -8,10 +7,6 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 
 import com.google.common.primitives.Bytes;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public final class MyDesignRenderer {
     public static final int CANVAS_SIZE = 240;
@@ -121,7 +116,7 @@ public final class MyDesignRenderer {
         // back
         for (int i = 0; i < 48; i++) {
             for (int j = 0; j < 32; j++) {
-                if (checkIfMaskedFrontBack(usage, j, i)) {
+                if (isMaskedFrontBack(usage, j, i)) {
                     continue;
                 }
                 int index;
@@ -153,7 +148,7 @@ public final class MyDesignRenderer {
         // front
         for (int i = 0; i < 48; i++) {
             for (int j = 0; j < 32; j++) {
-                if (checkIfMaskedFrontBack(usage, j, i)) {
+                if (isMaskedFrontBack(usage, j, i)) {
                     continue;
                 }
                 int index;
@@ -185,7 +180,7 @@ public final class MyDesignRenderer {
         // right
         for (int i = 0; i < 16; i++) {
             for (int j = 0; j < 32; j++) {
-                if (checkIfMaskedLeftRight(usage, j, i)) {
+                if (isMaskedLeftRight(usage, j, i)) {
                     continue;
                 }
                 int index = (i + 64) * 32 + j;
@@ -212,7 +207,7 @@ public final class MyDesignRenderer {
         // left
         for (int i = 0; i < 16; i++) {
             for (int j = 0; j < 32; j++) {
-                if (checkIfMaskedLeftRight(usage, j, i)) {
+                if (isMaskedLeftRight(usage, j, i)) {
                     continue;
                 }
                 int index = (i + 80) * 32 + j;
@@ -239,24 +234,7 @@ public final class MyDesignRenderer {
         return bitmap;
     }
 
-    private static byte[] concat(byte[]... bytes) {
-        int length = 0;
-        for (byte[] bytes1 : bytes) {
-            length += bytes1.length;
-        }
-        byte[] concat = new byte[length];
-        int offset = 0;
-        for (int i = 0; i < bytes.length; i++) {
-            byte[] bytes1 = bytes[i];
-            for (int j = 0; j < bytes1.length; j++) {
-                concat[j + offset] = (byte) (bytes1[j] & 0xFF);
-            }
-            offset += bytes1.length;
-        }
-        return concat;
-    }
-
-    private static boolean checkIfMaskedFrontBack(int usage, int x, int y) {
+    private static boolean isMaskedFrontBack(int usage, int x, int y) {
         switch (usage) {
             case 3:
             case 4:
@@ -267,7 +245,7 @@ public final class MyDesignRenderer {
         }
     }
 
-    private static boolean checkIfMaskedLeftRight(int usage, int x, int y) {
+    private static boolean isMaskedLeftRight(int usage, int x, int y) {
         switch (usage) {
             case 1:
             case 4:

@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string-array name="land_suffix">
-        <item>섬</item>
-        <item>섬</item>
-        <item>섬</item>
-        <item>도</item>
-    </string-array>
-</resources>

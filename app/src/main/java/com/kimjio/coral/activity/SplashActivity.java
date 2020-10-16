@@ -4,30 +4,45 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 
-import com.kimjio.coral.manager.SessionTokenManager;
+import com.kimjio.coral.R;
 import com.kimjio.coral.databinding.SplashActivityBinding;
+import com.kimjio.coral.manager.SessionTokenManager;
 
 public class SplashActivity extends BaseActivity<SplashActivityBinding> {
+    private String shortcut;
+
     Handler handler = new Handler();
-    Runnable runnable = () -> {
-        Class<? extends Activity> activityClass = IntroActivity.class;
-        if (SessionTokenManager.getInstance(getApplication()).loadSessionToken() != null)
-            activityClass = LoginActivity.class;
-        startActivity(new Intent(this, activityClass));
-        finish();
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        shortcut = getIntent().getStringExtra("shortcut");
+        if (shortcut == null) shortcut = "";
+        switch (shortcut) {
+            case "nook":
+                setTheme(R.style.Theme_App_Splash_Nook);
+                break;
+            case "splat":
+                setTheme(R.style.Theme_App_Splash_Splat);
+                break;
+            default:
+                setTheme(R.style.Theme_App_Splash);
+        }
         super.onCreate(savedInstanceState);
-        handler.postDelayed(runnable, 2000);
+        handler.postDelayed(this::openActivity, 2000);
+    }
+
+    public void openActivity() {
+        Class<? extends Activity> activityClass = IntroActivity.class;
+        if (SessionTokenManager.getInstance(getApplication()).loadSessionToken() != null)
+            activityClass = LoginActivity.class;
+        startActivity(new Intent(this, activityClass).putExtra("shortcut", shortcut));
+        finish();
     }
 
     @Override
     public void finish() {
-        handler.removeCallbacks(runnable);
+        handler.removeCallbacks(this::openActivity);
         super.finish();
     }
 }

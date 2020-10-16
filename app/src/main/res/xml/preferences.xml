@@ -27,7 +27,7 @@
         <Preference
             android:key="support_code"
             app:title="Support Code"
-            tools:summary="0799-0000-0000-0000-0000-0" />
+            tools:summary="0000-0000-0000-0000-0000-0" />
 
     </PreferenceCategory>
 

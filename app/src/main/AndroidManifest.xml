@@ -18,13 +18,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.App">
         <activity
-            android:name=".activity.SplashActivity"
-            android:theme="@style/Theme.App.Splash">
+            android:name=".activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
         </activity>
         <activity
             android:name=".activity.IntroActivity"
@@ -43,7 +46,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.WelcomeActivity" />
-        <activity android:name=".activity.MainActivity">
+        <activity android:name=".activity.MainActivity"
+            android:launchMode="singleInstance">
             <intent-filter>
                 <action android:name="com.nintendo.znca.OPEN_FROM_NOTIFICATION" />
 
@@ -59,10 +63,6 @@
                 <data android:pathPattern="/.*" />
                 <data android:scheme="lounge" />
             </intent-filter>
-
-            <meta-data
-                android:name="android.app.shortcuts"
-                android:resource="@xml/shortcuts" />
         </activity>
         <activity
             android:name=".activity.SettingsActivity"

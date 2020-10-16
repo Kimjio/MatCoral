@@ -5,9 +5,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.browser.customtabs.CustomTabColorSchemeParams;
 import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.lifecycle.SavedStateViewModelFactory;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.kimjio.coral.R;
@@ -34,6 +35,9 @@ import okhttp3.ResponseBody;
 import retrofit2.HttpException;
 import retrofit2.Response;
 
+/**
+ * TODO use previous issued token
+ */
 public class LoginActivity extends BaseActivity<LoginActivityBinding> {
     private static LoginViewModel viewModel;
     private SessionTokenManager sessionTokenManager;
@@ -42,7 +46,7 @@ public class LoginActivity extends BaseActivity<LoginActivityBinding> {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        viewModel = ViewModelProviders.of(this, new SavedStateViewModelFactory(getApplication(), this, getIntent().getExtras())).get(LoginViewModel.class);
+        viewModel = new ViewModelProvider(this, new SavedStateViewModelFactory(getApplication(), this, getIntent().getExtras())).get(LoginViewModel.class);
 
         sessionTokenManager = SessionTokenManager.getInstance(getApplication());
         SessionToken sessionToken = sessionTokenManager.loadSessionToken();
@@ -54,7 +58,7 @@ public class LoginActivity extends BaseActivity<LoginActivityBinding> {
         }
         binding.buttonSignIn.setOnClickListener(v -> {
             CustomTabsIntent intent = new CustomTabsIntent.Builder()
-                    .setToolbarColor(getResources().getColor(R.color.colorPrimary))
+                    .setDefaultColorSchemeParams(new CustomTabColorSchemeParams.Builder().setToolbarColor(getResources().getColor(R.color.colorPrimary)).build())
                     .setShowTitle(true)
                     .build();
 

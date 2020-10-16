@@ -5,7 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringDef;
 
 public class Message {
-    @StringDef({"keyboard", "all_friend", "friend"})
+    @StringDef({"keyboard", "all_friend", "friend", "emoticon"})
     @interface Type {}
 
     @Type
@@ -18,7 +18,7 @@ public class Message {
         if (body == null) {
             throw new NullPointerException("body == null");
         }
-        if (type.equals("keyboard") || type.equals("all_friend") || type.equals("friend")) {
+        if (type.equals("keyboard") || type.equals("all_friend") || type.equals("friend") || type.equals("emoticon")) {
             if (type.equals("friend") && userId == null) {
                 throw new IllegalArgumentException("userId cannot be null when type is 'friend'");
             }

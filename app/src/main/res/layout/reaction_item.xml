@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="reaction"
+            type="com.kimjio.coral.data.nook.Reaction" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardElevation="0dp"
+        app:cardCornerRadius="8dp">
+
+        <com.kimjio.coral.widget.DrawableSizeTextView
+            android:id="@+id/text"
+            drawableTopUri="@{reaction.uri}"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@{reaction.name}"
+            android:textAlignment="center"
+            android:background="?selectableItemBackground"
+            app:drawableTopHeight="72dp"
+            app:drawableTopWidth="72dp"
+            tools:drawableTopCompat="@tools:sample/avatars"
+            tools:text="안녕!" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+</layout>

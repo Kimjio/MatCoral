@@ -27,7 +27,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.SavedStateViewModelFactory;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
@@ -40,6 +40,7 @@ import com.kimjio.coral.data.nook.MyDesignQR;
 import com.kimjio.coral.data.nook.User;
 import com.kimjio.coral.databinding.NookActivityBinding;
 import com.kimjio.coral.databinding.NookUserItemBinding;
+import com.kimjio.coral.nook.recycler.ReactionAdapter;
 import com.kimjio.coral.nook.util.MyDesignParser;
 import com.kimjio.coral.nook.util.MyDesignRenderer;
 import com.kimjio.coral.nook.viewmodel.NookViewModel;
@@ -47,7 +48,6 @@ import com.kimjio.coral.nook.viewmodel.NookViewModel;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -64,6 +64,10 @@ import static com.kimjio.coral.api.NintendoApi.getAuthorization;
 
 public class NookActivity extends BaseActivity<NookActivityBinding> {
     private NookViewModel viewModel;
+    private WebServiceToken webServiceToken;
+    private ReactionAdapter reactionAdapter = new ReactionAdapter((item, position) -> {
+        viewModel.sendMessageReaction(getAuthorization(viewModel.getToken().getValue().getToken()), item.getLabel());
+    });
 
     private static final String TAG = "NookActivity";
 
@@ -71,7 +75,7 @@ public class NookActivity extends BaseActivity<NookActivityBinding> {
     // 3001 required parameter not included (?)
     // 3002 empty
     // 3006 invalid parameter value (?)
-    // 4002 expired
+    // 4002, 4102 expired
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,12 +83,14 @@ public class NookActivity extends BaseActivity<NookActivityBinding> {
         setSupportActionBar(binding.appBar);
         requireSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        viewModel = ViewModelProviders.of(this, new SavedStateViewModelFactory(getApplication(), this, getIntent().getExtras())).get(NookViewModel.class);
+        viewModel = new ViewModelProvider(this, new SavedStateViewModelFactory(getApplication(), this, getIntent().getExtras())).get(NookViewModel.class);
         binding.setViewModel(viewModel);
         observeData();
 
-        WebServiceToken webServiceToken = getIntent().getParcelableExtra("web_service_token");
+        webServiceToken = getIntent().getParcelableExtra("web_service_token");
         getSessionCookie(Objects.requireNonNull(webServiceToken).getAccessToken());
+
+        binding.recyclerView.setAdapter(reactionAdapter);
 
         /*binding.button.setOnClickListener(v -> {
             NintendoCharactersView.showPopup(this, v, binding.editText);
@@ -181,6 +187,11 @@ public class NookActivity extends BaseActivity<NookActivityBinding> {
         viewModel.getToken().observe(this, token -> {
             viewModel.loadUserProfile(getAuthorization(token.getToken()), viewModel.getUser().getValue().getId());
             viewModel.loadLandProfile(getAuthorization(token.getToken()), viewModel.getUser().getValue().getLand().getId());
+            viewModel.loadReactions(getAuthorization(token.getToken()));
+        });
+        viewModel.getReactions().observe(this, reactions -> {
+            // 256
+            reactionAdapter.setReactions(reactions.getData());
         });
     }
 
@@ -227,6 +238,11 @@ public class NookActivity extends BaseActivity<NookActivityBinding> {
                 try {
                     JSONObject object = new JSONObject(body.string());
                     CharSequence error = object.getString("code");
+                    if (error.equals("4102")) {
+                        getSessionCookie(Objects.requireNonNull(webServiceToken).getAccessToken());
+                        return;
+                    }
+
                     if (error.equals("1001"))
                         error = getText(R.string.error_offline);
 
