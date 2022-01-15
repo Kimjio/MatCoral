@@ -14,6 +14,7 @@ import com.kimjio.coral.R;
 import com.kimjio.coral.api.FlapgApi;
 import com.kimjio.coral.api.NintendoAccountApi;
 import com.kimjio.coral.api.NintendoApi;
+import com.kimjio.coral.data.Wrapper;
 import com.kimjio.coral.data.auth.TokenResponse;
 import com.kimjio.coral.data.auth.SessionToken;
 import com.kimjio.coral.data.auth.Token;
@@ -48,6 +49,8 @@ import static com.kimjio.coral.api.NintendoApi.NSO_VERSION;
 import static com.kimjio.coral.util.StringUtils.UTF_8;
 import static com.kimjio.coral.util.StringUtils.getEncodedString;
 
+import io.reactivex.rxjava3.core.Observable;
+
 public class LoginViewModel extends BaseViewModel {
     protected final NintendoApi nintendoApi = RetrofitUtil.getInstance(NINTENDO).create(NintendoApi.class);
     protected final NintendoAccountApi accountApi = RetrofitUtil.getInstance(NINTENDO_ACCOUNTS).create(NintendoAccountApi.class);
@@ -72,6 +75,16 @@ public class LoginViewModel extends BaseViewModel {
 
     public LoginViewModel(@NonNull Application application, SavedStateHandle savedStateHandle) {
         super(application, savedStateHandle);
+    }
+
+    @Override
+    protected <T> void onError(Observable<T> observable, Throwable e) {
+
+    }
+
+    @Override
+    protected <T, W extends Wrapper<T>> void onErrorWrapper(Observable<W> observable, Throwable e) {
+
     }
 
     public Uri getLoginUri() {

@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.SavedStateHandle;
 
 import com.kimjio.coral.api.SplatNet2Api;
+import com.kimjio.coral.data.Wrapper;
 import com.kimjio.coral.data.splat.FullRecords;
 import com.kimjio.coral.data.splat.NicknameIcon;
 import com.kimjio.coral.util.RetrofitUtil;
@@ -15,6 +16,7 @@ import com.kimjio.coral.viewmodel.BaseViewModel;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Observable;
 import retrofit2.Response;
 
 public class SplatViewModel extends BaseViewModel {
@@ -27,6 +29,16 @@ public class SplatViewModel extends BaseViewModel {
     public SplatViewModel(@NonNull Application application, SavedStateHandle savedStateHandle) {
         super(application, savedStateHandle);
         splatNet2Api = RetrofitUtil.getInstance(application.getApplicationContext(), SplatNet2Api.SPLAT_NET_2).create(SplatNet2Api.class);
+    }
+
+    @Override
+    protected <T> void onError(Observable<T> observable, Throwable e) {
+
+    }
+
+    @Override
+    protected <T, W extends Wrapper<T>> void onErrorWrapper(Observable<W> observable, Throwable e) {
+
     }
 
     public LiveData<Response<Void>> getCookieResponseData() {

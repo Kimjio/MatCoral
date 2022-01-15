@@ -17,8 +17,6 @@ import com.kimjio.coral.viewmodel.BaseViewModel;
 import java.lang.reflect.ParameterizedType;
 import java.util.Objects;
 
-import dagger.android.support.DaggerAppCompatActivity;
-
 public abstract class BaseActivity<VB extends ViewDataBinding> extends AppCompatActivity {
     protected BaseViewModel viewModel;
     protected VB binding;
@@ -44,7 +42,9 @@ public abstract class BaseActivity<VB extends ViewDataBinding> extends AppCompat
 
     @LayoutRes
     private int getLayoutRes() {
-        String[] split = ((Class<?>) ((ParameterizedType) Objects.requireNonNull(getClass().getGenericSuperclass())).getActualTypeArguments()[0]).getSimpleName().replace("Binding", "").split("(?<=.)(?=\\p{Upper})");
+        String[] split = ((Class<?>) ((ParameterizedType) Objects.requireNonNull(getClass().getGenericSuperclass()))
+                .getActualTypeArguments()[0]).getSimpleName()
+                .replace("Binding", "").split("(?<=.)(?=\\p{Upper})");
         StringBuilder name = new StringBuilder();
 
         for (int i = 0; i < split.length; i++) {
@@ -66,7 +66,7 @@ public abstract class BaseActivity<VB extends ViewDataBinding> extends AppCompat
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         boolean result = false;
         if (item.getItemId() == android.R.id.home) {
-            finish();
+            onBackPressed();
             result = true;
         }
         return result || super.onOptionsItemSelected(item);

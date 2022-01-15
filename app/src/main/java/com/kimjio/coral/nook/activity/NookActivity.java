@@ -164,7 +164,7 @@ public class NookActivity extends BaseActivity<NookActivityBinding> {
         });
         viewModel.getUser().observe(this, user -> {
             // binding.userProfile.setUser(user);
-            viewModel.loadToken(user.getId());
+            viewModel.loadToken(webServiceToken.getAccessToken(), user.getId());
         });
         viewModel.getUsers().observe(this, users -> {
             if (viewModel.getUser().getValue() == null) {

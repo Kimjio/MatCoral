@@ -72,8 +72,8 @@ public class NookViewModel extends BaseViewModel {
         return tokenLiveData;
     }
 
-    public void loadToken(String userId) {
-        disposable.add(getDisposable(nookLinkApi.getAuthToken(new TokenRequest(userId)), tokenLiveData));
+    public void loadToken(String webServiceToken, String userId) {
+        disposable.add(getDisposable(nookLinkApi.getAuthToken(webServiceToken, new TokenRequest(userId)), tokenLiveData));
     }
 
     public LiveData<ResponseStatus> getMessageResponseStatus() {

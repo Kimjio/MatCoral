@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
+import androidx.core.splashscreen.SplashScreen;
+
 import com.kimjio.coral.R;
 import com.kimjio.coral.databinding.SplashActivityBinding;
 import com.kimjio.coral.manager.SessionTokenManager;
@@ -18,16 +20,19 @@ public class SplashActivity extends BaseActivity<SplashActivityBinding> {
     protected void onCreate(Bundle savedInstanceState) {
         shortcut = getIntent().getStringExtra("shortcut");
         if (shortcut == null) shortcut = "";
-        switch (shortcut) {
+        // TODO: Custom Splash
+        /*switch (shortcut) {
             case "nook":
-                setTheme(R.style.Theme_App_Splash_Nook);
+                setTheme(R.style.Theme_Splash_Nook);
                 break;
             case "splat":
-                setTheme(R.style.Theme_App_Splash_Splat);
+                setTheme(R.style.Theme_Splash_Splat);
                 break;
             default:
-                setTheme(R.style.Theme_App_Splash);
-        }
+                setTheme(R.style.Theme_Splash);
+        }*/
+        SplashScreen splashScreen = SplashScreen.installSplashScreen(this);
+        splashScreen.setKeepVisibleCondition(() -> true);
         super.onCreate(savedInstanceState);
         handler.postDelayed(this::openActivity, 2000);
     }
@@ -38,6 +43,12 @@ public class SplashActivity extends BaseActivity<SplashActivityBinding> {
             activityClass = LoginActivity.class;
         startActivity(new Intent(this, activityClass).putExtra("shortcut", shortcut));
         finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        handler.removeCallbacks(this::openActivity);
+        super.onBackPressed();
     }
 
     @Override

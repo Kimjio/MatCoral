@@ -21,6 +21,8 @@ import retrofit2.http.Query;
 
 public interface NookLinkApi {
     String NOOK_LINK = "https://web.sd.lp1.acbaa.srv.nintendo.net/";
+    // minVersion 2.1.0
+    String BLANCO_VERSION = "99.0.0";
 
     @GET(".")
     @Headers({
@@ -32,7 +34,10 @@ public interface NookLinkApi {
     Observable<Users> getUsers();
 
     @POST("api/sd/v1/auth_token")
-    Observable<Token> getAuthToken(@Body TokenRequest request);
+    @Headers({
+            "X-Blanco-Version: 99.0.0"
+    })
+    Observable<Token> getAuthToken(@Header("X-GameWebToken") String webServiceToken, @Body TokenRequest request);
 
     @POST("api/sd/v1/messages")
     Observable<ResponseStatus> sendMessage(@Header("Authorization") String authorization, @Body Message message);
