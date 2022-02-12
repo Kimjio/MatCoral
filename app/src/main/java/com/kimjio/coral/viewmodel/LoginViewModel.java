@@ -66,12 +66,12 @@ public class LoginViewModel extends BaseViewModel {
     private OnProgressChangedListener progressChangedListener;
     private int step = 1;
 
-    private MutableLiveData<SessionToken> sessionTokenLiveData = new MutableLiveData<>();
-    protected MutableLiveData<Token> tokenLiveData = new MutableLiveData<>();
-    protected MutableLiveData<Me> meLiveData = new MutableLiveData<>();
-    protected MutableLiveData<FToken> fTokenNSOLiveData = new MutableLiveData<>();
-    protected MutableLiveData<FToken> fTokenAPPLiveData = new MutableLiveData<>();
-    protected MutableLiveData<TokenResponse> tokenResponseLiveData = new MutableLiveData<>();
+    private final MutableLiveData<SessionToken> sessionTokenLiveData = new MutableLiveData<>();
+    private final MutableLiveData<Token> tokenLiveData = new MutableLiveData<>();
+    private final MutableLiveData<Me> meLiveData = new MutableLiveData<>();
+    private final MutableLiveData<FToken> fTokenNSOLiveData = new MutableLiveData<>();
+    private final MutableLiveData<FToken> fTokenAPPLiveData = new MutableLiveData<>();
+    protected final MutableLiveData<TokenResponse> tokenResponseLiveData = new MutableLiveData<>();
 
     public LoginViewModel(@NonNull Application application, SavedStateHandle savedStateHandle) {
         super(application, savedStateHandle);

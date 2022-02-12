@@ -7,7 +7,9 @@ import android.view.View;
 
 import androidx.browser.customtabs.CustomTabColorSchemeParams;
 import androidx.browser.customtabs.CustomTabsIntent;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.SavedStateViewModelFactory;
+import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -15,6 +17,8 @@ import com.kimjio.coral.R;
 import com.kimjio.coral.api.FlapgApi;
 import com.kimjio.coral.api.NintendoException;
 import com.kimjio.coral.data.auth.SessionToken;
+import com.kimjio.coral.data.auth.flapg.FToken;
+import com.kimjio.coral.data.me.Me;
 import com.kimjio.coral.databinding.LoginActivityBinding;
 import com.kimjio.coral.manager.SessionTokenManager;
 import com.kimjio.coral.manager.TokenManager;
@@ -28,8 +32,9 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 
 import okhttp3.ResponseBody;
 import retrofit2.HttpException;
@@ -98,14 +103,16 @@ public class LoginActivity extends BaseActivity<LoginActivityBinding> {
             viewModel.loadMe(token.getAccessToken());
             viewModel.loadFTokenNSO(token.getIdToken());
         });
-        viewModel.getMe().observe(this, me -> {
-            UserManager.getInstance().setAccountUser(me);
-            viewModel.login(me, null);
-        });
-        viewModel.getFTokenNSO().observe(this, fToken -> {
-            TokenManager.getInstance().setNsoToken(fToken);
-            viewModel.login(null, Objects.requireNonNull(fToken));
-        });
+        LiveData<List<Object>> meToken = Transformations.switchMap(viewModel.getMe(),
+                (me) -> {
+                    UserManager.getInstance().setAccountUser(me);
+                    return Transformations.map(viewModel.getFTokenNSO(),
+                            (tokenNso) -> {
+                                TokenManager.getInstance().setNsoToken(tokenNso);
+                                return Arrays.asList(me, tokenNso);
+                            });
+                });
+        meToken.observe(this, (list) -> viewModel.login((Me) list.get(0), (FToken) list.get(1)));
         viewModel.getFTokenAPP().observe(this, fToken -> {
             TokenManager.getInstance().setWebAppToken(fToken);
             Intent intent = new Intent(this, MainActivity.class);

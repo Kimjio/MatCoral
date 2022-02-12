@@ -4,7 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 /**
- * NSO 구독 여부
+ * NSO 구독 정보
  */
 public class Membership extends BaseData {
     private boolean isActive; //구독 여부

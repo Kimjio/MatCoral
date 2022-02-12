@@ -17,8 +17,6 @@ import com.kimjio.coral.R;
 import java.lang.reflect.ParameterizedType;
 import java.util.Objects;
 
-import dagger.android.support.DaggerFragment;
-
 public abstract class BaseFragment<VB extends ViewDataBinding> extends Fragment {
     protected VB binding;
 

@@ -22,6 +22,10 @@ public class FToken {
         return timestamp;
     }
 
+    public int getTimestampMillisecond() {
+        return Integer.parseInt(timestamp, 10) * 1000;
+    }
+
     public String getUUID() {
         return uuid;
     }

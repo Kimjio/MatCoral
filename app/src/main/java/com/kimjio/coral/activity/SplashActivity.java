@@ -11,6 +11,7 @@ import com.kimjio.coral.R;
 import com.kimjio.coral.databinding.SplashActivityBinding;
 import com.kimjio.coral.manager.SessionTokenManager;
 
+// TODO: Manage Auth
 public class SplashActivity extends BaseActivity<SplashActivityBinding> {
     private String shortcut;
 
@@ -32,7 +33,7 @@ public class SplashActivity extends BaseActivity<SplashActivityBinding> {
                 setTheme(R.style.Theme_Splash);
         }*/
         SplashScreen splashScreen = SplashScreen.installSplashScreen(this);
-        splashScreen.setKeepVisibleCondition(() -> true);
+        splashScreen.setKeepOnScreenCondition(() -> true);
         super.onCreate(savedInstanceState);
         handler.postDelayed(this::openActivity, 2000);
     }

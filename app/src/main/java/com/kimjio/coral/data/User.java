@@ -18,7 +18,7 @@ public class User extends BaseData {
     private String name;
     private String imageUri;
     private String supportId; //지원 코드
-    private Membership membership; //NSO 구독 여부
+    private Membership membership; //NSO 구독 정보
     private boolean isFriend;
     private boolean isInvited;
     private boolean isJoinedVoip; //음성 사용 중?
