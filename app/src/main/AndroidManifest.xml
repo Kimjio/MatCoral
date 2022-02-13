@@ -32,6 +32,12 @@
                 android:name="android.app.shortcuts"
                 android:resource="@xml/shortcuts" />
         </activity>
+        <activity-alias
+            android:name="Monochrome"
+            android:targetActivity=".activity.SplashActivity"
+            android:icon="@mipmap/ic_launcher_monochrome"
+            android:roundIcon="@mipmap/ic_launcher_round_monochrome">
+        </activity-alias>
         <activity
             android:name=".activity.IntroActivity"
             android:theme="@style/Theme.App.Intro" />

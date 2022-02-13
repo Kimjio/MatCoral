@@ -17,7 +17,7 @@
         <ImageView
             android:id="@+id/image"
             srcCircleUri="@{user.reported ? null : user.imageUri}"
-            srcReported="@{@drawable/ic_reported_user}"
+            srcReported="@{@drawable/ic_nook_reported_user}"
             reported="@{user.reported}"
             android:layout_width="56dp"
             android:layout_height="56dp"

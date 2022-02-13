@@ -9,7 +9,7 @@ import java.nio.charset.StandardCharsets;
 
 public final class StringUtils {
 
-    public static final String UTF_8 = Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP_MR1 ? "UTF8" : StandardCharsets.UTF_8.toString();
+    public static final String UTF_8 = Build.VERSION.SDK_INT <= Build.VERSION_CODES.M ? "UTF8" : StandardCharsets.UTF_8.toString();
 
     private StringUtils() {
     }

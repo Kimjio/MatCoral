@@ -40,11 +40,13 @@
         </com.kimjio.coral.splat.widget.SplatSwipeRefreshLayout>
 
         <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/app_bar_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:stateListAnimator="@null"
-            android:theme="@style/ThemeOverlay.App.Splat.ActionBar">
+            android:theme="@style/ThemeOverlay.App.Splat.ActionBar"
+            android:fitsSystemWindows="true"
+            app:liftOnScroll="true"
+            app:liftOnScrollTargetViewId="@+id/scroll_home">
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/app_bar"

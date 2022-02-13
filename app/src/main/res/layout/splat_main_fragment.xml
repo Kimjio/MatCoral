@@ -5,12 +5,16 @@
 
     <data>
 
+        <import
+            type="com.kimjio.coral.R"/>
+
         <variable
             name="viewModel"
             type="com.kimjio.coral.splat.viewmodel.SplatViewModel" />
     </data>
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/scroll_home"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/background_splat_main">
@@ -19,7 +23,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingStart="16dp"
-            android:paddingTop="?actionBarSize"
+            app:paddingTopSystemInsetsAttr="@{R.attr.actionBarSize}"
+            app:paddingTopSystemInsetsDp="@{16}"
             android:paddingEnd="16dp">
 
             <include

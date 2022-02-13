@@ -1,5 +1,6 @@
 package com.kimjio.coral.util;
 
+import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.text.TextUtils;
@@ -9,10 +10,13 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.AttrRes;
 import androidx.annotation.Nullable;
 import androidx.annotation.RawRes;
 import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.databinding.BindingAdapter;
 import androidx.databinding.BindingConversion;
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
@@ -38,6 +42,21 @@ import jp.wasabeef.glide.transformations.CropCircleWithBorderTransformation;
 public final class BindingHelper {
 
     private BindingHelper() {
+    }
+
+    @BindingAdapter({"paddingTopSystemInsetsAttr","paddingTopSystemInsetsDp"})
+    public static void setPaddingTopSystemInsets(View view, @AttrRes int paddingTopSystemInsetsAttr, int paddingTopSystemInsetsDp) {
+        TypedArray typedArray = view.getContext().obtainStyledAttributes(new int[]{paddingTopSystemInsetsAttr});
+        int paddingPx = typedArray.getDimensionPixelSize(0, 0);
+        typedArray.recycle();
+        ViewCompat.setOnApplyWindowInsetsListener(view, (view1, insets) -> {
+            int systemTop = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top;
+            view.setPadding(view.getPaddingLeft(),
+                    systemTop + paddingPx + ViewUtils.dpToPx(view.getContext(), paddingTopSystemInsetsDp),
+                    view.getPaddingRight(),
+                    view.getPaddingBottom());
+            return insets;
+        });
     }
 
     @BindingAdapter("srcUri")
