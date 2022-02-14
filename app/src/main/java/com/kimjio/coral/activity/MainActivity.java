@@ -1,17 +1,24 @@
 package com.kimjio.coral.activity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.SavedStateViewModelFactory;
+import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.kimjio.coral.R;
 import com.kimjio.coral.api.NintendoException;
 import com.kimjio.coral.data.GameWebService;
+import com.kimjio.coral.data.auth.flapg.FToken;
+import com.kimjio.coral.data.me.Me;
 import com.kimjio.coral.databinding.MainActivityBinding;
 import com.kimjio.coral.manager.SessionTokenManager;
 import com.kimjio.coral.manager.TokenManager;
@@ -21,6 +28,8 @@ import com.kimjio.coral.recycler.GameWebServiceAdapter;
 import com.kimjio.coral.splat.activity.SplatActivity;
 import com.kimjio.coral.viewmodel.MainViewModel;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 public class MainActivity extends BaseActivity<MainActivityBinding> {
@@ -39,6 +48,13 @@ public class MainActivity extends BaseActivity<MainActivityBinding> {
         }
     });
 
+    private BroadcastReceiver localeChangeReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            viewModel.loadAccountToken(SessionTokenManager.getInstance(MainActivity.this).loadSessionToken().getSessionToken());
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +68,8 @@ public class MainActivity extends BaseActivity<MainActivityBinding> {
 
     @Override
     protected void observeData() {
+        IntentFilter localeFilter = new IntentFilter(Intent.ACTION_LOCALE_CHANGED);
+        registerReceiver(localeChangeReceiver, localeFilter);
         viewModel.getThrowable().observe(this, throwable -> {
             if (throwable instanceof NintendoException) {
                 handleNintendoException((NintendoException) throwable);
@@ -87,6 +105,16 @@ public class MainActivity extends BaseActivity<MainActivityBinding> {
             viewModel.loadMe(token.getAccessToken());
             viewModel.loadFTokenNSO(token.getIdToken());
         });
+        LiveData<List<Object>> meToken = Transformations.switchMap(viewModel.getMe(),
+                (me) -> {
+                    UserManager.getInstance().setAccountUser(me);
+                    return Transformations.map(viewModel.getFTokenNSO(),
+                            (tokenNso) -> {
+                                TokenManager.getInstance().setNsoToken(tokenNso);
+                                return Arrays.asList(me, tokenNso);
+                            });
+                });
+        meToken.observe(this, (list) -> viewModel.login((Me) list.get(0), (FToken) list.get(1)));
         viewModel.getGameWebServices().observe(this, gameWebServices ->
                 adapter.setGameWebServices(gameWebServices));
         viewModel.setTokenListener((webServiceToken, position) -> {
@@ -128,6 +156,12 @@ public class MainActivity extends BaseActivity<MainActivityBinding> {
         } else {
             viewModel.loadGameWebServices();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(localeChangeReceiver);
     }
 
     private void getToken(CauseBy causeBy) {

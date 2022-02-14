@@ -20,11 +20,11 @@ import com.kimjio.coral.splat.viewmodel.SplatViewModel;
 
 public class SplatFragmentAdapter extends FragmentStateAdapter {
 
-    private MainFragment mainFragment = new MainFragment();
-    private StagesFragment stagesFragment = new StagesFragment();
-    private StatsFragment statsFragment = new StatsFragment();
-    private BattlesFragment battlesFragment = new BattlesFragment();
-    private SalmonFragment salmonFragment = new SalmonFragment();
+    private final MainFragment mainFragment = new MainFragment();
+    private final StagesFragment stagesFragment = new StagesFragment();
+    private final StatsFragment statsFragment = new StatsFragment();
+    private final BattlesFragment battlesFragment = new BattlesFragment();
+    private final SalmonFragment salmonFragment = new SalmonFragment();
 
     public SplatFragmentAdapter(@NonNull FragmentActivity fragmentActivity) {
         super(fragmentActivity);

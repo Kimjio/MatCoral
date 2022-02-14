@@ -10,11 +10,11 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.SavedStateViewModelFactory;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelStore;
-import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.elevation.SurfaceColors;
@@ -47,6 +47,18 @@ public class SplatActivity extends BaseActivity<SplatActivityBinding> implements
 
         binding.viewPager.setAdapter(adapter = new SplatFragmentAdapter(this));
         binding.viewPager.setUserInputEnabled(false);
+        binding.viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                Fragment fragment = getSupportFragmentManager().findFragmentByTag("f" + binding.viewPager.getCurrentItem());
+                if (fragment != null) {
+                    View fragmentView = fragment.getView();
+                    if (fragmentView != null)
+                        binding.appBarLayout.setLifted(fragmentView.findViewById(binding.appBarLayout.getLiftOnScrollTargetViewId()).getScrollY() > 0);
+                }
+            }
+        });
 
         binding.bottomNavigationView.setOnItemSelectedListener(this::onOptionsItemSelected);
 
@@ -60,7 +72,7 @@ public class SplatActivity extends BaseActivity<SplatActivityBinding> implements
         binding.swipeRefreshLayout.setRefreshing(true);
 
         MaterialShapeDrawable drawable = new MaterialShapeDrawable();
-        drawable.setFillColor(new ColorStateList(new int[][]{new int[]{R.attr.state_lifted},new int[]{-R.attr.state_lifted}}, new int[]{SurfaceColors.SURFACE_2.getColor(this), Color.TRANSPARENT}));
+        drawable.setFillColor(new ColorStateList(new int[][]{new int[]{R.attr.state_lifted}, new int[]{-R.attr.state_lifted}}, new int[]{SurfaceColors.SURFACE_2.getColor(this), Color.TRANSPARENT}));
 
         binding.appBarLayout.setBackground(drawable);
     }
@@ -104,6 +116,7 @@ public class SplatActivity extends BaseActivity<SplatActivityBinding> implements
             case R.id.menu_stats:
                 index = 2;
                 result = true;
+                scrollId = R.id.scroll_stats;
                 break;
             case R.id.menu_battles:
                 index = 3;
@@ -112,12 +125,12 @@ public class SplatActivity extends BaseActivity<SplatActivityBinding> implements
             case R.id.menu_salmon:
                 index = 4;
                 result = true;
+                scrollId = R.id.scroll_salmon;
                 break;
         }
+        binding.appBarLayout.setLiftOnScrollTargetViewId(scrollId);
         if (index >= 0)
             binding.viewPager.setCurrentItem(index, false);
-        binding.appBarLayout.setLiftOnScrollTargetViewId(scrollId);
-        binding.appBarLayout.setLifted(true);
         return result || super.onOptionsItemSelected(item);
     }
 
