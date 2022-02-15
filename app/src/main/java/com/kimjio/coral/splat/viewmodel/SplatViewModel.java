@@ -22,9 +22,9 @@ import retrofit2.Response;
 public class SplatViewModel extends BaseViewModel {
     private final SplatNet2Api splatNet2Api;
 
-    private MutableLiveData<Response<Void>> cookieResponseLiveData = new MutableLiveData<>();
-    private MutableLiveData<FullRecords> fullRecordsLiveData = new MutableLiveData<>();
-    private MutableLiveData<List<NicknameIcon>> nicknameIconsLiveData = new MutableLiveData<>();
+    private final MutableLiveData<Response<Void>> cookieResponseLiveData = new MutableLiveData<>();
+    private final MutableLiveData<FullRecords> fullRecordsLiveData = new MutableLiveData<>();
+    private final MutableLiveData<List<NicknameIcon>> nicknameIconsLiveData = new MutableLiveData<>();
 
     public SplatViewModel(@NonNull Application application, SavedStateHandle savedStateHandle) {
         super(application, savedStateHandle);

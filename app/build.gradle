@@ -28,32 +28,17 @@ android {
     buildToolsVersion '31.0.0'
 }
 
-configurations.all {
-    resolutionStrategy {
-        force 'androidx.lifecycle:lifecycle-runtime:2.4.1'
-        force 'androidx.lifecycle:lifecycle-viewmodel:2.4.1'
-        force 'androidx.lifecycle:lifecycle-viewmodel-savedstate:2.4.1'
-    }
-}
-
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation ('androidx.appcompat:appcompat:1.4.1') {
-        exclude group: 'androidx.lifecycle', module:'lifecycle-runtime'
-        exclude group: 'androidx.lifecycle', module:'lifecycle-viewmodel'
-        exclude group: 'androidx.lifecycle', module:'lifecycle-viewmodel-savedstate'
+        exclude group: 'androidx.lifecycle', module:'lifecycle-viewmodel-ktx'
     }
     implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
     implementation 'com.google.android.material:material:1.6.0-alpha02'
-    implementation 'androidx.lifecycle:lifecycle-runtime:2.4.1'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel:2.4.1'
-    implementation 'androidx.lifecycle:lifecycle-livedata:2.4.1'
-    implementation 'androidx.lifecycle:lifecycle-common-java8:2.4.1'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-savedstate:2.4.1'
     implementation 'androidx.browser:browser:1.4.0'
     implementation ('androidx.preference:preference:1.2.0') {
-        exclude group: 'androidx.lifecycle', module:'lifecycle-viewmodel-ktx'
+        exclude group: 'androidx.fragment', module:'fragment-ktx'
     }
     implementation 'com.kimjio:customtabs:1.1.0'
     implementation 'com.airbnb.android:lottie:4.2.2'
