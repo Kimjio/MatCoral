@@ -31,4 +31,16 @@
 
     </PreferenceCategory>
 
+    <PreferenceCategory app:title="Developer Options">
+        <SwitchPreference
+            android:key="monochrome_icon"
+            app:title="@string/pref_monochrome_icon"
+            android:summary="@string/pref_summary_monochrome_icon"
+            android:enabled="false"/>
+        <Preference
+            android:enabled="false"
+            android:icon="@drawable/ic_error_outline"
+            android:summary="@string/pref_summary_extra_monochrome_icon"/>
+    </PreferenceCategory>
+
 </PreferenceScreen>

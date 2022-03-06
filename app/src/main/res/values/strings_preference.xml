@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pref_monochrome_icon">Use Themed Icon</string>
+    <string name="pref_summary_monochrome_icon">Use Themed Icon</string>
+    <string name="pref_summary_extra_monochrome_icon">
+    시스템 테마 색상 변경 시, 아이콘의 색상이 변경되지 않을 수 있습니다.\n
+    설정을 재활성화하시면 색상이 변경된 아이콘을 볼 수 있습니다.\n
+    주의: 기존에 런처에 추가한 바로가기가 사라집니다.</string>
+</resources>

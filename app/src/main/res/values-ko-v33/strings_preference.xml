@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pref_summary_extra_monochrome_icon">시스템의 테마 아이콘 설정을 사용하세요.</string>
+</resources>
