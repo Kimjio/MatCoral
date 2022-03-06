@@ -16,18 +16,38 @@
         app:cardElevation="0dp"
         app:cardCornerRadius="8dp">
 
-        <com.kimjio.coral.widget.DrawableSizeTextView
-            android:id="@+id/text"
-            drawableTopUri="@{reaction.uri}"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="@{reaction.name}"
-            android:textAlignment="center"
-            android:background="?selectableItemBackground"
-            app:drawableTopHeight="72dp"
-            app:drawableTopWidth="72dp"
-            tools:drawableTopCompat="@tools:sample/avatars"
-            tools:text="안녕!" />
+            android:orientation="vertical"
+            tools:ignore="UseCompoundDrawables">
+
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/shimmer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/image"
+                    android:src="@drawable/ic_nook_reaction_placeholder"
+                    android:layout_width="match_parent"
+                    android:layout_height="72dp"
+                    android:contentDescription="@{reaction.name}"
+                    srcUri="@{reaction.uri}"
+                    srcPlaceholder="@{@drawable/ic_nook_reaction_placeholder}"/>
+
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
+            <TextView
+                android:id="@+id/text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@{reaction.name}"
+                android:textAlignment="center"
+                android:background="?selectableItemBackground"
+                tools:text="안녕!" />
+
+        </LinearLayout>
 
     </com.google.android.material.card.MaterialCardView>
 

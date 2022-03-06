@@ -1,5 +1,7 @@
 package com.kimjio.coral.api;
 
+import com.kimjio.coral.data.nook.DreamLandHistories;
+import com.kimjio.coral.data.nook.Friends;
 import com.kimjio.coral.data.nook.LandProfile;
 import com.kimjio.coral.data.nook.Message;
 import com.kimjio.coral.data.nook.Reactions;
@@ -50,4 +52,10 @@ public interface NookLinkApi {
 
     @GET("api/sd/v1/emoticons")
     Observable<Reactions> getReactions(@Header("Authorization") String authorization, @Query("language") String language);
+
+    @GET("api/sd/v1/users/{id}/dream_land_history")
+    Observable<DreamLandHistories> getDreamLandHistories(@Header("Authorization") String authorization, @Path("id") String id);
+
+    @GET("api/sd/v1/friends")
+    Observable<Friends> getFriends(@Header("Authorization") String authorization);
 }

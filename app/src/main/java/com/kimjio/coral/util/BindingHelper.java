@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -27,8 +28,13 @@ import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.bumptech.glide.request.transition.DrawableCrossFadeFactory;
+import com.facebook.shimmer.Shimmer;
+import com.facebook.shimmer.ShimmerDrawable;
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.kimjio.coral.R;
 import com.kimjio.coral.data.nook.Fruit;
 import com.kimjio.coral.data.nook.UserProfile;
@@ -61,9 +67,51 @@ public final class BindingHelper {
 
     @BindingAdapter("srcUri")
     public static void setDrawable(ImageView view, Uri uri) {
+        ShimmerDrawable drawable = new ShimmerDrawable();
+        drawable.setShimmer(new Shimmer.AlphaHighlightBuilder().setAutoStart(true).build());
         Glide.with(view)
                 .load(uri)
+                .transition(DrawableTransitionOptions.withCrossFade())
+                .placeholder(drawable)
                 .transform(new RoundedCorners(ViewUtils.dpToPx(view.getContext(), 2)))
+                .listener(new RequestListener<Drawable>() {
+                    @Override
+                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                        if (view.getParent() instanceof ShimmerFrameLayout) {
+                            ((ShimmerFrameLayout) view.getParent()).hideShimmer();
+                        }
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                        return false;
+                    }
+                })
+                .into(view);
+    }
+
+    @BindingAdapter({"srcUri", "srcPlaceholder"})
+    public static void setDrawable(ImageView view, Uri srcUri, Drawable srcPlaceholder) {
+        Glide.with(view)
+                .load(srcUri)
+                .transition(DrawableTransitionOptions.withCrossFade(new DrawableCrossFadeFactory.Builder().setCrossFadeEnabled(true).build()))
+                .placeholder(ViewUtils.getBitmapDrawableFromVectorDrawable(view.getContext(), srcPlaceholder))
+                .transform(new RoundedCorners(ViewUtils.dpToPx(view.getContext(), 2)))
+                .listener(new RequestListener<Drawable>() {
+                    @Override
+                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                        if (view.getParent() instanceof ShimmerFrameLayout) {
+                            ((ShimmerFrameLayout) view.getParent()).hideShimmer();
+                        }
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                        return false;
+                    }
+                })
                 .into(view);
     }
 
@@ -71,6 +119,7 @@ public final class BindingHelper {
     public static void setProfileDrawable(ImageView view, Uri uri) {
         Glide.with(view)
                 .load(uri)
+                .transition(DrawableTransitionOptions.withCrossFade())
                 .placeholder(R.drawable.ic_account)
                 .error(Glide.with(view).load(R.drawable.ic_user_red).transform(new CropCircleWithBorderTransformation(ViewUtils.dpToPx(view.getContext(), 3), ContextCompat.getColor(view.getContext(), R.color.stroke_color))))
                 .transform(new CropCircleWithBorderTransformation(ViewUtils.dpToPx(view.getContext(), 3), ContextCompat.getColor(view.getContext(), R.color.stroke_color)))
@@ -93,15 +142,18 @@ public final class BindingHelper {
         drawable.start();
         Glide.with(view)
                 .load(srcCircleUri)
+                .transition(DrawableTransitionOptions.withCrossFade())
                 .transform(new CircleCrop())
                 .placeholder(drawable)
                 .into(view);
     }
 
-    @BindingAdapter("drawableTopUri")
-    public static void setDrawableTopUri(DrawableSizeTextView view, Uri uri) {
+    @BindingAdapter({"drawableTopUri", "drawableTopPlaceholder"})
+    public static void setDrawableTopUri(DrawableSizeTextView view, Uri drawableTopUri, Drawable drawableTopPlaceholder) {
         Glide.with(view)
-                .load(uri)
+                .load(drawableTopUri)
+                .transition(DrawableTransitionOptions.withCrossFade())
+                .placeholder(drawableTopPlaceholder)
                 .transform(new RoundedCorners(ViewUtils.dpToPx(view.getContext(), 2)))
                 .listener(new RequestListener<Drawable>() {
                     @Override
@@ -122,6 +174,7 @@ public final class BindingHelper {
     public static void setDrawableStartUri(DrawableSizeTextView view, Uri uri) {
         Glide.with(view)
                 .load(uri)
+                .transition(DrawableTransitionOptions.withCrossFade())
                 .placeholder(R.drawable.ic_account)
                 .error(R.drawable.ic_account)
                 .transform(new CircleCrop())

@@ -143,6 +143,7 @@ public class NookActivity extends BaseActivity<NookActivityBinding> {
                         values.put(MediaStore.Images.Media.IS_PENDING, 0);
                         contentResolver.update(uri, values, null, null);
                     }
+                    descriptor.close();
                     Snackbar.make(binding.getRoot(), "Saved.", Snackbar.LENGTH_SHORT).show();
                 }
             } catch (IOException e) {
@@ -185,8 +186,10 @@ public class NookActivity extends BaseActivity<NookActivityBinding> {
             }
         });
         viewModel.getToken().observe(this, token -> {
-            viewModel.loadUserProfile(getAuthorization(token.getToken()), viewModel.getUser().getValue().getId());
-            viewModel.loadLandProfile(getAuthorization(token.getToken()), viewModel.getUser().getValue().getLand().getId());
+            if (viewModel.getUser().getValue() != null) {
+                viewModel.loadUserProfile(getAuthorization(token.getToken()), viewModel.getUser().getValue().getId());
+                viewModel.loadLandProfile(getAuthorization(token.getToken()), viewModel.getUser().getValue().getLand().getId());
+            }
             viewModel.loadReactions(getAuthorization(token.getToken()));
         });
         viewModel.getReactions().observe(this, reactions -> {

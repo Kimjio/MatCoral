@@ -33,6 +33,7 @@ public class ReactionAdapter extends RecyclerView.Adapter<ReactionViewHolder> {
             if (onItemClickListener != null)
                 onItemClickListener.onItemClick(reaction, position);
         });
+        holder.binding.shimmer.showShimmer(true);
         holder.binding.setReaction(reaction);
     }
 
